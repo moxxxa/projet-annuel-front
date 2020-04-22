@@ -133,7 +133,7 @@ export default {
   data() {
     return {
         goBackText: "Return",
-        colorTheme: "black",
+        colorTheme: "blue",
         //Registre
         introRegistre: 'Soccer heist, more then a game',
         registreText:  "Register",

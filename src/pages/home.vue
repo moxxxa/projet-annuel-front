@@ -24,6 +24,7 @@
         </f7-fab>
         <!-- Content -->
         <f7-page-content class="margin-horizontal">
+          <br><br><br><br><br><br><br><br>
             <h1 class="home-header" id="homePage">
                 {{ headerText }}
             </h1>
@@ -49,7 +50,7 @@
                 </f7-button>
               </f7-row>
             </f7-block>
-            <br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <h3 class="home-header text-align-center text-color-white" id="howItWorks">
                 {{ howSoocerHeistWork }}
             </h3>
@@ -59,7 +60,8 @@
                 <f7-col width="100" medium="30">
                   <f7-row class="text-align-center">
                     <f7-col width="100">
-                      <img src="static/images/create-account.svg" height="150px" width="200px">
+                      <!-- <img src="static/images/step2.png" height="200px" width="200px"> -->
+                      <img src="static/images/predict.png" height="200px" width="200px">
                     </f7-col>
                     <f7-col width="100">
                       <h2 class="text-color-white">
@@ -76,7 +78,7 @@
                 <f7-col width="100" medium="30">
                   <f7-row class="text-align-center">
                     <f7-col width="100">
-                      <img src="static/images/predict.svg" height="150px" width="200px">
+                      <img src="static/images/step2.png" height="200px" width="200px">
                     </f7-col>
                     <f7-col width="100">
                       <h2 class="text-color-white">
@@ -93,7 +95,7 @@
                 <f7-col width="100" medium="30">
                   <f7-row class="text-align-center">
                     <f7-col width="100">
-                      <img src="static/images/second-predict.svg" height="150px" width="200px">
+                      <img src="static/images/step3.png" height="200px" width="200px">
                     </f7-col>
                     <f7-col width="100">
                       <h2 class="text-color-white">

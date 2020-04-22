@@ -4,10 +4,8 @@
     <f7-view
       main
       class="safe-areas"
-      url="/"
-      :push-state="true"
+      id="main-view" :stackPages="true" url="/"
     >
-      <its-match ref="itsMatch"></its-match>
     </f7-view>
 
     <!-- Login screen -->
@@ -74,7 +72,7 @@ export default {
       // Login screen data
       email: "",
       password: "",
-      colorTheme: "pink",
+      colorTheme: "blue",
       // html text
       screenTitle: "S'identifier",
       signInText: "Connexion",

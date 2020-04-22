@@ -1,9 +1,9 @@
 <template>
     <f7-page name="accueil" class="accueil-page">
-        <div v-if="feeleeAnimation" class="fullscreenDiv">
-          <h1 class="feelee center-soccer-heist">feelee</h1>
+        <div v-if="SoccerAnimation" class="fullscreenDiv">
+          <h1 class="feelee center-soccer-heist">Soccer heist</h1>
         </div>
-        <div v-if="!checkProfile && !feeleeAnimation">
+        <div v-if="!checkProfile && !SoccerAnimation">
           <center>
             <!-- <profile-checker :user="userC" @inscriptionCompleted="finishInscription" @avatar="sendAvatarToNavbar"/> -->
           </center>
@@ -25,7 +25,7 @@ export default {
     name: "main",
     data () {
       return {
-        feeleeAnimation: true,
+        SoccerAnimation: true,
         user: StorageService.getUser(),
         logOutText: 'Log out',
         inscriptionFinished: true,
@@ -75,7 +75,7 @@ export default {
       this.profileIsCompleted();
       // console.log('inscriptionFinished =', this.inscriptionFinished);
       setTimeout(function () {
-        vm.feeleeAnimation = false;
+        vm.SoccerAnimation = false;
         if (vm.inscriptionFinished) {
           // console.log('inscriptionFinished =', vm.inscriptionFinished);
           //redirection to macth page
