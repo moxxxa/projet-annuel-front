@@ -29,7 +29,7 @@ export default {
         SoccerAnimation: true,
         user: StorageService.getUser(),
         logOutText: 'Log out',
-        inscriptionFinished: false,
+        inscriptionFinished: true,
         tmpAvatar: ''
       }
     },
@@ -41,6 +41,7 @@ export default {
         setTimeout(() => {
           vm.$f7.dialog.close();
           vm.$f7router.navigate("/main-prediction/");
+          console.log('redirected succesfully')
         }, 3000);
       },
       async profileIsCompleted() {

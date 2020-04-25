@@ -29,7 +29,7 @@ if (token) {
             component: Profile
         },
         {
-          path: "/prediction/",
+          path: "/main-prediction/",
           component: MainPrediction
         }
     ];

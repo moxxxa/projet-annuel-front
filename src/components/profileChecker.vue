@@ -2,9 +2,6 @@
   <div>
     <br>
     <f7-card class="card-profile-complete margin-top no-border" valign="bottom">
-      <f7-card-header>
-        <f7-progressbar :progress="currentProgress" id="demo-inline-progressbar"></f7-progressbar>
-      </f7-card-header>
       <f7-card-content>
         <div class="step-1" v-if="step === 1">
           <p class="text-align-center">
@@ -28,7 +25,7 @@
       <p>&nbsp;</p>
       <f7-button
        :class="!currentStateC ? 'disabled margin-right' : 'margin-right'"
-       @click="setInlineProgress(40); step = step + 1;">
+       @click="step = step + 1;">
        Finish
      </f7-button>
     </f7-card-footer>
@@ -49,7 +46,6 @@
       return {
         messagePictureOne: ', We need a photo in order to establish your profile',
         messagePictureTwo: 'Donwload a photo please',
-        currentProgress: 60,
         selectedFile: null,
         currentState : true,
         profilePhoto: '',
@@ -57,12 +53,6 @@
       };
     },
     methods: {
-      setInlineProgress(value) {
-        const self = this;
-        const app = self.$f7;
-        app.progressbar.set('#demo-inline-progressbar', value);
-        this.currentProgress = this.currentProgress + value;
-      },
       onFileSelected(event) {
         // console.log('event =', event);
         this.selectedFile = event.target.files[0];
