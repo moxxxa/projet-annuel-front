@@ -1,5 +1,6 @@
 <template>
     <f7-page name="accueil" class="accueil-page">
+      <navbar-auth :avatar="userAvatar" :checkProfil="checkProfile"/>
         <div v-if="SoccerAnimation" class="fullscreenDiv">
           <h3 class="center-soccer-heist">Soccer heist</h3>
         </div>
@@ -14,14 +15,14 @@
 <script>
 import WebService from '../services/web-service'
 import StorageService from '../services/storage-service';
-// import navbarAuth from '../components/navBar/navBarAuthentificated';
+import navbarAuth from '../components/navBar/navBarAuthentificated';
 import profileChecker from '../components/profileChecker';
 
 
 export default {
     components: {
-      profileChecker
-      // navbarAuth
+      profileChecker,
+      navbarAuth
     },
     name: "main",
     data () {
@@ -80,14 +81,14 @@ export default {
       let vm = this;
       this.profileIsCompleted();
       // console.log('inscriptionFinished =', this.inscriptionFinished);
-      setTimeout(function () {
-        vm.SoccerAnimation = false;
-        if (vm.inscriptionFinished) {
-          // console.log('inscriptionFinished =', vm.inscriptionFinished);
-          //redirection to macth page
+      // setTimeout(function () {
+      //   vm.SoccerAnimation = false;
+      //   if (vm.inscriptionFinished) {
+      //     // console.log('inscriptionFinished =', vm.inscriptionFinished);
+      //     //redirection to macth page
           vm.$f7router.navigate("/main-prediction/");
-        }
-      }, 4000);
+      //   }
+      // }, 4000);
     }
   }
 </script>

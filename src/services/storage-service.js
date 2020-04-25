@@ -60,7 +60,7 @@ export default class StorageService {
   }
 
   static avatarFromProfile(profile) {
-    console.log('profile =', profile);
+    // console.log('profile =', profile);
     let prefix = 'http://localhost:8000';
 
     return profile.avatar ?
@@ -71,11 +71,4 @@ export default class StorageService {
       ) :
       'static/images/d-avatar.jpg';
   }
-
-  static mediaUrl(media) {
-    let prefix = 'http://localhost:8000';
-
-    return prefix + media.url;
-  }
-
 }

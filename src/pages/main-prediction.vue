@@ -1,5 +1,6 @@
 <template>
     <f7-page name="main-prediction" class="accueil-page">
+      <navbar-auth :avatar="user.avatar" :checkProfil="true"/>
       <f7-block>
         <f7-row>
           <f7-col width="100">
@@ -12,7 +13,7 @@
                   <center><h2 class="light">1 Vs 1 Prediction</h2></center>
                   <center><h3 class="light">To start, please choose a league</h3></center>
                   <hr/>
-                  <br><br><br><br>
+                  <br><br><br>
                   <f7-list>
                     <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}">
                       <select :name="leaguesC">
@@ -34,11 +35,18 @@
                 <div v-else-if="currentStep === 2">
                   <secondstep :currentLeague="currentLeague" :teams="currentTeamsLeague"/>
                 </div>
-
-
               </f7-card-content>
               <f7-card-footer class="no-border">
-                <p>&nbsp;</p>
+                <span v-if="step > 1">
+                  <f7-button
+                   :class="!currentStateC ? 'disabled margin-right' : 'margin-right'"
+                   @click="setInlineProgress(-40); step = step - 1;">
+                   Back
+                 </f7-button>
+                </span>
+                <span v-else>
+                  &nbsp;
+                </span>
                 <f7-button
                  :class="!currentStateC ? 'disabled margin-right' : 'margin-right'"
                  @click="setInlineProgress(40); step = step + 1;">
@@ -82,6 +90,7 @@ export default {
     name: "main-prediction",
     data () {
       return {
+        user: StorageService.getUser(),
         leagues: [
           "La liga",
           "Premier league",
@@ -252,19 +261,19 @@ export default {
       }
     },
     mounted() {
-      let vm = this;
-      const app = vm.$f7;
-      let smartSelect = app.smartSelect.get('.smart-select');
-      smartSelect.on('close', function (el) {
-        vm.currentLeague = el.selectEl.selectedOptions[0].value;
-        let yearMinusOne = new Date().getFullYear() - 1;
-        let currentYear = ( yearMinusOne % 100 ) + 1;
-        console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
-
-        // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
-        //   .then(response => console.log('response =', response));
-          // .then(teams => vm.teams = teams);
-      });
+      // let vm = this;
+      // const app = vm.$f7;
+      // let smartSelect = app.smartSelect.get('.smart-select');
+      // smartSelect.on('close', function (el) {
+      //   vm.currentLeague = el.selectEl.selectedOptions[0].value;
+      //   let yearMinusOne = new Date().getFullYear() - 1;
+      //   let currentYear = ( yearMinusOne % 100 ) + 1;
+      //   console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+      //
+      //   // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
+      //   //   .then(response => console.log('response =', response));
+      //     // .then(teams => vm.teams = teams);
+      // });
 
       //WebService calls
       //fetching available leagues
