@@ -20,6 +20,7 @@ export default class StorageService {
   }
 
   static setUser(user) {
+    console.log('user =', user);
     storage.setItem('user', JSON.stringify(user));
   }
 
@@ -59,6 +60,7 @@ export default class StorageService {
   }
 
   static avatarFromProfile(profile) {
+    console.log('profile =', profile);
     let prefix = 'http://localhost:8000';
 
     return profile.avatar ?

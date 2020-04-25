@@ -8,6 +8,9 @@ import RegistrePage from '../components/registry/registry.vue'
 
 import ConditionsPage from '../pages/conditions'
 
+import MainPrediction from '../pages/main-prediction'
+
+import Profile from '../pages/profile'
 var routes;
 
 let token = StorageService.getToken();
@@ -22,8 +25,12 @@ if (token) {
             component: MainPage
         },
         {
-            path: "/profile/:id/",
+            path: "/profile/",
             component: Profile
+        },
+        {
+          path: "/prediction/",
+          component: MainPrediction
         }
     ];
 } else {

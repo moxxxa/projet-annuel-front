@@ -25,16 +25,16 @@ a:hover
 /** soccer-hesit-breathing **/
 
 .center-soccer-heist {
-  font-size: 80px;
+  font-size: 40px;
   color: #fff;
   animation: glow 1s ease-in-out infinite alternate;
 }
 @keyframes glow {
   from {
-    text-shadow: 0 0 5px #fff, 0 0 10px #FF1493, 0 0 15px #FF1493, 0 0 20px #FF1493, 0 0 25px #FF1493, 0 0 30px #FF1493, 0 0 35px #FF1493;
+    text-shadow: 0 0 5px #fff, 0 0 10px #9921e8, 0 0 15px #9921e8, 0 0 20px #9921e8, 0 0 25px #9921e8, 0 0 30px #9921e8, 0 0 35px #9921e8;
   }
   to {
-    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #FF1493, 0 0 40px #FF1493, 0 0 50px #FF1493, 0 0 60px #FF1493, 0 0 70px #FF1493;
+    text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #9921e8, 0 0 40px #9921e8, 0 0 50px #9921e8, 0 0 60px #9921e8, 0 0 70px #9921e8;
   }
 }
 .center-soccer-heist {
@@ -114,12 +114,12 @@ a:hover
   border-bottom: 3px solid red;
 }
 .accueil-page {
-  background: rgb(238,174,202);
-  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+  background-color: #9921e8;
+  background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
 }
 .profile-page {
-  background: rgb(238,174,202);
-  background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
+  background-color: #9921e8;
+  background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
 }
 
 .autocomplete{
@@ -305,12 +305,8 @@ a:hover
 
 /* specific elements styles */
 .home-page {
-  background-color: #0cbaba;
-  background-image: linear-gradient(315deg, #0cbaba 0%, #380036 74%);
-
-        // url("../static/images/giorgio-trovato-6rKkr2fh2-I-unsplash-scaled.jpg");
-    background-size: auto 100%;
-    background-position: center;
+  background-color: #9921e8;
+  background-image: linear-gradient(315deg, #9921e8 0%, #5f72be 74%);
 }
 
 .home-page .navbar .title {
