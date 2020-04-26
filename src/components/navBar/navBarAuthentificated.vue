@@ -17,6 +17,12 @@
     </f7-link>
   </f7-nav-left>
 
+  <div class="align-items-center display-flex">
+    <a @click="logout">
+      &nbsp;&nbsp;<img src="static/images/logout.png" />
+    </a>
+  </div>
+  <!-- logout.png -->
   <div slot="right" class="align-items-center display-flex">
     <a @click="goToProfile">
       <img :src="profileAvatarC" class="img-avatar margin-right" slot="right" />
@@ -36,6 +42,10 @@ export default {
     };
   },
   methods: {
+    logout() {
+      StorageService.removeAll();
+      window.location.href = "/";
+    },
     goToPredict() {
       if (this.checkProfil) {
         this.$f7router.navigate("/main-prediction/");

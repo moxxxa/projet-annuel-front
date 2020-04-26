@@ -270,7 +270,11 @@ export default {
         const self = this;
         const app = self.$f7;
         app.progressbar.set('#demo-inline-progressbar', value);
-        this.currentProgress = this.currentProgress + value;
+        if (this.currentProgress + value > 100) {
+          this.currentProgress = 100;
+        } else {
+          this.currentProgress = this.currentProgress + value;
+        }
       },
       calculateLeagueCode(league) {
         if (league === 'La liga') {
