@@ -12,7 +12,7 @@
 
   <!-- Find matchs -->
   <f7-nav-left class="tournament margin-left">
-    <f7-link @click="goToPredict">
+    <f7-link @click="goToTournament">
       <h5><font colot="black">Tournament</font></h5>
     </f7-link>
   </f7-nav-left>
@@ -29,7 +29,7 @@
 import StorageService from "../../services/storage-service";
 
 export default {
-  props: ["avatar"],
+  props: ["avatar", "checkProfil"],
   data() {
     return {
 
@@ -37,10 +37,19 @@ export default {
   },
   methods: {
     goToPredict() {
-
+      if (this.checkProfil) {
+        this.$f7router.navigate("/main-prediction/");
+      }
     },
     goToProfile() {
-
+      if (this.checkProfil) {
+        this.$f7router.navigate("/profile/");
+      }
+    },
+    goToTournament() {
+      if (this.checkProfil) {
+        this.$f7router.navigate("/tournament/");
+      }
     },
     _avatar() {
       return StorageService.avatarFromProfile(StorageService.getUser());

@@ -10,6 +10,8 @@ import ConditionsPage from '../pages/conditions'
 
 import MainPrediction from '../pages/main-prediction'
 
+import Tournament from '../pages/tournament'
+
 import Profile from '../pages/profile'
 var routes;
 
@@ -31,6 +33,10 @@ if (token) {
         {
           path: "/main-prediction/",
           component: MainPrediction
+        },
+        {
+          path: "/tournament/",
+          component: Tournament
         }
     ];
 } else {
