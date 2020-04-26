@@ -2,7 +2,7 @@
     <f7-page name="accueil" class="accueil-page">
       <navbar-auth :avatar="userAvatar" :checkProfil="checkProfile"/>
         <div v-if="SoccerAnimation" class="fullscreenDiv">
-          <h3 class="center-soccer-heist">Soccer heist</h3>
+          <h4 class="center-soccer-heist">SoccerHeist</h4>
         </div>
         <div v-if="!checkProfile && !SoccerAnimation">
           <center>
@@ -80,15 +80,15 @@ export default {
     mounted() {
       let vm = this;
       this.profileIsCompleted();
-      // console.log('inscriptionFinished =', this.inscriptionFinished);
-      // setTimeout(function () {
-      //   vm.SoccerAnimation = false;
-      //   if (vm.inscriptionFinished) {
-      //     // console.log('inscriptionFinished =', vm.inscriptionFinished);
-      //     //redirection to macth page
+      console.log('inscriptionFinished =', this.inscriptionFinished);
+      setTimeout(function () {
+        vm.SoccerAnimation = false;
+        if (vm.inscriptionFinished) {
+          // console.log('inscriptionFinished =', vm.inscriptionFinished);
+          //redirection to macth page
           vm.$f7router.navigate("/main-prediction/");
-      //   }
-      // }, 4000);
+        }
+      }, 4000);
     }
   }
 </script>
