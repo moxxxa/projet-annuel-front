@@ -15,7 +15,7 @@
                   <hr/>
                   <br><br><br>
                   <f7-list>
-                    <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}">
+                    <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}" ref="leagues">
                       <select :name="leaguesC">
                         <option value="Select a league" selected>Select a league</option>
                         <option :value="leagues[0]">{{leagues[0]}}</option>
@@ -33,24 +33,58 @@
 
 
                 <div v-else-if="currentStep === 2">
-                  <secondstep :currentLeague="currentLeague" :teams="currentTeamsLeague"/>
+                  <secondstep :currentLeague="currentLeague" :teams="currentTeamsLeague" @prediction="setPrediction"/>
+                </div>
+                <div v-else-if="currentStep === 3">
+                    <center><h2 class="light">The final step</h2></center>
+                    <center><h3 class="light">This step is essential for defining the accurecy of the prediction</h3></center>
+                    <br>
+                    <f7-list>
+                      <f7-list-item title="Based on the 1, 2, 3 ... last years" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
+                        <select name="Based on the 1, 2, 3 ... last years">
+                          <option value="Select a benchmark" selected>Select a benchmark</option>
+                          <option value="Current year">Current year</option>
+                          <option value="Last 2 years">Last 2 years</option>
+                          <option value="Last 3 years">Last 3 years</option>
+                          <option value="Last 4 years">Last 4 years</option>
+                          <option value="Last 5 years">Last 5 years</option>
+                          <option value="Last 6 years">Last 6 years</option>
+                          <option value="Last 7 years">Last 7 years</option>
+                          <option value="Last 8 years">Last 8 years</option>
+                          <option value="Last 9 years">Last 9 years</option>
+                        </select>
+                      </f7-list-item>
+                    </f7-list>
+                    <br><br><br><br><br><br>
+                </div>
+                <div v-else-if="step === 4">
+                  <center><h1 class="light">Results</h1></center>
+                  <div v-if="displayResult">
+                    <br><br><br>
+                    <h2 class="light">{{prediction.team0}}   : 60 %</h2>
+                    <h2 class="light">{{prediction.team1}}   : 25 %</h2>
+                    <h2 class="light">Draw   : 15 %</h2>
+                  </div>
+                  <div v-else>
+                    <br><br><br><br><br>
+                  </div>
                 </div>
               </f7-card-content>
               <f7-card-footer class="no-border">
-                <span v-if="step > 1">
+                <span v-if="step > 1 && step < 4">
                   <f7-button
-                   :class="!currentStateC ? 'disabled margin-right' : 'margin-right'"
-                   @click="setInlineProgress(-40); step = step - 1;">
+                   @click="setInlineProgress(-40); handleBack()">
                    Back
                  </f7-button>
                 </span>
                 <span v-else>
                   &nbsp;
                 </span>
-                <f7-button
+                <f7-button v-if="step < 4"
                  :class="!currentStateC ? 'disabled margin-right' : 'margin-right'"
                  @click="setInlineProgress(40); step = step + 1;">
-                 Next step
+                 <span v-if="step < 3">Next step</span>
+                 <span v-else> Predict</span>
                </f7-button>
               </f7-card-footer>
             </f7-card>
@@ -96,7 +130,7 @@ export default {
           "Premier league",
           "Bundesliga"
         ],
-        currentLeague: 'Premier league',
+        currentLeague: 'Select a league',
         match: [
           {
             name: "team1"
@@ -214,10 +248,24 @@ export default {
 
         ],
         currentProgress: 10,
-        step: 2
+        step: 1,
+        prediction: null,
+        yearsParams: '',
+        displayResult: false
       }
     },
     methods: {
+      handleBack() {
+        this.currentLeague = 'Select a league';
+        this.step = this.step - 1;
+        this.yearsParams = '';
+      },
+      setPrediction(payload) {
+        if (payload) {
+          this.prediction = payload;
+          console.log('this.prediction =', this.prediction);
+        }
+      },
       setInlineProgress(value) {
         const self = this;
         const app = self.$f7;
@@ -237,6 +285,7 @@ export default {
     },
     computed: {
       currentStep() {
+        console.log('currentStep =', this.step);
         return this.step;
       },
       leaguesC() {
@@ -245,6 +294,12 @@ export default {
       currentStateC() {
         console.log('current league =', this.currentLeague);
         if (this.step === 1 && this.currentLeague === 'Select a league') {
+          return false;
+        }
+        if (this.step === 2 && this.prediction === null) {
+          return false;
+        }
+        if (this.step === 3 && this.yearsParams === '') {
           return false;
         }
         return true;
@@ -261,18 +316,28 @@ export default {
       }
     },
     mounted() {
-      // let vm = this;
-      // const app = vm.$f7;
+      let vm = this;
+      vm.$refs.leagues.f7SmartSelect.on('close', function(el) {
+        vm.currentLeague = el.selectEl.selectedOptions[0].value;
+        console.log('dans le mounted, currentLeague =', vm.currentLeague);
+        let yearMinusOne = new Date().getFullYear() - 1;
+        let currentYear = ( yearMinusOne % 100 ) + 1;
+        console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+
+        // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
+        //   .then(response => console.log('response =', response));
+          // .then(teams => vm.teams = teams);
+      });
+      if (vm.step === 3) {
+        vm.$refs.years.f7SmartSelect.on('close', function(el) {
+          vm.yearsParams = el.selectEl.selectedOptions[0].value;
+          console.log('yearsParams = ', vm.yearsParams);
+        });
+      }
+
       // let smartSelect = app.smartSelect.get('.smart-select');
       // smartSelect.on('close', function (el) {
       //   vm.currentLeague = el.selectEl.selectedOptions[0].value;
-      //   let yearMinusOne = new Date().getFullYear() - 1;
-      //   let currentYear = ( yearMinusOne % 100 ) + 1;
-      //   console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
-      //
-      //   // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
-      //   //   .then(response => console.log('response =', response));
-      //     // .then(teams => vm.teams = teams);
       // });
 
       //WebService calls
@@ -281,8 +346,50 @@ export default {
       //   .then(response => response.data.data.leagues)
       //   .then(leagues => vm.leagues = leagues);
 
+    },
+    watch: {
+      step(newv, oldv) {
+        if (this.step === 1) {
+          let vm = this;
+          setTimeout(function () {
+            vm.$refs.leagues.f7SmartSelect.on('close', function(el) {
+              vm.currentLeague = el.selectEl.selectedOptions[0].value;
+              console.log('dans le mounted, currentLeague =', vm.currentLeague);
+              let yearMinusOne = new Date().getFullYear() - 1;
+              let currentYear = ( yearMinusOne % 100 ) + 1;
+              console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+          }, 3000);
+
+            // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
+            //   .then(response => console.log('response =', response));
+              // .then(teams => vm.teams = teams);
+          });
+        }
+        if (this.step === 2) {
+
+        }
+        if (this.step === 3) {
+          let vm = this;
+          setTimeout(function () {
+            vm.$refs.years.f7SmartSelect.on('close', function(el) {
+              vm.yearsParams = el.selectEl.selectedOptions[0].value;
+              console.log('yearsParams = ', vm.yearsParams);
+            });
+          }, 3000);
+        }
+
+        if (this.step === 4) {
+          let vm = this;
+          vm.$f7.dialog.preloader('Processing for the prediction ...., please wait');
+          setTimeout(() => {
+            vm.displayResult = true;
+            vm.$f7.dialog.close();
+          }, 10000);
+
+      }
     }
   }
+}
 </script>
 
 <style scoped>

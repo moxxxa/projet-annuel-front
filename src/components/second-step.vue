@@ -2,7 +2,7 @@
   <div>
     <center><h2 class="light">prediction preference</h2></center>
     <f7-list>
-      <f7-list-item title="First team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}">
+      <f7-list-item title="First team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item1">
         <select name="First team" @input="updateSmartSelect">
           <optgroup :label="currentLeague">
             <option value="Select a team" selected>Select a team</option>
@@ -14,14 +14,14 @@
       </f7-list-item>
     </f7-list>
     <center>
-      <h1>Vs</h1>
+      <h1 class="light"><font color="#9921e8">Vs</font></h1>
     </center>
     <f7-list>
-      <f7-list-item title="Second team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}">
+      <f7-list-item title="Second team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item2" :class="team0 === '' ? 'disabled': ''">
         <select name="Second team">
           <optgroup :label="currentLeague">
             <option value="Select a team" selected>Select a team</option>
-            <div v-for="team in teams" :key="team.code">
+            <div v-for="team in teamsAux" :key="team.code">
               <option :value="team.name">{{team.name}}</option>
             </div>
           </optgroup>
@@ -30,11 +30,11 @@
     </f7-list>
     <hr/>
     <f7-list>
-      <f7-list-item title="The home team" smart-select :smart-select-params="{openIn: 'sheet'}">
+      <f7-list-item title="The home team" smart-select :smart-select-params="{openIn: 'sheet'}" :class="team0 === '' || team1 === '' ? 'disabled': ''" ref="hometeam">
         <select name="Home team">
           <option value="Home team" selected>Select the home team</option>
-          <option value="team1">team1</option>
-          <option value="Team2">team2</option>
+          <option :value="team0">{{team0}}</option>
+          <option :value="team1">{{team1}}</option>
         </select>
       </f7-list-item>
     </f7-list>
@@ -53,27 +53,19 @@ export default {
     },
     props: [
       "currentLeague",
-      "teams"
+      "teams",
+      "validateSecondStep"
     ],
     name: "second-step",
     data () {
       return {
-        match: [
-          {
-            name: "team1"
-          },
-          {
-            name: "team2"
-          }
-        ],
+        team0: '',
+        team1: '',
+        homeTeam: '',
         teamsAux: []
       }
     },
     methods: {
-      calculateTeamName(name) {
-        console.log('name =', name);
-        return "" + name+ "";
-      },
       updateSmartSelect(event) {
         console.log('event =', event);
       }
@@ -83,13 +75,29 @@ export default {
     },
     mounted() {
       let vm = this;
-      const app = vm.$f7;
-      let smartSelect = app.smartSelect.get('.smart-select');
-      smartSelect.on('close', function (el) {
-        // console.log('vm.f7SmartSelect =', vm.f7SmartSelect);
-        // console.log('smartSelect =', smartSelect);
-        // console.log('el =', el);
-        console.log('value =', el.$valueEl[0].innerText);
+      vm.$refs.item1.f7SmartSelect.on('close', function(el) {
+        vm.team0 = el.$valueEl[0].innerText;
+        vm.teamsAux = [];
+        vm.teams.forEach((team) => {
+          if (team.name !== vm.team0) {
+            vm.teamsAux.push(team);
+          };
+        });
+      });
+
+      vm.$refs.item2.f7SmartSelect.on('close', function(el) {
+        vm.team1 = el.$valueEl[0].innerText;
+      });
+
+      vm.$refs.hometeam.f7SmartSelect.on('close', function(el) {
+        vm.homeTeam = el.$valueEl[0].innerText;
+        console.log('vm.homeTeam =', vm.homeTeam);
+        let prediction = {
+          'team0': vm.team0,
+          'team1': vm.team1,
+          'homeTeam': vm.homeTeam
+        };
+        vm.$emit('prediction', prediction);
       });
     }
   }
