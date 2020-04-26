@@ -263,7 +263,7 @@ export default {
       setPrediction(payload) {
         if (payload) {
           this.prediction = payload;
-          console.log('this.prediction =', this.prediction);
+          // console.log('this.prediction =', this.prediction);
         }
       },
       setInlineProgress(value) {
@@ -289,14 +289,14 @@ export default {
     },
     computed: {
       currentStep() {
-        console.log('currentStep =', this.step);
+        // console.log('currentStep =', this.step);
         return this.step;
       },
       leaguesC() {
         return this.leagues[0] + ", " + this.leagues[1] + ", " + this.leagues[2];
       },
       currentStateC() {
-        console.log('current league =', this.currentLeague);
+        // console.log('current league =', this.currentLeague);
         if (this.step === 1 && this.currentLeague === 'Select a league') {
           return false;
         }
@@ -309,6 +309,7 @@ export default {
         return true;
       },
       currentTeamsLeague() {
+        console.log('dans currentTeamsLeague, currentLeague =', this.currentLeague);
         if (this.currentLeague === 'La liga') {
           return this.espagnolTeams;
         } else if (this.currentLeague === 'Premier league') {
@@ -316,6 +317,7 @@ export default {
         } else if (this.currentLeague === 'Bundesliga') {
           return this.deutchTeams;
         }
+        console.log('returning nothing');
         return [];
       }
     },
@@ -326,7 +328,7 @@ export default {
         console.log('dans le mounted, currentLeague =', vm.currentLeague);
         let yearMinusOne = new Date().getFullYear() - 1;
         let currentYear = ( yearMinusOne % 100 ) + 1;
-        console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+        // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
 
         // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
         //   .then(response => console.log('response =', response));
@@ -335,7 +337,7 @@ export default {
       if (vm.step === 3) {
         vm.$refs.years.f7SmartSelect.on('close', function(el) {
           vm.yearsParams = el.selectEl.selectedOptions[0].value;
-          console.log('yearsParams = ', vm.yearsParams);
+          // console.log('yearsParams = ', vm.yearsParams);
         });
       }
 
@@ -358,10 +360,10 @@ export default {
           setTimeout(function () {
             vm.$refs.leagues.f7SmartSelect.on('close', function(el) {
               vm.currentLeague = el.selectEl.selectedOptions[0].value;
-              console.log('dans le mounted, currentLeague =', vm.currentLeague);
+              // console.log('dans le mounted, currentLeague =', vm.currentLeague);
               let yearMinusOne = new Date().getFullYear() - 1;
               let currentYear = ( yearMinusOne % 100 ) + 1;
-              console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+              // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
           }, 3000);
 
             // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
@@ -377,7 +379,7 @@ export default {
           setTimeout(function () {
             vm.$refs.years.f7SmartSelect.on('close', function(el) {
               vm.yearsParams = el.selectEl.selectedOptions[0].value;
-              console.log('yearsParams = ', vm.yearsParams);
+              // console.log('yearsParams = ', vm.yearsParams);
             });
           }, 3000);
         }

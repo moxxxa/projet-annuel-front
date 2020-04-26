@@ -14,7 +14,7 @@
                     @click="openGalleryOfIndex(-1)"
                   />
                 </a>
-                <div class="middle" @click="$refs.fileInput4.click()">
+                <div @click="$refs.fileInput4.click()">
                   <a>
                     <f7-icon f7="photo" color="black"></f7-icon>
                   </a>

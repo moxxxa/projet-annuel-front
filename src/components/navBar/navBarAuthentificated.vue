@@ -11,17 +11,17 @@
   </f7-nav-title>
 
   <!-- Find matchs -->
-  <f7-nav-left class="tournament margin-left">
+  <f7-nav-left class="tournament">
     <f7-link @click="goToTournament">
       <h5><font colot="black">Tournament</font></h5>
     </f7-link>
   </f7-nav-left>
 
-  <div class="align-items-center display-flex">
+  <f7-nav-left
     <a @click="logout">
-      &nbsp;&nbsp;<img src="static/images/logout.png" />
+      <img src="static/images/logout.png" />
     </a>
-  </div>
+  </f7-nav-left>
   <!-- logout.png -->
   <div slot="right" class="align-items-center display-flex">
     <a @click="goToProfile">
@@ -45,6 +45,7 @@ export default {
     logout() {
       StorageService.removeAll();
       window.location.href = "/";
+      location.reload();
     },
     goToPredict() {
       if (this.checkProfil) {
