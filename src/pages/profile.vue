@@ -1,89 +1,103 @@
 <template>
     <f7-page name="accueil" class="accueil-page">
-        <!-- <div v-if="SoccerAnimation" class="fullscreenDiv">
-          <h1 class="feelee center-soccer-heist">Soccer heist</h1>
-        </div>
-        <div v-if="!checkProfile && !SoccerAnimation">
+      <navbar-auth :avatar="user.avatar" :checkProfil="true"/>
+      <br><br><br>
+      <f7-card>
+        <f7-card-content>
           <center>
-            <profile-checker :user="userC" @inscriptionCompleted="finishInscription" @avatar="sendAvatarToNavbar"/>
+            <div class="img-cont">
+              <div class="container">
+                <a>
+                  <img
+                    :src="userAvatar"
+                    class="img-profile"
+                    @click="openGalleryOfIndex(-1)"
+                  />
+                </a>
+                <div class="middle" @click="$refs.fileInput4.click()">
+                  <a>
+                    <f7-icon f7="photo" color="black"></f7-icon>
+                  </a>
+                </div>
+              </div>
+            </div>
           </center>
-        </div> -->
+          <br>
+          <center><h3 class="light">{{user.pseudo}}</h3></center>
+          <f7-photo-browser
+            :photos="gallery"
+            routable-modals
+            ref="standalone"
+            virtualSlides
+            photobrowser:swipetoclose
+            popup-close-link-text="Fermer"
+          ></f7-photo-browser>
+          <input style="display: none" type="file" @change="onPhotoUpload" ref="fileInput4" />
+        </f7-card-content>
+      </f7-card>
+      <br><br><br><br>
     </f7-page>
 </template>
 
 <script>
 import WebService from '../services/web-service'
 import StorageService from '../services/storage-service';
-// import navbarAuth from '../components/navBar/navBarAuthentificated';
-// import navbarAuth from '../components/profileChecker';
+import navbarAuth from '../components/navBar/navBarAuthentificated';
+
 
 
 export default {
-    // components: {
-    //   // profileChecker,
-    //   navbarAuth
-    // },
-    // name: "main",
-    // data () {
-    //   return {
-    //     SoccerAnimation: true,
-    //     user: StorageService.getUser(),
-    //     logOutText: 'Log out',
-    //     inscriptionFinished: true,
-    //     tmpAvatar: ''
-    //   }
-    // },
-    // methods: {
-    //   finishInscription() {
-    //     this.inscriptionFinished = true;
-    //     let vm = this;
-    //     vm.$f7router.navigate("/find-matchs/");
-    //   },
-    //   async profileIsCompleted() {
-    //     // let status = false;
-    //     // await WebService.checkIfProfileIsCompleted().then(response => {
-    //     //   this.inscriptionFinished = response.data.data.is_completed;
-    //     //   // console.log('response completed =', response);
-    //     // }).catch((err) => {
-    //     //   console.log('error =', err);
-    //     // });
-    //     // console.log('status =', status);
-    //   },
-    //   sendAvatarToNavbar(avatar) {
-    //     if (avatar) {
-    //       // console.log('dans sendAvatarToNavBar');
-    //       this.tmpAvatar = avatar;
-    //     }
-    //   }
-    // },
-    // computed: {
-    //   userC() {
-    //     return this.user;
-    //   },
-    //   checkProfile() {
-    //     return this.inscriptionFinished;
-    //   },
-    //   userAvatar() {
-    //     if (this.tmpAvatar && this.tmpAvatar !== '') {
-    //       // console.log('dans le userAvatar computed');
-    //       return this.tmpAvatar;
-    //     }
-    //     return StorageService.avatarFromProfile(StorageService.getUser());
-    //   }
-    // },
-    // mounted() {
-    //   let vm = this;
-    //   this.profileIsCompleted();
-    //   // console.log('inscriptionFinished =', this.inscriptionFinished);
-    //   setTimeout(function () {
-    //     vm.SoccerAnimation = false;
-    //     if (vm.inscriptionFinished) {
-    //       // console.log('inscriptionFinished =', vm.inscriptionFinished);
-    //       //redirection to macth page
-    //       vm.$f7router.navigate("/main-prediction/");
-    //     }
-    //   }, 4000);
-    // }
+    components: {
+      navbarAuth
+    },
+    name: "main",
+    data () {
+      return {
+        user: StorageService.getUser(),
+      }
+    },
+    methods: {
+      openGalleryOfIndex(payload) {
+        this.$refs.standalone.open(payload + 1);
+      },
+      async onPhotoUpload(event) {
+        // let vm = this;
+        // vm.$f7.preloader.show();
+        // this.getBase64(event.target.files[0]).then(data =>
+        //   WebService.insertPhotoIntoUser(data.substr(data.indexOf(",") + 1))
+        //     .then(response => {
+        //       // console.log('data =', data);
+        //       vm.$f7.preloader.hide();
+        //       this.profilePhoto =
+        //         "http://localhost:8000" + response.data.data.profile.avatar.url;
+        //       // console.log('profile photoUpdated, response =', response);
+        //       StorageService.setUser(response.data.data.profile);
+        //       // console.log('user =', StorageService.getUser());
+        //     })
+        //     .catch(err => {
+        //       vm.$f7.preloader.hide();
+        //       console.log("err =", err);
+        //     })
+        // );
+      }
+    },
+    computed: {
+      userAvatar() {
+        console.log('avatar =', StorageService.avatarFromProfile(StorageService.getUser()));
+        return StorageService.avatarFromProfile(StorageService.getUser());
+      },
+      gallery() {
+        let res = [
+          {
+            url: this.userAvatar
+          }
+        ];
+        return res;
+      }
+    },
+    mounted() {
+
+    }
   }
 </script>
 
