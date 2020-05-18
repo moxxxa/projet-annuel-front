@@ -43,9 +43,14 @@ export default {
   },
   methods: {
     logout() {
-      StorageService.removeAll();
-      window.location.href = "/";
-      location.reload();
+      let vm = this;
+      vm.$f7.dialog.preloader('Logout ...');
+      setTimeout(() => {
+        vm.$f7.dialog.close();
+        StorageService.removeAll();
+        window.location.href = "/";
+        location.reload();
+      }, 3000);
     },
     goToPredict() {
       if (this.checkProfil) {

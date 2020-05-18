@@ -6,11 +6,11 @@ Framework7 app created with following options:
 
 ```
 {
-  "cwd": "C:\\Users\\Admin\\Documents\\code\\feelee\\feelee_webapp",
+  "cwd": "C:\\Users\\Admin\\Documents\\code\\soccer_hesit\\soccer_hesit_webapp",
   "type": [
     "web"
   ],
-  "name": "feelee",
+  "name": "soccer-hesit",
   "framework": "vue",
   "template": "single-view",
   "cssPreProcessor": "scss",

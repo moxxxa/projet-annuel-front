@@ -140,7 +140,96 @@ export default {
           }
         ],
         deutchTeams: [
-
+          {
+            "key": "bayern",
+            "name": "Bayern München",
+            "code": "FCB"
+          },
+          {
+            "key": "dortmund",
+            "name": "Borussia Dortmund",
+            "code": "BVB"
+          },
+          {
+            "key": "leverkusen",
+            "name": "Bayer 04 Leverkusen",
+            "code": "B04"
+          },
+          {
+            "key": "schalke",
+            "name": "FC Schalke 04",
+            "code": "S04"
+          },
+          {
+            "key": "frankfurt",
+            "name": "Eintracht Frankfurt",
+            "code": "FFM"
+          },
+          {
+            "key": "mgladbach",
+            "name": "Bor. Mönchengladbach",
+            "code": "BMG"
+          },
+          {
+            "key": "wolfsburg",
+            "name": "VfL Wolfsburg",
+            "code": "WOB"
+          },
+          {
+            "key": "mainz",
+            "name": "1. FSV Mainz 05",
+            "code": "M05"
+          },
+          {
+            "key": "bremen",
+            "name": "Werder Bremen",
+            "code": "BRE"
+          },
+          {
+            "key": "hoffenheim",
+            "name": "TSG 1899 Hoffenheim",
+            "code": "HOF"
+          },
+          {
+            "key": "augsburg",
+            "name": "FC Augsburg",
+            "code": "FCA"
+          },
+          {
+            "key": "herthabsc",
+            "name": "Hertha BSC",
+            "code": "BSC"
+          },
+          {
+            "key": "koeln",
+            "name": "1. FC Köln",
+            "code": "KOE"
+          },
+          {
+            "key": "paderborn",
+            "name": "SC Paderborn 07",
+            "code": "SCP"
+          },
+          {
+            "key": "freiburg",
+            "name": "SC Freiburg",
+            "code": "SCF"
+          },
+          {
+            "key": "duesseldorf",
+            "name": "Fortuna Düsseldorf",
+            "code": "F95"
+          },
+          {
+            "key": "unionberlin",
+            "name": "1. FC Union Berlin",
+            "code": "FCU"
+          },
+          {
+            "key": "leipzig",
+            "name": "RB Leipzig",
+            "code": "RBL"
+          }
         ],
         englandTeams: [
           {
@@ -245,7 +334,106 @@ export default {
           }
         ],
         espagnolTeams: [
-
+          {
+            "key": "barcelona",
+            "name": "FC Barcelona",
+            "code": "BAR"
+          },
+          {
+            "key": "espanyol",
+            "name": "RCD Espanyol",
+            "code": "ESP"
+          },
+          {
+            "key": "madrid",
+            "name": "Real Madrid",
+            "code": "RMD"
+          },
+          {
+            "key": "atletico",
+            "name": "Atlético Madrid",
+            "code": "ATL"
+          },
+          {
+            "key": "getafe",
+            "name": "Getafe CF",
+            "code": "GET"
+          },
+          {
+            "key": "sevilla",
+            "name": "Sevilla FC",
+            "code": "SEV"
+          },
+          {
+            "key": "valencia",
+            "name": "Valencia CF",
+            "code": "VAL"
+          },
+          {
+            "key": "levante",
+            "name": "Levante UD",
+            "code": "LEV"
+          },
+          {
+            "key": "athletic",
+            "name": "Athletic Club Bilbao",
+            "code": "ATH"
+          },
+          {
+            "key": "granada",
+            "name": "Granada CF",
+            "code": "GRA"
+          },
+          {
+            "key": "celta",
+            "name": "RC Celta Vigo",
+            "code": "CEL"
+          },
+          {
+            "key": "realsociedad",
+            "name": "Real Sociedad",
+            "code": "RSO"
+          },
+          {
+            "key": "valladolid",
+            "name": "Real Valladolid CF",
+            "code": "VID"
+          },
+          {
+            "key": "eibar",
+            "name": "SD Eibar",
+            "code": null
+          },
+          {
+            "key": "betis",
+            "name": "Real Betis",
+            "code": "BET"
+          },
+          {
+            "key": "osasuna",
+            "name": "CA Osasuna",
+            "code": "OSA"
+          },
+          {
+            "key": "villareal",
+            "name": "Villarreal CF",
+            "code": "VLL"
+          },
+          {
+            "key": "alaves",
+            "name": "Deportivo Alavés",
+            "code": null
+          },
+          {
+            "key": "mallorca",
+            "name": "RCD Mallorca",
+            "code": "MLL"
+          },
+          {
+            "key": "leganes",
+            "name": "CD Leganés",
+            "code": null
+          }
         ],
         currentProgress: 10,
         step: 1,
