@@ -2,7 +2,7 @@
     <f7-page name="accueil" class="accueil-page">
       <navbar-auth :avatar="userAvatar" :checkProfil="checkProfile"/>
         <div v-if="SoccerAnimation" class="fullscreenDiv">
-          <h4 class="center-soccer-heist">SoccerHeist</h4>
+          <h4 class="center-soccer-heist">ClicFoot</h4>
         </div>
         <div v-if="!checkProfile && !SoccerAnimation">
           <center>
@@ -27,7 +27,7 @@ export default {
     name: "main",
     data () {
       return {
-        SoccerAnimation: true,
+        SoccerAnimation: false,
         user: StorageService.getUser(),
         logOutText: 'Log out',
         inscriptionFinished: true,
@@ -86,9 +86,10 @@ export default {
         if (vm.inscriptionFinished) {
           // console.log('inscriptionFinished =', vm.inscriptionFinished);
           //redirection to macth page
-          vm.$f7router.navigate("/main-prediction/");
+          vm.$f7router.navigate("/welcome/");
         }
-      }, 4000);
+      }, 10);
+      //4000
     }
   }
 </script>

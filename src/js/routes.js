@@ -8,11 +8,12 @@ import RegistrePage from '../components/registry/registry.vue'
 
 import ConditionsPage from '../pages/conditions'
 
-import MainPrediction from '../pages/main-prediction'
-
-import Tournament from '../pages/tournament'
-
 import Profile from '../pages/profile'
+
+import Welcome from '../pages/welcome'
+
+import Settings from '../components/settings/settings'
+
 var routes;
 
 let token = StorageService.getToken();
@@ -31,12 +32,12 @@ if (token) {
             component: Profile
         },
         {
-          path: "/main-prediction/",
-          component: MainPrediction
+          path: "/settings/",
+          component: Settings
         },
         {
-          path: "/tournament/",
-          component: Tournament
+          path: "/welcome/",
+          component: Welcome
         }
     ];
 } else {

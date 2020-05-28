@@ -1,86 +1,92 @@
 <template>
-    <f7-page name="accueil" class="accueil-page">
-      <navbar-auth :avatar="user.avatar" :checkProfil="true"/>
-      <f7-card>
-        <f7-card-content>
-          <div v-if="!displayResult">
-            <center><h1 class="light">Simulate tournament</h1></center>
-            <center><h3 class="light">Predict the result of a tournament</h3></center>
-            <br>
-            <!-- number of teams -->
-            <f7-button popover-open=".popover-menu-sexe"><font size="2"> To start, please choose the number of teams: &nbsp;{{numberOfTeams}}</font></f7-button>
-            <br><br>
-            <!-- years caluclation -->
-            <f7-list>
-              <f7-list-item title="Based on the 1, 2, 3 ... last years" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
-                <select name="Based on the 1, 2, 3 ... last years">
-                  <option value="Select a benchmark" selected>Select a benchmark</option>
-                  <option value="Current year">Current year</option>
-                  <option value="Last 2 years">Last 2 years</option>
-                  <option value="Last 3 years">Last 3 years</option>
-                  <option value="Last 4 years">Last 4 years</option>
-                  <option value="Last 5 years">Last 5 years</option>
-                  <option value="Last 6 years">Last 6 years</option>
-                  <option value="Last 7 years">Last 7 years</option>
-                  <option value="Last 8 years">Last 8 years</option>
-                  <option value="Last 9 years">Last 9 years</option>
-                </select>
-              </f7-list-item>
-            </f7-list>
+  <f7-block>
+    <f7-card>
+      <f7-card-content>
+        <div v-if="!displayResult">
+          <center><h1 class="light">Simuler un tournoi</h1></center>
+          <center><h3 class="light">Prédire le résultat d'un tournoi</h3></center>
+          <br>
+          <!-- number of teams -->
+          <f7-button popover-open=".popover-number-teams"><font size="2"> Pour commencer, merci de choisir le nombre des équipes : &nbsp;{{numberOfTeams}}</font></f7-button>
+          <br><br>
+          <!-- years caluclation -->
+          <f7-list>
+            <f7-list-item title="baser sur le 1, 2, 3 ... dernière années" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
+              <select name="Based on the 1, 2, 3 ... last years">
+                <option value="Selectionner un benchmark" selected>Selectionner un benchmark</option>
+                <option value="1">Années en cours</option>
+                <option value="2">2 dernières années</option>
+                <option value="3">3 dernières années</option>
+                <option value="4">4 dernières années</option>
+                <option value="5">5 dernières années</option>
+                <option value="6">6 dernières années</option>
+                <option value="7">7 dernières années</option>
+                <option value="8">8 dernières années</option>
+                <option value="9">9 dernières années</option>
+              </select>
+            </f7-list-item>
+          </f7-list>
 
-            <!-- teams selection -->
-            <br><br>
-            <div v-if="numberOfTeamC !== 0">
-              <teams-selector @updateTeams="updateTeams" :numberOfTeams="numberOfTeamC"/>
-            </div>
-            <div v-else>
-              <p><font size="3" class="disabled">&nbsp;&nbsp;&nbsp;Select the teams</font></p>
-            </div>
-            <br><br>
-            <f7-button fill round raised text-color="black" :class="!currentStateC ? 'disabled' : ''" @click="predict">
-              Predict
-            </f7-button>
+          <!-- teams selection -->
+          <br><br>
+          <div v-if="numberOfTeamC !== 0">
+            <teams-selector @updateTeams="updateTeams" :numberOfTeams="numberOfTeamC"/>
           </div>
           <div v-else>
-            <br>
-            <center><h1 class="light">Results</h1></center>
-            <br><br><br>
-            <h2 class="light">First place: {{selectedTeams[1]}}  <font color="red">( 58 % )</font></h2>
-            <h2 class="light">Second place: {{selectedTeams[3]}}  <font color="red">( 42 % )</font></h2>
-            <br><br><br><br>
+            <p><font size="3" class="disabled">&nbsp;&nbsp;&nbsp;Selectionner une équipe</font></p>
           </div>
-        </f7-card-content>
-      </f7-card>
-      <f7-popover class="popover-menu-sexe">
-        <f7-list>
-          <f7-list-item link="#" popover-close title="4" @click="numberOfTeams = 4"></f7-list-item>
-          <f7-list-item link="#" popover-close title="6" @click="numberOfTeams = 6"></f7-list-item>
-          <f7-list-item link="#" popover-close title="8" @click="numberOfTeams = 8"></f7-list-item>
-          <f7-list-item link="#" popover-close title="10" @click="numberOfTeams = 10"></f7-list-item>
-          <f7-list-item link="#" popover-close title="12" @click="numberOfTeams = 12"></f7-list-item>
-          <f7-list-item link="#" popover-close title="14" @click="numberOfTeams = 14"></f7-list-item>
-          <f7-list-item link="#" popover-close title="16" @click="numberOfTeams = 16"></f7-list-item>
-          <f7-list-item link="#" popover-close title="18" @click="numberOfTeams = 18"></f7-list-item>
-        </f7-list>
-      </f7-popover>
-    </f7-page>
+          <br><br>
+          <f7-button fill round raised text-color="black" :class="!currentStateC ? 'disabled' : ''" @click="predict">
+            Prédire
+          </f7-button>
+        </div>
+        <div v-else>
+          <br>
+          <center><h1 class="light">Résultats</h1></center>
+          <br><br><br>
+          <h2 class="light">Prémiere place: {{selectedTeams[1]}}  <font color="red">( 58 % )</font></h2>
+          <h2 class="light">Deuxième place: {{selectedTeams[3]}}  <font color="red">( 42 % )</font></h2>
+          <br><br>
+          <f7-button fill round raised text-color="black" fill @click="restart">Nouveau simulation</f7-button>
+          <br><br>
+        </div>
+      </f7-card-content>
+    </f7-card>
+    <f7-popover class="popover-number-teams">
+      <f7-list>
+        <f7-list-item link="#" popover-close title="2" @click="numberOfTeams = 2"></f7-list-item>
+        <f7-list-item link="#" popover-close title="4" @click="numberOfTeams = 4"></f7-list-item>
+        <f7-list-item link="#" popover-close title="6" @click="numberOfTeams = 6"></f7-list-item>
+        <f7-list-item link="#" popover-close title="8" @click="numberOfTeams = 8"></f7-list-item>
+        <f7-list-item link="#" popover-close title="10" @click="numberOfTeams = 10"></f7-list-item>
+        <f7-list-item link="#" popover-close title="12" @click="numberOfTeams = 12"></f7-list-item>
+        <f7-list-item link="#" popover-close title="14" @click="numberOfTeams = 14"></f7-list-item>
+        <f7-list-item link="#" popover-close title="16" @click="numberOfTeams = 16"></f7-list-item>
+        <f7-list-item link="#" popover-close title="18" @click="numberOfTeams = 18"></f7-list-item>
+      </f7-list>
+    </f7-popover>
+  </f7-block>
 </template>
 
 <script>
 import WebService from '../services/web-service'
 import StorageService from '../services/storage-service';
 import navbarAuth from '../components/navBar/navBarAuthentificated';
-import profileChecker from '../components/profileChecker';
 import teamsSelector from '../components/teamsSelector';
 
 export default {
     components: {
-      profileChecker,
       navbarAuth,
       teamsSelector
     },
     name: "main",
     methods: {
+      restart() {
+        this.selectedTeams = [];
+        this.numberOfTeams = 0;
+        this.yearsParams = '';
+        this.displayResult = false;
+      },
       updateTeams(payload) {
         this.selectedTeams = payload;
       },
@@ -99,7 +105,7 @@ export default {
         return this.numberOfTeams;
       },
       currentStateC() {
-        if (this.numberOfTeams === 0 || this.selectedTeams.length === 0 || this.selectedTeams.length !== this.numberOfTeams ||this.yearsParams === '') {
+        if (this.numberOfTeams === 0 || this.selectedTeams.length === 0 || this.selectedTeams.length !== this.numberOfTeams || this.yearsParams === '' || this.yearsParams === 'Select a benchmark') {
           return false;
         }
         return true;

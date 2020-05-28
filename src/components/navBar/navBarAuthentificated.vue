@@ -7,7 +7,7 @@
 
   <!-- Title -->
   <f7-nav-title sliding class="text-italic">
-    <a @click="goToPredict" style="text-decorations:none;"><font color="#9921e8">Soccer heist</font></a>
+    <a @click="goToPredict" style="text-decorations:none;"><font color="#9921e8">ClicFoot</font></a>
   </f7-nav-title>
 
   <!-- Find matchs -->
@@ -54,7 +54,7 @@ export default {
     },
     goToPredict() {
       if (this.checkProfil) {
-        this.$f7router.navigate("/main-prediction/");
+        this.$f7router.navigate("/welcome/");
       }
     },
     goToProfile() {

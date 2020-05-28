@@ -4,9 +4,9 @@
     <f7-list>
       <f7-list-item title="First team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item1">
         <select name="First team" @input="updateSmartSelect">
-          <optgroup :label="currentLeague">
+          <optgroup :label="currentLeague1">
             <option value="Select a team" selected>Select a team</option>
-            <div v-for="team in teams" :key="team.code">
+            <div v-for="team in teams1" :key="team.code">
               <option :value="team.name">{{team.name}}</option>
             </div>
           </optgroup>
@@ -19,7 +19,7 @@
     <f7-list>
       <f7-list-item title="Second team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item2" :class="team0 === '' ? 'disabled': ''">
         <select name="Second team">
-          <optgroup :label="currentLeague">
+          <optgroup :label="currentLeague2">
             <option value="Select a team" selected>Select a team</option>
             <div v-for="team in teamsAux" :key="team.code">
               <option :value="team.name">{{team.name}}</option>
@@ -52,8 +52,10 @@ export default {
       navbarAuth
     },
     props: [
-      "currentLeague",
-      "teams",
+      "currentLeague1",
+      "currentLeague2",
+      "teams1",
+      "teams2",
       "validateSecondStep"
     ],
     name: "second-step",
@@ -74,17 +76,24 @@ export default {
 
     },
     mounted() {
+      console.log('currentLeague1 =', this.currentLeague1);
+      console.log('currentLeague2 =', this.currentLeague2);
       let vm = this;
       vm.$refs.item1.f7SmartSelect.on('close', function(el) {
         vm.team0 = el.$valueEl[0].innerText;
         vm.teamsAux = [];
-        vm.teams.forEach((team) => {
-          if (team.name !== vm.team0) {
-            vm.teamsAux.push(team);
-          };
-        });
+        if (vm.currentLeague1 === vm.currentLeague2) {
+          vm.teams1.forEach((team) => {
+            if (team.name !== vm.team0) {
+              vm.teamsAux.push(team);
+            };
+          });
+        }
+        else {
+          vm.teamsAux = vm.teams2;
+          console.log('teamsAux =', vm.teamsAux);
+        }
       });
-
       vm.$refs.item2.f7SmartSelect.on('close', function(el) {
         vm.team1 = el.$valueEl[0].innerText;
       });

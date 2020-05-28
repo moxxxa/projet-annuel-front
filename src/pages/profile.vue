@@ -23,7 +23,11 @@
             </div>
           </center>
           <br>
-          <center><h3 class="light">{{user.pseudo}}</h3></center>
+          <img src="https://media.api-sports.io/football/teams/541.png"/>
+          <center>
+            <h3 class="light">{{user.pseudo}}</h3>
+            <f7-button outline size="50" href="/settings/">{{proileModify}}</f7-button>
+          </center>
           <f7-photo-browser
             :photos="gallery"
             routable-modals
@@ -54,6 +58,8 @@ export default {
     data () {
       return {
         user: StorageService.getUser(),
+        numMaillot: 7,
+        proileModify: "Modifier mon profil"
       }
     },
     methods: {

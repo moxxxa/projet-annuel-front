@@ -1,111 +1,150 @@
 <template>
-    <f7-page name="main-prediction" class="accueil-page">
-      <navbar-auth :avatar="user.avatar" :checkProfil="true"/>
-      <f7-block>
-        <f7-row>
-          <f7-col width="100">
-            <f7-card class="demo-facebook-card">
-              <f7-card-header>
-                <f7-progressbar :progress="currentProgress" id="demo-inline-progressbar"></f7-progressbar>
-              </f7-card-header>
-              <f7-card-content :padding="true">
-                <div v-if="currentStep === 1">
-                  <center><h2 class="light">1 Vs 1 Prediction</h2></center>
-                  <center><h3 class="light">To start, please choose a league</h3></center>
-                  <hr/>
-                  <br><br><br>
+    <f7-block>
+      <f7-row>
+        <f7-col width="100">
+          <f7-card class="demo-facebook-card">
+            <f7-card-header>
+              <f7-progressbar :progress="currentProgress" id="demo-inline-progressbar"></f7-progressbar>
+            </f7-card-header>
+            <f7-card-content :padding="true">
+              <div v-if="currentStep === 1">
+                <center><h2 class="light">1 Vs 1 Prediction</h2></center>
+                <center><h3 class="light">Pour commencer, veuillez sélectionner la ligue de la première équipe</h3></center>
+                <hr/>
+                <br>
+                <f7-list>
+                  <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}" ref="leagues1">
+                    <select :name="leaguesC">
+                      <option value="Select a league" selected>Selectionner une ligue</option>
+                      <option :value="leagues[0]">{{leagues[0]}}</option>
+                      <option :value="leagues[1]">{{leagues[1]}}</option>
+                      <option :value="leagues[2]">{{leagues[2]}}</option>
+                    </select>
+                  </f7-list-item>
+                </f7-list>
+                <br><br>
+                <f7-button fill round raised text-color="black" fill sheet-open=".demo-sheet-swipe-to-close1" :class="currentLeague1 === 'Select a league'? 'disabled' : ''">
+                  Monter les équipes <span v-if="currentLeague1 !== 'Select a league'">de la {{currentLeague1}}</span>
+                </f7-button>
+                <br><br>
+                <hr/>
+
+                <center><h3 class="light">veuillez sélectionner la ligue de la deuxième équipe</h3></center>
+                <br>
+                <f7-list>
+                  <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}" ref="leagues2">
+                    <select :name="leaguesC">
+                      <option value="Select a league" selected>Selectionner une ligue</option>
+                      <option :value="leagues[0]">{{leagues[0]}}</option>
+                      <option :value="leagues[1]">{{leagues[1]}}</option>
+                      <option :value="leagues[2]">{{leagues[2]}}</option>
+                    </select>
+                  </f7-list-item>
+                </f7-list>
+                <br><br>
+                <f7-button fill round raised text-color="black" fill sheet-open=".demo-sheet-swipe-to-close2" :class="currentLeague2 === 'Select a league' ? 'disabled' : ''">
+                  Monter les équipes <span v-if="currentLeague2 !== 'Select a league'">de la {{currentLeague2}}</span>
+                </f7-button>
+                <br><br>
+              </div>
+
+
+              <div v-else-if="currentStep === 2">
+                <secondstep :currentLeague1="currentLeague1" :currentLeague2="currentLeague2" :teams1="currentTeamsLeague1" :teams2="currentTeamsLeague2" @prediction="setPrediction"/>
+              </div>
+              <div v-else-if="currentStep === 3">
+                  <center><h2 class="light">Dernière étape</h2></center>
+                  <center><h3 class="light">Cette étape est essentielle pour définir la précision de la prédiction</h3></center>
+                  <br>
                   <f7-list>
-                    <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}" ref="leagues">
-                      <select :name="leaguesC">
-                        <option value="Select a league" selected>Select a league</option>
-                        <option :value="leagues[0]">{{leagues[0]}}</option>
-                        <option :value="leagues[1]">{{leagues[1]}}</option>
-                        <option :value="leagues[2]">{{leagues[2]}}</option>
+                    <f7-list-item title="Based on the 1, 2, 3 ... last years" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
+                      <select name="Based on the 1, 2, 3 ... last years">
+                        <option value="Select a benchmark" selected>Selctionner un benchmark</option>
+                        <option value="Current year">Current year</option>
+                        <option value="Last 2 years">Last 2 years</option>
+                        <option value="Last 3 years">Last 3 years</option>
+                        <option value="Last 4 years">Last 4 years</option>
+                        <option value="Last 5 years">Last 5 years</option>
+                        <option value="Last 6 years">Last 6 years</option>
+                        <option value="Last 7 years">Last 7 years</option>
+                        <option value="Last 8 years">Last 8 years</option>
+                        <option value="Last 9 years">Last 9 years</option>
                       </select>
                     </f7-list-item>
                   </f7-list>
-                  <br><br>
-                  <f7-button fill round raised text-color="black" fill sheet-open=".demo-sheet-swipe-to-close" :class="!currentStateC ? 'disabled' : ''">
-                    Show teams <span v-if="currentLeague !== 'Select a league'">of {{currentLeague}}</span>
-                  </f7-button>
-                  <br><br>
+                  <br><br><br><br><br><br>
+              </div>
+              <div v-else-if="step === 4">
+                <center><h1 class="light">Résultats</h1></center>
+                <div v-if="displayResult">
+                  <br><br><br>
+                  <h2 class="light">{{prediction.team0}}   : 60 %</h2>
+                  <h2 class="light">{{prediction.team1}}   : 25 %</h2>
+                  <h2 class="light">Égaliter   : 15 %</h2>
+                  <f7-button fill round raised text-color="black" fill @click="restart">Nouveau simulation</f7-button>
                 </div>
-
-
-                <div v-else-if="currentStep === 2">
-                  <secondstep :currentLeague="currentLeague" :teams="currentTeamsLeague" @prediction="setPrediction"/>
+                <div v-else>
+                  <br><br><br><br><br>
                 </div>
-                <div v-else-if="currentStep === 3">
-                    <center><h2 class="light">The final step</h2></center>
-                    <center><h3 class="light">This step is essential for defining the accurecy of the prediction</h3></center>
-                    <br>
-                    <f7-list>
-                      <f7-list-item title="Based on the 1, 2, 3 ... last years" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
-                        <select name="Based on the 1, 2, 3 ... last years">
-                          <option value="Select a benchmark" selected>Select a benchmark</option>
-                          <option value="Current year">Current year</option>
-                          <option value="Last 2 years">Last 2 years</option>
-                          <option value="Last 3 years">Last 3 years</option>
-                          <option value="Last 4 years">Last 4 years</option>
-                          <option value="Last 5 years">Last 5 years</option>
-                          <option value="Last 6 years">Last 6 years</option>
-                          <option value="Last 7 years">Last 7 years</option>
-                          <option value="Last 8 years">Last 8 years</option>
-                          <option value="Last 9 years">Last 9 years</option>
-                        </select>
-                      </f7-list-item>
-                    </f7-list>
-                    <br><br><br><br><br><br>
-                </div>
-                <div v-else-if="step === 4">
-                  <center><h1 class="light">Results</h1></center>
-                  <div v-if="displayResult">
-                    <br><br><br>
-                    <h2 class="light">{{prediction.team0}}   : 60 %</h2>
-                    <h2 class="light">{{prediction.team1}}   : 25 %</h2>
-                    <h2 class="light">Draw   : 15 %</h2>
-                  </div>
-                  <div v-else>
-                    <br><br><br><br><br>
-                  </div>
-                </div>
-              </f7-card-content>
-              <f7-card-footer class="no-border">
-                <span v-if="step > 1 && step < 4">
-                  <f7-button
-                   @click="setInlineProgress(-40); handleBack()">
-                   Back
-                 </f7-button>
-                </span>
-                <span v-else>
-                  &nbsp;
-                </span>
-                <f7-button v-if="step < 4"
-                 :class="!currentStateC ? 'disabled margin-right' : 'margin-right'"
-                 @click="setInlineProgress(40); step = step + 1;">
-                 <span v-if="step < 3">Next step</span>
-                 <span v-else> Predict</span>
+              </div>
+            </f7-card-content>
+            <f7-card-footer class="no-border">
+              <span v-if="step > 1 && step < 4">
+                <f7-button
+                 @click="setInlineProgress(-40); handleBack()">
+                 Retourner
                </f7-button>
-              </f7-card-footer>
-            </f7-card>
-          </f7-col>
-        </f7-row>
-      </f7-block>
+              </span>
+              <span v-else>
+                &nbsp;
+              </span>
+              <f7-button v-if="step < 4"
+               :class="!currentStateC ? 'disabled margin-right' : 'margin-right'"
+               @click="setInlineProgress(40); step = step + 1;">
+               <span v-if="step < 3">Prochaine étape</span>
+               <span v-else> Prédire</span>
+             </f7-button>
+            </f7-card-footer>
+          </f7-card>
+        </f7-col>
+      </f7-row>
       <f7-sheet
-        class="demo-sheet-swipe-to-close"
-        style="--f7-sheet-bg-color: #fff;"
-        swipe-to-close
-        backdrop
+      class="demo-sheet-swipe-to-close1"
+      style="--f7-sheet-bg-color: #fff;"
+      swipe-to-close
+      backdrop
       >
-        <f7-page-content>
-          <f7-block-title large><font color="red">{{currentLeague}} teams</font></f7-block-title>
-          <f7-block-title>2020-21</f7-block-title>
-          <f7-list simple-list v-for="team in currentTeamsLeague" :key="team.code">
-            <f7-list-item :title="team.name">&nbsp;&nbsp;&nbsp;<font color="red">{{team.code}}</font></f7-list-item>
-          </f7-list>
-        </f7-page-content>
+      <f7-page-content>
+        <f7-block-title large><font color="red">Les équipes de la {{currentLeague1}}</font></f7-block-title>
+        <f7-block-title>2020-21</f7-block-title>
+        <f7-list simple-list v-for="team in currentTeamsLeague1" :key="team.code">
+          <f7-list-item :title="team.name">
+            &nbsp;&nbsp;&nbsp;
+            <!-- <img :src="calculateLogo(team.name)"/> -->
+            <font color="red">{{team.code}}</font>
+          </f7-list-item>
+        </f7-list>
+      </f7-page-content>
     </f7-sheet>
-  </f7-page>
+    <f7-sheet
+    class="demo-sheet-swipe-to-close2"
+    style="--f7-sheet-bg-color: #fff;"
+    swipe-to-close
+    backdrop
+    >
+    <f7-page-content>
+      <f7-block-title large><font color="red">Les équipes de la {{currentLeague2}}</font></f7-block-title>
+      <f7-block-title>2020-21</f7-block-title>
+      <f7-list simple-list v-for="team in currentTeamsLeague2" :key="team.code">
+        <f7-list-item :title="team.name">
+          &nbsp;&nbsp;&nbsp;
+          <!-- <img :src="calculateLogo(team.name)"/> -->
+          <font color="red">{{team.code}}</font>
+        </f7-list-item>
+      </f7-list>
+    </f7-page-content>
+  </f7-sheet>
+  </f7-block>
 </template>
 
 <script>
@@ -113,7 +152,8 @@ import WebService from '../services/web-service'
 import StorageService from '../services/storage-service';
 import navbarAuth from '../components/navBar/navBarAuthentificated';
 import secondstep from '../components/second-step';
-
+// import { logos } from '../teams_logo';
+import logoFetcher from '../utility/logo-fetcher';
 
 export default {
     components: {
@@ -130,7 +170,8 @@ export default {
           "Premier league",
           "Bundesliga"
         ],
-        currentLeague: 'Select a league',
+        currentLeague1: 'Select a league',
+        currentLeague2: 'Select a league',
         match: [
           {
             name: "team1"
@@ -443,8 +484,25 @@ export default {
       }
     },
     methods: {
+      restart() {
+        this.step = 1;
+        this.currentLeague1 = 'Select a league';
+        this.currentLeague2 = 'Select a league';
+        this.currentProgress = 10;
+        this.yearsParams = '';
+        this.displayResult = false;
+        this.prediction = null;
+      },
+      calculateLogo(teamName) {
+        let fetshResult = logoFetcher.findCodeLogo(teamName);
+        if (fetshResult !== -1) {
+          return "/https://sportteamslogo.com/api?key=acfb00c739f04cf6856a20128351ee94&size=small&tid=" + fetshResult;
+        }
+        return '';
+      },
       handleBack() {
-        this.currentLeague = 'Select a league';
+        this.currentLeague1 = 'Select a league';
+        this.currentLeague2 = 'Select a league';
         this.step = this.step - 1;
         this.yearsParams = '';
       },
@@ -485,7 +543,7 @@ export default {
       },
       currentStateC() {
         // console.log('current league =', this.currentLeague);
-        if (this.step === 1 && this.currentLeague === 'Select a league') {
+        if ((this.step === 1) && (this.currentLeague1 === 'Select a league' || this.currentLeague2 === 'Select a league')) {
           return false;
         }
         if (this.step === 2 && this.prediction === null) {
@@ -496,13 +554,25 @@ export default {
         }
         return true;
       },
-      currentTeamsLeague() {
-        console.log('dans currentTeamsLeague, currentLeague =', this.currentLeague);
-        if (this.currentLeague === 'La liga') {
+      currentTeamsLeague1() {
+        console.log('dans currentTeamsLeague, currentLeague =', this.currentLeague1);
+        if (this.currentLeague1 === 'La liga') {
           return this.espagnolTeams;
-        } else if (this.currentLeague === 'Premier league') {
+        } else if (this.currentLeague1 === 'Premier league') {
           return this.englandTeams;
-        } else if (this.currentLeague === 'Bundesliga') {
+        } else if (this.currentLeague1 === 'Bundesliga') {
+          return this.deutchTeams;
+        }
+        console.log('returning nothing');
+        return [];
+      },
+      currentTeamsLeague2() {
+        console.log('dans currentTeamsLeague, currentLeague =', this.currentLeague2);
+        if (this.currentLeague2 === 'La liga') {
+          return this.espagnolTeams;
+        } else if (this.currentLeague2 === 'Premier league') {
+          return this.englandTeams;
+        } else if (this.currentLeague2 === 'Bundesliga') {
           return this.deutchTeams;
         }
         console.log('returning nothing');
@@ -510,10 +580,11 @@ export default {
       }
     },
     mounted() {
+      console.log('logoFetcher =', logoFetcher.findCodeLogo('FC Barcelona'));
       let vm = this;
-      vm.$refs.leagues.f7SmartSelect.on('close', function(el) {
-        vm.currentLeague = el.selectEl.selectedOptions[0].value;
-        console.log('dans le mounted, currentLeague =', vm.currentLeague);
+      vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
+        vm.currentLeague1 = el.selectEl.selectedOptions[0].value;
+        console.log('dans le mounted, currentLeague =', vm.currentLeague1);
         let yearMinusOne = new Date().getFullYear() - 1;
         let currentYear = ( yearMinusOne % 100 ) + 1;
         // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
@@ -522,6 +593,20 @@ export default {
         //   .then(response => console.log('response =', response));
           // .then(teams => vm.teams = teams);
       });
+
+      vm.$refs.leagues2.f7SmartSelect.on('close', function(el) {
+        vm.currentLeague2 = el.selectEl.selectedOptions[0].value;
+        console.log('dans le mounted, currentLeague =', vm.currentLeague2);
+        let yearMinusOne = new Date().getFullYear() - 1;
+        let currentYear = ( yearMinusOne % 100 ) + 1;
+        // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+
+        // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
+        //   .then(response => console.log('response =', response));
+          // .then(teams => vm.teams = teams);
+      });
+
+
       if (vm.step === 3) {
         vm.$refs.years.f7SmartSelect.on('close', function(el) {
           vm.yearsParams = el.selectEl.selectedOptions[0].value;
@@ -546,13 +631,21 @@ export default {
         if (this.step === 1) {
           let vm = this;
           setTimeout(function () {
-            vm.$refs.leagues.f7SmartSelect.on('close', function(el) {
-              vm.currentLeague = el.selectEl.selectedOptions[0].value;
+            vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
+              vm.currentLeague1 = el.selectEl.selectedOptions[0].value;
               // console.log('dans le mounted, currentLeague =', vm.currentLeague);
               let yearMinusOne = new Date().getFullYear() - 1;
               let currentYear = ( yearMinusOne % 100 ) + 1;
               // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
           }, 3000);
+
+          vm.$refs.leagues2.f7SmartSelect.on('close', function(el) {
+            vm.currentLeague2 = el.selectEl.selectedOptions[0].value;
+            // console.log('dans le mounted, currentLeague =', vm.currentLeague);
+            let yearMinusOne = new Date().getFullYear() - 1;
+            let currentYear = ( yearMinusOne % 100 ) + 1;
+            // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+        }, 3000);
 
             // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
             //   .then(response => console.log('response =', response));
