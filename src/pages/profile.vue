@@ -23,7 +23,6 @@
             </div>
           </center>
           <br>
-          <img src="https://media.api-sports.io/football/teams/541.png"/>
           <center>
             <h3 class="light">{{user.pseudo}}</h3>
             <f7-button outline size="50" href="/settings/">{{proileModify}}</f7-button>

@@ -26,7 +26,7 @@
             <f7-list-input
               type="password"
               floating-label
-              label="Password"
+              label="Mot de passe"
               name="password"
               :value="password"
               @input="password = $event.target.value"
@@ -62,7 +62,7 @@ export default {
     return {
       // Framework7 Parameters
       f7params: {
-        name: "Soccer heist", // App name
+        name: "ClicFoot", // App name
         theme: "auto", // Automatic theme detection
 
         // App routes
@@ -74,12 +74,12 @@ export default {
       password: "",
       colorTheme: "blue",
       // html text
-      screenTitle: "Login",
+      screenTitle: "S'identifier",
       signInText: "Connexion",
-      dontHaveAccText: "Not registered yet ?",
-      signUpText: "Subscribe now",
-      goBackText: "Go back",
-      emailIncorrectText: "Email or Password is incorrect.",
+      dontHaveAccText: "Pas encore inscrit ?",
+      signUpText: "S'inscrire maintenant",
+      goBackText: "Retourner",
+      emailIncorrectText: "E-mail ou mot de passe incorrect.",
 
       user: StorageService.getUser()
     };
@@ -96,48 +96,49 @@ export default {
       // }
     },
     handleLogin() {
-      StorageService.setToken("pokemon007");
-      WebService.setAuthorization("pokemon007");
-      let profile = {
-        pseudo: "userA",
-        birthday: "20/07/1995"
-      }
-      StorageService.setUser(profile);
-      location.reload();
-      // let vm = this;
-      // vm.$f7.preloader.show();
-      // WebService.login(this.email, this.password)
-      //   .then(response => {
-      //     StorageService.setToken(response.data.data.token);
-      //     StorageService.setMail(vm.email);
-      //     StorageService.setIsPremium(response.data.data.user.profile.is_premium);
-      //     StorageService.setCredits(response.data.data.user.credits);
-      //     StorageService.setFullUser(response.data.data.user);
-      //     WebService.setAuthorization(response.data.data.token);
-      //     WebService.getUserProfile()
-      //       .then(response => {
-      //         StorageService.setUser(response.data.data.profile);
-      //         location.reload();
-      //       })
-      //       .catch(err => {
-      //         console.log("err =", err);
-      //       });
-      //   })
-      //   .catch(() => {
-      //     vm.$f7.preloader.hide();
-      //     let dialog = vm.$f7.dialog.create({
-      //       title: "",
-      //       text: vm.emailIncorrectText,
-      //       destroyOnClose: true,
-      //       buttons: [
-      //         {
-      //           text: "OK",
-      //           color: vm.colorTheme
-      //         }
-      //       ]
-      //     });
-      //     dialog.open();
-      //   });
+      // StorageService.setToken("pokemon007");
+      // WebService.setAuthorization("pokemon007");
+      // let profile = {
+      //   pseudo: "userA",
+      //   birthday: "20/07/1995"
+      // }
+      // StorageService.setUser(profile);
+      // location.reload();
+      let vm = this;
+      vm.$f7.preloader.show();
+      WebService.login(this.email, this.password)
+        .then(response => {
+          console.log('response login =', response);
+          // StorageService.setToken(response.data.data.token);
+          // StorageService.setMail(vm.email);
+          // StorageService.setIsPremium(response.data.data.user.profile.is_premium);
+          // StorageService.setCredits(response.data.data.user.credits);
+          // StorageService.setFullUser(response.data.data.user);
+          // WebService.setAuthorization(response.data.data.token);
+          // WebService.getUserProfile()
+          //   .then(response => {
+          //     StorageService.setUser(response.data.data.profile);
+          //     location.reload();
+          //   })
+          //   .catch(err => {
+          //     console.log("err =", err);
+          //   });
+        })
+        .catch(() => {
+          vm.$f7.preloader.hide();
+          let dialog = vm.$f7.dialog.create({
+            title: "",
+            text: vm.emailIncorrectText,
+            destroyOnClose: true,
+            buttons: [
+              {
+                text: "OK",
+                color: vm.colorTheme
+              }
+            ]
+          });
+          dialog.open();
+        });
     }
   },
   mounted() {

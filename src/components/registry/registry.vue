@@ -9,10 +9,10 @@
         <f7-list-input
           ref="nomProfile"
           outline
-          label="Name"
+          label="Nom"
           floating-label
           type="text"
-          placeholder="Your name"
+          placeholder="Votre nom"
           clear-button
           error-message="The name must consist of alphabetical letters only!"
           required
@@ -31,7 +31,7 @@
           label="Prènom"
           floating-label
           type="text"
-          placeholder="Your first name"
+          placeholder="Votre prénom"
           clear-button
           required
           error-message="The first name must consist of alphabetical letters only!"
@@ -64,11 +64,11 @@
         <!-- Password -->
         <f7-list-input
           outline
-          label="Password"
+          label="Mot de passe"
           floating-label
           type="password"
-          placeholder="Your password"
-          info="At least 8 characters and at least one number, upper and lower case"
+          placeholder="Votre mot de passe"
+          info="au moins  8 characters contenant un nombre, une lettre majuscule et une lettre miniscule"
           clear-button
           :value="passwordRegistration"
           @input="passwordRegistration =  $event.target.value"
@@ -79,10 +79,10 @@
         <!-- Password confirmation -->
         <f7-list-input
           outline
-          label="Password confirmation"
+          label="Mot de passe confirmation"
           floating-label
           type="password"
-          placeholder="Please confirm the password"
+          placeholder="Confirmation mot de passe"
           clear-button
           :value="passwordConfirmationRegistration"
           @input="passwordConfirmationRegistration =  $event.target.value"
@@ -132,26 +132,26 @@ export default {
   },
   data() {
     return {
-        goBackText: "Return",
+        goBackText: "Revenir",
         colorTheme: "blue",
         //Registre
-        introRegistre: 'Soccer heist, more then a game',
+        introRegistre: 'ClicFoot, plus qu\'un jeu',
         registreText:  "Register",
         haveAccount: "Vous avez déjà un compte ?",
-        LoginText: "Identify",
+        LoginText: "S'identifier",
         emailRegistration: "",
         nomRegistration: "",
         prenomRegistration: "",
         passwordRegistration: "",
         passwordConfirmationRegistration: "",
-        nomUtilisateurInvalide: "The name must contain at least three characters!",
-        prenomUtilisateurInvalide: "The first name must contain at least three characters!",
-        emailInvalide: "The email address is invalid!",
-        motInmatch: "Your password does not match",
-        mdpFaible: "The password must contain at least one number, upper case, lower case and between 8 and 64 in length.",
-        errorRegistre: "an error occurred during your registration, please try again later",
-        termsText: "By creating your account, you accept our",
-        conditionRedirect: "Terms of use",
+        nomUtilisateurInvalide: "Le nom doit contenir au moins trois caractères!",
+        prenomUtilisateurInvalide: "Le prénom doit contenir au moins trois caractères!",
+        emailInvalide: "L'adresse mail est invalide!",
+        motInmatch: "Votre mot de passe ne correspond pas",
+        mdpFaible: "Le mot de passe doit contenir au moins un chiffre, un majuscules, un minuscules et entre 8 et 64.",
+        errorRegistre: "une erreur s'est produite lors de votre inscription, veuillez réessayer plus tard",
+        termsText: "En créant votre compte, vous acceptez nos",
+        conditionRedirect: "conditionsd'utilisation",
         userAccept: false
     };
   },
@@ -223,7 +223,6 @@ export default {
         dialog.open();
         return ;
       }
-      console.log('rule =', vm.passwordRegistration.length < 8 || !vm.PermittedPassword(vm.passwordRegistration));
       if (vm.passwordRegistration.length < 8 || !vm.PermittedPassword(vm.passwordRegistration)) {
         let dialog =  vm.$f7.dialog.create({
             title: '',
@@ -240,70 +239,45 @@ export default {
         return ;
       }
       vm.$f7.preloader.show();
-      WebService.registre(vm.emailRegistration, vm.passwordRegistration)
+      WebService.registre(vm.emailRegistration, vm.passwordRegistration, vm.nomRegistration, vm.prenomRegistration)
       .then((response) => {
-        StorageService.setToken(response.data.data.token);
-        WebService.setAuthorization(response.data.data.token);
-        StorageService.setUser(response.data.data.user);
-        StorageService.setCredits(response.data.data.user.credits);
-        StorageService.setMail(vm.emailRegistration);
-        WebService.updateUser(vm.nomRegistration, vm.prenomRegistration)
-          .then((response) =>  {
-            // console.log('response =', response);
-            StorageService.setUser(response.data.data.profile);
-            // console.log('user registry =', response.data.data.profile);
-            // console.log('user updated !!');
-            window.location.href = "/";
+            console.log('response registration=', response);
+            // StorageService.setUser(response.data);
+            // StorageService.setToken("temporory token");
+            // WebService.setAuthorization("temporory token");
+            // window.location.href = "/";
           })
           .catch((err) => {
             vm.$f7.preloader.hide();
-            let dialog =  vm.$f7.dialog.create({
-              title: '',
-              text: vm.errorRegistre,
-              destroyOnClose: true,
-              buttons: [
-                {
-                  text: 'Ok',
-                  color: vm.colorTheme,
-                }
-              ]
-            });
-            dialog.open();
+            if(err.message.includes("406")) {
+              let dialog =  vm.$f7.dialog.create({
+                title: 'Ops ....',
+                content: `This email address is already in use by another user`,
+                destroyOnClose: true,
+                buttons: [
+                  {
+                    text: 'OK',
+                    color: vm.colorTheme,
+                  }
+                ]
+              });
+              dialog.open();
+            } else {
+              vm.$f7.preloader.hide();
+              let dialog =  vm.$f7.dialog.create({
+                title: '',
+                text: vm.errorRegistre,
+                destroyOnClose: true,
+                buttons: [
+                  {
+                    text: 'Ok',
+                    color: vm.colorTheme,
+                  }
+                ]
+              });
+              dialog.open();
+            }
             console.log('error =', err);
-          });
-        // console.log('registration success');
-      })
-      .catch((err) => {
-          vm.$f7.preloader.hide();
-          if(err.message.includes("406")) {
-            let dialog =  vm.$f7.dialog.create({
-              title: 'Ops ....',
-              content: `This email address is already in use by another user`,
-              destroyOnClose: true,
-              buttons: [
-                {
-                  text: 'OK',
-                  color: vm.colorTheme,
-                }
-              ]
-            });
-            dialog.open();
-          } else {
-            vm.$f7.preloader.hide();
-            let dialog =  vm.$f7.dialog.create({
-              title: '',
-              text: vm.errorRegistre,
-              destroyOnClose: true,
-              buttons: [
-                {
-                  text: 'Ok',
-                  color: vm.colorTheme,
-                }
-              ]
-            });
-            dialog.open();
-          }
-          console.log('error =', err);
       });
     },
     validateEmail(email) {

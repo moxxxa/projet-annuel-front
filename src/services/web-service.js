@@ -3,9 +3,9 @@ import StorageService from './storage-service';
 
 var token = StorageService.getToken();
 
-var apiHost = 'https://soccer-hesit-webapp.azurewebsites.net';
+var apiHost = 'https://jeeback.azurewebsites.net';
 if (process && process.env && process.env.NODE_ENV === 'development') {
-    apiHost = 'http://localhost:8000';
+    apiHost = 'https://jeeback.azurewebsites.net';
 }
 
 axios.defaults.baseURL = apiHost;
@@ -18,15 +18,18 @@ export default class WebService {
     }
 
     static login (email, password) {
-        return axios.post(`/api/login`, {
+        return axios.post(`/login`, {
             email: email,
             password: password
         });
     }
-    static registre (email, password) {
-        return axios.post(`/api/register`, {
+    static registre (email, password, nom, prenom) {
+      console.log('host =', apiHost);
+        return axios.post(`/register`, {
             email: email,
-            password: password
+            password: password,
+            lastName: prenom,
+            name: nom
         });
     }
     static updateUser (firstName, lastName) {

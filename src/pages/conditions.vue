@@ -15,7 +15,7 @@
           Registre
         </f7-button>
       <f7-nav-title sliding text-color="white" class="text-italic margin-top">
-        <a href="/" style="text-decorations:none; color:inherit;">Soccer heist&nbsp;</a>
+        <a href="/" style="text-decorations:none; color:inherit;">ClicFoot&nbsp;</a>
       </f7-nav-title>
     </f7-navbar>
     <br>

@@ -149,7 +149,7 @@ export default {
             knowMoreText: "Know more",
             headerText: "You can own the game",
             descSoocerHesitText: "Join SOCCER HEIST to predict football results and much more",
-            howSoocerHeistWork: "How SOCCER HEIST work",
+            howSoocerHeistWork: "How ClicFoot work",
             createAccountText: "Create your account",
             createAccountDesc: "Subscribe for free and create your profile",
             chooseGame: "Choose your football games",

@@ -1,10 +1,10 @@
 <template>
     <f7-page name="accueil" class="accueil-page">
       <navbar-auth :avatar="userAvatar" :checkProfil="checkProfile"/>
-        <div v-if="SoccerAnimation" class="fullscreenDiv">
+        <div v-if="clicAnimation" class="fullscreenDiv">
           <h4 class="center-soccer-heist">ClicFoot</h4>
         </div>
-        <div v-if="!checkProfile && !SoccerAnimation">
+        <div v-if="!checkProfile && !clicAnimation">
           <center>
             <profile-checker :user="userC" @inscriptionCompleted="finishInscription" @avatar="sendAvatarToNavbar"/>
           </center>
@@ -27,7 +27,7 @@ export default {
     name: "main",
     data () {
       return {
-        SoccerAnimation: false,
+        clicAnimation: true,
         user: StorageService.getUser(),
         logOutText: 'Log out',
         inscriptionFinished: true,
@@ -82,13 +82,13 @@ export default {
       this.profileIsCompleted();
       console.log('inscriptionFinished =', this.inscriptionFinished);
       setTimeout(function () {
-        vm.SoccerAnimation = false;
+        vm.clicAnimation = false;
         if (vm.inscriptionFinished) {
           // console.log('inscriptionFinished =', vm.inscriptionFinished);
           //redirection to macth page
           vm.$f7router.navigate("/welcome/");
         }
-      }, 10);
+      }, 4000);
       //4000
     }
   }
