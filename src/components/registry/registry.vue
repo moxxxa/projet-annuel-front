@@ -110,6 +110,10 @@
           >
               {{ registreText }}
           </f7-button>
+          <br>
+            <template>
+              <button v-google-signin-button="clientId" class="google-signin-button"> Continue with Google</button>
+            </template>
           <f7-block-footer>
               {{ haveAccount }}
               <f7-link login-screen-open="#my-login-screen">{{ LoginText }}</f7-link>
@@ -125,10 +129,11 @@
 <script>
 import WebService from '../../services/web-service';
 import StorageService from '../../services/storage-service';
+import GoogleSignInButton from 'vue-google-signin-button-directive'
 
 export default {
   components: {
-
+    GoogleSignInButton
   },
   data() {
     return {
@@ -152,11 +157,26 @@ export default {
         errorRegistre: "une erreur s'est produite lors de votre inscription, veuillez réessayer plus tard",
         termsText: "En créant votre compte, vous acceptez nos",
         conditionRedirect: "conditionsd'utilisation",
-        userAccept: false
+        userAccept: false,
+        clientId: '236557997475-brjtalksspr9epeksd8amep2hl5ddeqn.apps.googleusercontent.com'
     };
   },
   methods: {
+    OnGoogleAuthSuccess (idToken) {
+      WebService.googleRegistre(idToken).then(response => {
+        StorageService.setUser(response.data);
+        StorageService.setToken("temporory token");
+        WebService.setAuthorization("temporory token");
+        location.reload();
+      }).catch((err) => {
+        console.log('error google registry ', err);
+      });
+    },
+    OnGoogleAuthFail (error) {
+      console.log(error)
+    },
     acceptDeclineConditions(event) {
+      console.log('event =', event);
       this.userAccept = !this.userAccept;
     },
     handleRegistre() {
@@ -242,17 +262,17 @@ export default {
       WebService.registre(vm.emailRegistration, vm.passwordRegistration, vm.nomRegistration, vm.prenomRegistration)
       .then((response) => {
             console.log('response registration=', response);
-            // StorageService.setUser(response.data);
-            // StorageService.setToken("temporory token");
-            // WebService.setAuthorization("temporory token");
-            // window.location.href = "/";
+            StorageService.setUser(response.data);
+            StorageService.setToken("temporory token");
+            WebService.setAuthorization("temporory token");
+            location.reload();
           })
           .catch((err) => {
             vm.$f7.preloader.hide();
-            if(err.message.includes("406")) {
+            if(err.message.includes("409")) {
               let dialog =  vm.$f7.dialog.create({
                 title: 'Ops ....',
-                content: `This email address is already in use by another user`,
+                content: `Cette adresse e-mail est déjà utilisée par un autre utilisateur`,
                 destroyOnClose: true,
                 buttons: [
                   {
@@ -319,3 +339,15 @@ export default {
   }
 };
 </script>
+
+<style>
+.google-signin-button {
+  color: white;
+  background-color: red;
+  height: 50px;
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 10px 20px 25px 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+</style>

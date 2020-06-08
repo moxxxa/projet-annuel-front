@@ -1,11 +1,12 @@
 import axios from 'axios';
+const qs = require('querystring')
 import StorageService from './storage-service';
 
 var token = StorageService.getToken();
 
-var apiHost = 'https://jeeback.azurewebsites.net';
+var apiHost = 'http://localhost:8080';
 if (process && process.env && process.env.NODE_ENV === 'development') {
-    apiHost = 'https://jeeback.azurewebsites.net';
+    apiHost = 'http://localhost:8080';
 }
 
 axios.defaults.baseURL = apiHost;
@@ -18,13 +19,18 @@ export default class WebService {
     }
 
     static login (email, password) {
-        return axios.post(`/login`, {
-            email: email,
-            password: password
-        });
+      const requestBody = {
+        email: email,
+        password : password
+      };
+      const config = {
+        headers: {
+          'Content-Type': 'msapplication/x-www-form-urlencoded'
+        }
+      };
+      return axios.post(`/login`, qs.stringify(requestBody), config);
     }
     static registre (email, password, nom, prenom) {
-      console.log('host =', apiHost);
         return axios.post(`/register`, {
             email: email,
             password: password,
@@ -32,6 +38,11 @@ export default class WebService {
             name: nom
         });
     }
+
+    static googleRegistre(idToken) {
+      return axios.post(`/googleregistre`, idToken);
+    }
+
     static updateUser (firstName, lastName) {
         return axios.put(`/api/user/profile`, {
             first_name: firstName,

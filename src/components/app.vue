@@ -109,6 +109,7 @@ export default {
       WebService.login(this.email, this.password)
         .then(response => {
           console.log('response login =', response);
+          vm.$f7.preloader.hide();
           // StorageService.setToken(response.data.data.token);
           // StorageService.setMail(vm.email);
           // StorageService.setIsPremium(response.data.data.user.profile.is_premium);
@@ -124,7 +125,8 @@ export default {
           //     console.log("err =", err);
           //   });
         })
-        .catch(() => {
+        .catch((err) => {
+          console.log('err =', err)
           vm.$f7.preloader.hide();
           let dialog = vm.$f7.dialog.create({
             title: "",
