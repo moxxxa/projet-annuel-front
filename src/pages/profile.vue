@@ -24,7 +24,7 @@
           </center>
           <br>
           <center>
-            <h3 class="light">{{user.pseudo}}</h3>
+            <h3 class="light">{{userLastName}}</h3>
             <f7-button outline size="50" href="/settings/">{{proileModify}}</f7-button>
           </center>
           <f7-photo-browser
@@ -47,8 +47,6 @@ import WebService from '../services/web-service'
 import StorageService from '../services/storage-service';
 import navbarAuth from '../components/navBar/navBarAuthentificated';
 
-
-
 export default {
     components: {
       navbarAuth
@@ -58,7 +56,8 @@ export default {
       return {
         user: StorageService.getUser(),
         numMaillot: 7,
-        proileModify: "Modifier mon profil"
+        proileModify: "Modifier mon profil",
+        selectedFile: null
       }
     },
     methods: {
@@ -66,30 +65,24 @@ export default {
         this.$refs.standalone.open(payload + 1);
       },
       async onPhotoUpload(event) {
-        // let vm = this;
-        // vm.$f7.preloader.show();
-        // this.getBase64(event.target.files[0]).then(data =>
-        //   WebService.insertPhotoIntoUser(data.substr(data.indexOf(",") + 1))
-        //     .then(response => {
-        //       // console.log('data =', data);
-        //       vm.$f7.preloader.hide();
-        //       this.profilePhoto =
-        //         "http://localhost:8000" + response.data.data.profile.avatar.url;
-        //       // console.log('profile photoUpdated, response =', response);
-        //       StorageService.setUser(response.data.data.profile);
-        //       // console.log('user =', StorageService.getUser());
-        //     })
-        //     .catch(err => {
-        //       vm.$f7.preloader.hide();
-        //       console.log("err =", err);
-        //     })
-        // );
+        this.selectedFile = event.target.files[0];
+        const uploadImageData = new FormData();
+        uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+        WebService.uploadPhoto(uploadImageData).then(response => {
+            console.log('response upload photo =', response);
+        }).catch((err) => {
+            console.warn('error uploading profile photo ', err);
+        });
       }
     },
     computed: {
+      userLastName() {
+        console.log('user last name =', (StorageService.getUser() && StorageService.getUser().lastName) ? StorageService.getUser().lastName: 'ClicFoot');
+        return (StorageService.getUser() && StorageService.getUser().lastName) ? StorageService.getUser().lastName: 'ClicFoot';
+      },
       userAvatar() {
-        console.log('avatar =', StorageService.avatarFromProfile(StorageService.getUser()));
-        return StorageService.avatarFromProfile(StorageService.getUser());
+        console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
+        return StorageService.avatarFromUser(StorageService.getUser());
       },
       gallery() {
         let res = [

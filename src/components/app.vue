@@ -35,6 +35,10 @@
           </f7-list>
           <f7-list>
             <f7-button @click="handleLogin" fill round class="margin-horizontal">{{ signInText }}</f7-button>
+            <br>
+            <template>
+              <button v-google-signin-button="clientId" class="google-signin-button"> Continue with Google</button>
+            </template>
             <f7-block-footer>
               {{ dontHaveAccText }}
               <f7-link href="/registre/">{{ signUpText }}</f7-link>
@@ -56,8 +60,12 @@
 import routes from "../js/routes.js";
 import WebService from "../services/web-service";
 import StorageService from "../services/storage-service";
+import GoogleSignInButton from 'vue-google-signin-button-directive'
 
 export default {
+  components: {
+    GoogleSignInButton
+  },
   data() {
     return {
       // Framework7 Parameters
@@ -80,7 +88,7 @@ export default {
       signUpText: "S'inscrire maintenant",
       goBackText: "Retourner",
       emailIncorrectText: "E-mail ou mot de passe incorrect.",
-
+      clientId: '236557997475-brjtalksspr9epeksd8amep2hl5ddeqn.apps.googleusercontent.com',
       user: StorageService.getUser()
     };
   },
@@ -88,12 +96,33 @@ export default {
 
   },
   methods: {
+    OnGoogleAuthSuccess (idToken) {
+      WebService.googleRegistre(idToken).then(response => {
+        StorageService.setUser(response.data);
+        StorageService.setToken("temporory token");
+        WebService.setAuthorization("temporory token");
+        location.reload();
+      }).catch((err) => {
+        console.log('error google registry ', err);
+      });
+    },
+    OnGoogleAuthFail (error) {
+      let vm = this;
+      let dialog =  vm.$f7.dialog.create({
+          title: 'Ouups ..',
+          text: error,
+          destroyOnClose: true,
+          buttons: [
+              {
+                  text: 'OK',
+                  color: vm.colorTheme,
+              }
+          ]
+      });
+      dialog.open();
+      return ;
+    },
     onKeydown(event) {
-      // switch(event.key) {
-      //   case 'Enter': this.handleLogin();
-      //   break;
-      //   default: break;
-      // }
     },
     handleLogin() {
       // StorageService.setToken("pokemon007");
@@ -112,18 +141,7 @@ export default {
           vm.$f7.preloader.hide();
           // StorageService.setToken(response.data.data.token);
           // StorageService.setMail(vm.email);
-          // StorageService.setIsPremium(response.data.data.user.profile.is_premium);
-          // StorageService.setCredits(response.data.data.user.credits);
-          // StorageService.setFullUser(response.data.data.user);
           // WebService.setAuthorization(response.data.data.token);
-          // WebService.getUserProfile()
-          //   .then(response => {
-          //     StorageService.setUser(response.data.data.profile);
-          //     location.reload();
-          //   })
-          //   .catch(err => {
-          //     console.log("err =", err);
-          //   });
         })
         .catch((err) => {
           console.log('err =', err)
@@ -156,4 +174,13 @@ export default {
 @import "../../node_modules/@syncfusion/ej2-buttons/styles/material.css";
 @import "../../node_modules/@syncfusion/ej2-popups/styles/material.css";
 @import "../../node_modules/@syncfusion/ej2-vue-inputs/styles/material.css";
+.google-signin-button {
+  color: white;
+  background-color: red;
+  height: 50px;
+  font-size: 16px;
+  border-radius: 10px;
+  padding: 10px 20px 25px 20px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 </style>

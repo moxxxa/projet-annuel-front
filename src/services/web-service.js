@@ -50,7 +50,7 @@ export default class WebService {
         });
     }
     static uploadPhoto (photo) {
-      return axios.post('api/uploads', photo);
+      return axios.post('/upload-user-photo', photo);
     }
 
 

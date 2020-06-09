@@ -59,15 +59,18 @@ export default class StorageService {
     this.removeUser();
   }
 
-  static avatarFromProfile(profile) {
+  static avatarFromUser(profile) {
+    if (profile.googleId && profile.picture) {
+      return profile.picture;
+    }
     // console.log('profile =', profile);
     let prefix = 'http://localhost:8000';
 
-    return profile.avatar ?
+    return profile.picture ?
       (
-        profile.avatar.url ?
-          prefix + profile.avatar.url :
-          prefix + profile.avatar
+        profile.picture.url ?
+          prefix + profile.picture.url :
+          prefix + profile.picture
       ) :
       'static/images/d-avatar.jpg';
   }

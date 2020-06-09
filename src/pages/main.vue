@@ -74,7 +74,7 @@ export default {
           // console.log('dans le userAvatar computed');
           return this.tmpAvatar;
         }
-        return StorageService.avatarFromProfile(StorageService.getUser());
+        return StorageService.avatarFromUser(StorageService.getUser());
       }
     },
     mounted() {

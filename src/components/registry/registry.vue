@@ -173,7 +173,20 @@ export default {
       });
     },
     OnGoogleAuthFail (error) {
-      console.log(error)
+      let vm = this;
+      let dialog =  vm.$f7.dialog.create({
+          title: 'Ouups ..',
+          text: error,
+          destroyOnClose: true,
+          buttons: [
+              {
+                  text: 'OK',
+                  color: vm.colorTheme,
+              }
+          ]
+      });
+      dialog.open();
+      return ;
     },
     acceptDeclineConditions(event) {
       console.log('event =', event);
