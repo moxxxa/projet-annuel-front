@@ -1,6 +1,6 @@
 <template>
     <f7-page name="accueil" class="accueil-page">
-      <navbar-auth :avatar="user.avatar" :checkProfil="true"/>
+      <navbar-auth :avatar="userAvatar" :checkProfil="true"/>
       <br><br><br>
       <f7-card>
         <f7-card-content>
@@ -57,7 +57,8 @@ export default {
         user: StorageService.getUser(),
         numMaillot: 7,
         proileModify: "Modifier mon profil",
-        selectedFile: null
+        selectedFile: null,
+        retrievedImage: null
       }
     },
     methods: {
@@ -65,13 +66,38 @@ export default {
         this.$refs.standalone.open(payload + 1);
       },
       async onPhotoUpload(event) {
+        WebService.deletePhoto(StorageService.getUser().email).then(response => {
+          console.log('response delete photo =' , response);
+          this.triggerUpload(event);
+        }).catch((err) => {
+          console.warn('err deleting photo', err);
+        });
+      },
+      triggerUpload(event) {
         this.selectedFile = event.target.files[0];
         const uploadImageData = new FormData();
-        uploadImageData.append('imageFile', this.selectedFile, this.selectedFile.name);
+        uploadImageData.append('imageFile', this.selectedFile, StorageService.getUser().email);
         WebService.uploadPhoto(uploadImageData).then(response => {
             console.log('response upload photo =', response);
+            this.base64Data = response.data.picByte;
+            this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
+            console.log('retrievedImage =', this.retrievedImage);
         }).catch((err) => {
-            console.warn('error uploading profile photo ', err);
+          console.log("error =", err);
+          let vm = this;
+          let dialog =  vm.$f7.dialog.create({
+              title: 'Ouups ..',
+              text: 'Image size is too large, try with smaller image please',
+              destroyOnClose: true,
+              buttons: [
+                  {
+                      text: 'OK',
+                      color: vm.colorTheme,
+                  }
+              ]
+          });
+          dialog.open();
+          return ;
         });
       }
     },
@@ -82,7 +108,8 @@ export default {
       },
       userAvatar() {
         console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
-        return StorageService.avatarFromUser(StorageService.getUser());
+        return (this.retrievedImage !== null) ? this.retrievedImage :
+          (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? this.retrievedImage : 'static/images/d-avatar.jpg';
       },
       gallery() {
         let res = [
@@ -94,11 +121,27 @@ export default {
       }
     },
     mounted() {
-
+      WebService.getImage(StorageService.getUser().email).then(response => {
+        console.log('response get image ', response);
+          const base64Data = response.data.picByte;
+          if (base64Data) {
+            this.retrievedImage = 'data:image/jpeg;base64,' + base64Data;
+            console.log('retrievedImage =', this.retrievedImage);
+          }
+      }).catch((err) => {
+        console.warn("can't fetsh photo, error :", err);
+      });
     }
   }
 </script>
 
 <style scoped>
-
+.img-profile {
+  height: 200px;
+  width: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+}
 </style>

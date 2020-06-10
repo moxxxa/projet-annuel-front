@@ -43,6 +43,7 @@ import statisqtique from '../components/statisqtique';
 import recherches from '../components/recherches';
 import navbarAuth from '../components/navBar/navBarAuthentificated';
 import StorageService from '../services/storage-service';
+import WebService from '../services/web-service'
 // import pronostics from '../components/pronostics';
 
 export default {
@@ -58,7 +59,7 @@ export default {
   },
   data() {
     return {
-
+      retrievedImage: null
     };
   },
   methods: {
@@ -69,15 +70,22 @@ export default {
       return true;
     },
     userAvatar() {
-      if (this.tmpAvatar && this.tmpAvatar !== '') {
-        // console.log('dans le userAvatar computed');
-        return this.tmpAvatar;
-      }
-      return StorageService.avatarFromUser(StorageService.getUser());
+      console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
+      return (this.retrievedImage !== null) ? this.retrievedImage :
+        (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? this.retrievedImage : 'static/images/d-avatar.jpg';
     }
   },
   mounted() {
-
+    WebService.getImage(StorageService.getUser().email).then(response => {
+      console.log('response get image ', response);
+        const base64Data = response.data.picByte;
+        if (base64Data) {
+          this.retrievedImage = 'data:image/jpeg;base64,' + base64Data;
+          console.log('retrievedImage =', this.retrievedImage);
+        }
+    }).catch((err) => {
+      console.warn("can't fetsh photo, error :", err);
+    });
   }
 }
 </script>

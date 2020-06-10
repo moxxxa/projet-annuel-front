@@ -63,15 +63,6 @@ export default class StorageService {
     if (profile.googleId && profile.picture) {
       return profile.picture;
     }
-    // console.log('profile =', profile);
-    let prefix = 'http://localhost:8000';
-
-    return profile.picture ?
-      (
-        profile.picture.url ?
-          prefix + profile.picture.url :
-          prefix + profile.picture
-      ) :
-      'static/images/d-avatar.jpg';
+    return '';
   }
 }

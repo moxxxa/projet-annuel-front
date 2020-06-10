@@ -27,6 +27,7 @@ export default {
     name: "main",
     data () {
       return {
+        retrievedImage: null,
         clicAnimation: true,
         user: StorageService.getUser(),
         logOutText: 'Log out',
@@ -70,12 +71,10 @@ export default {
         return this.inscriptionFinished;
       },
       userAvatar() {
-        if (this.tmpAvatar && this.tmpAvatar !== '') {
-          // console.log('dans le userAvatar computed');
-          return this.tmpAvatar;
-        }
-        return StorageService.avatarFromUser(StorageService.getUser());
-      }
+        console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
+        return (this.retrievedImage !== null) ? this.retrievedImage :
+          (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? this.retrievedImage : 'static/images/d-avatar.jpg';
+      },
     },
     mounted() {
       let vm = this;
@@ -89,7 +88,16 @@ export default {
           vm.$f7router.navigate("/welcome/");
         }
       }, 4000);
-      //4000
+      WebService.getImage(StorageService.getUser().email).then(response => {
+        console.log('response get image ', response);
+          const base64Data = response.data.picByte;
+          if (base64Data) {
+            this.retrievedImage = 'data:image/jpeg;base64,' + base64Data;
+            console.log('retrievedImage =', this.retrievedImage);
+          }
+      }).catch((err) => {
+        console.warn("can't fetsh photo, error :", err);
+      });
     }
   }
 </script>

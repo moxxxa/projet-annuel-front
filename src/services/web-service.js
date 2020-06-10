@@ -50,9 +50,16 @@ export default class WebService {
         });
     }
     static uploadPhoto (photo) {
-      return axios.post('/upload-user-photo', photo);
+      return axios.post('/image/upload', photo);
     }
 
+    static deletePhoto (imageName) {
+      return axios.delete(`/image/delete/${imageName}`);
+    }
+
+    static getImage(imageName) {
+      return axios.get(`/image/get/${imageName}`);
+    }
 
     static checkIfProfileIsCompleted() {
       return axios.get('/api/user/profile/is-completed');
