@@ -109,7 +109,7 @@ export default {
       userAvatar() {
         console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
         return (this.retrievedImage !== null) ? this.retrievedImage :
-          (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? this.retrievedImage : 'static/images/d-avatar.jpg';
+          (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? StorageService.avatarFromUser(StorageService.getUser()) : 'static/images/d-avatar.jpg';
       },
       gallery() {
         let res = [

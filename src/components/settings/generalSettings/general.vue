@@ -246,9 +246,9 @@ export default {
   },
   mounted() {
 
-    this.oldName =(StorageService && StorageService.getUser()) ? StorageService.getUser().first_name : '';
-    this.oldLastName =(StorageService && StorageService.getUser()) ? StorageService.getUser().last_name : '';
-    this.oldMail = (StorageService && StorageService.getMail()) ? StorageService.getMail() : '';
+    this.oldName =(StorageService && StorageService.getUser()) ? StorageService.getUser().name : '';
+    this.oldLastName =(StorageService && StorageService.getUser()) ? StorageService.getUser().lastName : '';
+    this.oldMail = (StorageService && StorageService.getUser()) ? StorageService.getUser().email : '';
     console.log('oldName =', this.oldName);
     console.log('oldLastName =', this.oldLastName);
     console.log('oldMail =', this.oldMail);

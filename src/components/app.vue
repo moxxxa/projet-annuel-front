@@ -138,10 +138,12 @@ export default {
       WebService.login(this.email, this.password)
         .then(response => {
           console.log('response login =', response);
+          console.log('cookie =', response.headers['set-cookie']);
           vm.$f7.preloader.hide();
-          // StorageService.setToken(response.data.data.token);
-          // StorageService.setMail(vm.email);
-          // WebService.setAuthorization(response.data.data.token);
+          StorageService.setToken(response.data.token);
+          StorageService.setUser(response.data);
+          WebService.setAuthorization(response.data.token);
+          location.reload();
         })
         .catch((err) => {
           console.log('err =', err)

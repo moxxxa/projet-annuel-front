@@ -19,17 +19,13 @@ export default class WebService {
     }
 
     static login (email, password) {
-      const requestBody = {
+
+      return axios.post(`/userLogin`, {
         email: email,
-        password : password
-      };
-      const config = {
-        headers: {
-          'Content-Type': 'msapplication/x-www-form-urlencoded'
-        }
-      };
-      return axios.post(`/login`, qs.stringify(requestBody), config);
+        password: password
+      });
     }
+
     static registre (email, password, nom, prenom) {
         return axios.post(`/register`, {
             email: email,
@@ -61,42 +57,6 @@ export default class WebService {
       return axios.get(`/image/get/${imageName}`);
     }
 
-    static checkIfProfileIsCompleted() {
-      return axios.get('/api/user/profile/is-completed');
-    }
-
-
-    static insertPhotoIntoUser(photoUrl) {
-      return axios.put('/api/user/profile', {
-        avatar_base64: photoUrl
-      });
-    }
-
-    static getUserProfile() {
-      return axios.get('/api/user/profile');
-    }
-
-    static getUser(id) {
-      return axios.get(`/api​/users​/${id}`);
-    }
-
-    static updateUserName(name) {
-      return axios.put('/api/user/profile', {
-        first_name: name
-      });
-    }
-
-    static updateUserLastName(prenom) {
-      return axios.put('/api/user/profile', {
-        last_name: prenom
-      });
-    }
-
-    static updateUserEmail(email, id) {
-      return axios.put(`/api/users/${id}`, {
-        email: email
-      });
-    }
     static updateUserPassword(newMdp, currentMdp, userId) {
       return axios.put(`/api/users/${userId}`, {
         current_password: currentMdp,
@@ -104,11 +64,11 @@ export default class WebService {
       });
     }
 
-    static deleteUserAccount(currentMdp, userId) {
+    static deleteUserAccount(currentMdp) {
       console.log('currentMdp =', currentMdp);
-      return axios.delete(`/api/users/${userId}`, {
+      return axios.delete('/user/delete', {
         data: {
-          current_password: currentMdp
+          password : currentMdp
         }
       });
     }

@@ -165,8 +165,8 @@ export default {
     OnGoogleAuthSuccess (idToken) {
       WebService.googleRegistre(idToken).then(response => {
         StorageService.setUser(response.data);
-        StorageService.setToken("temporory token");
-        WebService.setAuthorization("temporory token");
+        StorageService.setToken(response.data.token);
+        WebService.setAuthorization(response.data.token);
         location.reload();
       }).catch((err) => {
         console.log('error google registry ', err);
@@ -276,8 +276,8 @@ export default {
       .then((response) => {
             console.log('response registration=', response);
             StorageService.setUser(response.data);
-            StorageService.setToken("temporory token");
-            WebService.setAuthorization("temporory token");
+            StorageService.setToken(response.data.token);
+            WebService.setAuthorization(response.data.token);
             location.reload();
           })
           .catch((err) => {
