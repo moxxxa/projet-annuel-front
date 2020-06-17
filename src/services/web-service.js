@@ -39,10 +39,11 @@ export default class WebService {
       return axios.post(`/googleregistre`, idToken);
     }
 
-    static updateUser (firstName, lastName) {
-        return axios.put(`/api/user/profile`, {
-            first_name: firstName,
-            last_name: lastName
+    static updateUser (name, lastName, email) {
+        return axios.put(`/user/update`, {
+            name: name,
+            lastName: lastName,
+            email: email
         });
     }
     static uploadPhoto (photo) {
@@ -57,10 +58,10 @@ export default class WebService {
       return axios.get(`/image/get/${imageName}`);
     }
 
-    static updateUserPassword(newMdp, currentMdp, userId) {
-      return axios.put(`/api/users/${userId}`, {
-        current_password: currentMdp,
-        password: newMdp
+    static updateUserPassword(newMdp, currentMdp) {
+      return axios.put(`/user/update/password`, {
+        password: currentMdp,
+        passwordConfirm: newMdp
       });
     }
 

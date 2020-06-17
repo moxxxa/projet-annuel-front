@@ -190,7 +190,7 @@ export default {
     },
     updateUserPassword() {
       let vm = this;
-      WebService.updateUserPassword(vm.newMdp, vm.currentMdp, StorageService.getUser().id).then(response => {
+      WebService.updateUserPassword(vm.newMdp, vm.currentMdp).then(response => {
         let dialog =  vm.$f7.dialog.create({
             title: 'Succès',
             text: 'Votre mot de passe vient d\'être mis a jour',

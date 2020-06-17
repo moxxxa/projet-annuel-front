@@ -196,40 +196,22 @@ export default {
       // console.log('dans le validate userInfo');
       // this.$f7app.dialog.alert('Vos informations vient d\'être mise à jour');
       let vm = this;
-      if (vm.email.length > 0 && this.validateEmail(vm.email)) {
-        WebService.updateUserEmail(vm.email, StorageService.getUser().id).then(response => {
-          // console.log('response =', response);
+      if (vm.email.length > 0 && this.validateEmail(vm.email) && vm.nom.length >= 3 && vm.prenom.length >= 3) {
+        WebService.updateUser(vm.nom, vm.prenom, vm.email).then(response => {
+          vm.oldLastName = vm.prenom;
           vm.oldMail = vm.email;
+          vm.oldLastName = vm.prenom;
+          StorageService.setUser(response.data);
           // StorageService.setUser(response.data.data.profile);
         }).catch((err) => {
           console.log('error =', err);
         });
       }
 
-      if(vm.nom.length >= 3) {
-        WebService.updateUserName(vm.nom).then(response => {
-          vm.oldName = vm.nom;
-          StorageService.setUser(response.data.data.profile);
-          // console.log('new profile =', response.data.data.profile);
-        }).catch((err) => {
-          console.log('err while updating userName ', err)
-        });
-      }
-
-      if (vm.prenom.length >= 3) {
-        WebService.updateUserLastName(vm.prenom).then(response => {
-          vm.oldLastName = vm.prenom;
-          StorageService.setUser(response.data.data.profile);
-          // console.log('new profile =', response.data.data.profile);
-        }).catch((err) => {
-          console.log('err while updating userlastName ', err)
-        });
-      }
-
       vm.$f7.dialog.preloader('Vos informations vient d\'être mise à jour, vous serez redirigé vers votre profil');
       setTimeout(() => {
         vm.$f7.dialog.close();
-        vm.$f7router.navigate("/profile/0/");
+        vm.$f7router.navigate("/profile/");
       }, 4000);
     }
   },
@@ -249,6 +231,9 @@ export default {
     this.oldName =(StorageService && StorageService.getUser()) ? StorageService.getUser().name : '';
     this.oldLastName =(StorageService && StorageService.getUser()) ? StorageService.getUser().lastName : '';
     this.oldMail = (StorageService && StorageService.getUser()) ? StorageService.getUser().email : '';
+    this.prenom = this.oldLastName;
+    this.nom = this.oldName;
+    this.email = this.oldMail;
     console.log('oldName =', this.oldName);
     console.log('oldLastName =', this.oldLastName);
     console.log('oldMail =', this.oldMail);
