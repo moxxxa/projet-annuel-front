@@ -234,8 +234,20 @@ export default {
       },
       restart() {
         this.step = 1;
-        this.currentLeague1 = 'Select a league';
-        this.currentLeague2 = 'Select a league';
+        this.currentLeague1 = {
+          country: "",
+          id: -1,
+          name: "Selectionner une ligue",
+          type: "",
+          year: ""
+        };
+        this.currentLeague2 = {
+          country: "",
+          id: -1,
+          name: "Selectionner une ligue",
+          type: "",
+          year: ""
+        };
         this.currentProgress = 10;
         this.yearsParams = '';
         this.displayResult = false;
@@ -249,8 +261,20 @@ export default {
         return '';
       },
       handleBack() {
-        this.currentLeague1 = 'Select a league';
-        this.currentLeague2 = 'Select a league';
+        this.currentLeague1 = {
+          country: "",
+          id: -1,
+          name: "Selectionner une ligue",
+          type: "",
+          year: ""
+        };
+        this.currentLeague2 = {
+          country: "",
+          id: -1,
+          name: "Selectionner une ligue",
+          type: "",
+          year: ""
+        };
         this.step = this.step - 1;
         this.yearsParams = '';
       },
@@ -352,7 +376,6 @@ export default {
         if (this.step === 1) {
           let vm = this;
           setTimeout(function () {
-            vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
               vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
                 const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
                 vm.countryTeam1 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
@@ -361,15 +384,14 @@ export default {
               });
           }, 3000);
 
-          vm.$refs.leagues2.f7SmartSelect.on('close', function(el) {
+          setTimeout(function () {
             vm.$refs.leagues2.f7SmartSelect.on('close', function(el) {
               const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
               vm.countryTeam2 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
               vm.currentLeague2 = vm.leagues.filter(league => league.name === tmpName && league.country === vm.countryTeam2)[0];
               vm.fetshTeams2();
             });
-        }, 3000);
-          });
+          }, 3000);
         }
         if (this.step === 2) {
 

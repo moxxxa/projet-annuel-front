@@ -6,7 +6,7 @@
         <select name="First team" @input="updateSmartSelect">
           <optgroup :label="currentLeague1.name">
             <option value="Select a team" selected>Select a team</option>
-            <div v-for="team in teams1" :key="team.code">
+            <div v-for="team in teams1" :key="team.id">
               <option :value="team.name">{{team.name}}</option>
             </div>
           </optgroup>
@@ -21,7 +21,7 @@
         <select name="Second team">
           <optgroup :label="currentLeague2.name">
             <option value="Select a team" selected>Select a team</option>
-            <div v-for="team in teamsAux" :key="team.code">
+            <div v-for="team in teamsAux" :key="team.id">
               <option :value="team.name">{{team.name}}</option>
             </div>
           </optgroup>
