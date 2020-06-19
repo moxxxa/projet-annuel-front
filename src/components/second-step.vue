@@ -2,9 +2,9 @@
   <div>
     <center><h2 class="light">prediction preference</h2></center>
     <f7-list>
-      <f7-list-item title="First team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item1">
+      <f7-list-item title="First team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une équipe'}" ref="item1">
         <select name="First team" @input="updateSmartSelect">
-          <optgroup :label="currentLeague1">
+          <optgroup :label="currentLeague1.name">
             <option value="Select a team" selected>Select a team</option>
             <div v-for="team in teams1" :key="team.code">
               <option :value="team.name">{{team.name}}</option>
@@ -19,7 +19,7 @@
     <f7-list>
       <f7-list-item title="Second team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item2" :class="team0 === '' ? 'disabled': ''">
         <select name="Second team">
-          <optgroup :label="currentLeague2">
+          <optgroup :label="currentLeague2.name">
             <option value="Select a team" selected>Select a team</option>
             <div v-for="team in teamsAux" :key="team.code">
               <option :value="team.name">{{team.name}}</option>
@@ -30,9 +30,9 @@
     </f7-list>
     <hr/>
     <f7-list>
-      <f7-list-item title="The home team" smart-select :smart-select-params="{openIn: 'sheet'}" :class="team0 === '' || team1 === '' ? 'disabled': ''" ref="hometeam">
+      <f7-list-item title="The home team" smart-select :smart-select-params="{openIn: 'sheet'}" :class="team0 === '' || team1 === '' || team0 === 'Select a team' || team1 === 'Select a team' ? 'disabled': ''" ref="hometeam">
         <select name="Home team">
-          <option value="Home team" selected>Select the home team</option>
+          <option value="Home team" selected>Selectionner l'équipe a domicile</option>
           <option :value="team0">{{team0}}</option>
           <option :value="team1">{{team1}}</option>
         </select>
@@ -101,10 +101,27 @@ export default {
       vm.$refs.hometeam.f7SmartSelect.on('close', function(el) {
         vm.homeTeam = el.$valueEl[0].innerText;
         console.log('vm.homeTeam =', vm.homeTeam);
+        const team1Tmp = {
+          teamImage: vm.teams1.find(div => div.name === vm.team0).image,
+          teamName: vm.team0,
+          teamId: vm.teams1.find(div => div.name === vm.team0).id,
+          leagueName: vm.currentLeague1.name,
+          leagueId: vm.currentLeague1.id,
+          year: vm.currentLeague1.year,
+          country: vm.currentLeague1.country
+        };
+        const team2Tmp = {
+          teamImage: vm.teams2.find(div => div.name === vm.team1).image,
+          teamName: vm.team1,
+          teamId: vm.teams2.find(div => div.name === vm.team1).id,
+          leagueName: vm.currentLeague2.name,
+          leagueId: vm.currentLeague2.id,
+          year: vm.currentLeague2.year,
+          country: vm.currentLeague2.country
+        };
         let prediction = {
-          'team0': vm.team0,
-          'team1': vm.team1,
-          'homeTeam': vm.homeTeam
+          'awayTeam': (vm.homeTeam === vm.team0) ? team2Tmp : team1Tmp,
+          'homeTeam': (vm.homeTeam === vm.team0) ? team1Tmp : team2Tmp
         };
         vm.$emit('prediction', prediction);
       });

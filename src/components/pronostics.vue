@@ -13,18 +13,17 @@
                 <hr/>
                 <br>
                 <f7-list>
-                  <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}" ref="leagues1">
-                    <select :name="leaguesC">
-                      <option value="Select a league" selected>Selectionner une ligue</option>
-                      <option :value="leagues[0]">{{leagues[0]}}</option>
-                      <option :value="leagues[1]">{{leagues[1]}}</option>
-                      <option :value="leagues[2]">{{leagues[2]}}</option>
+                  <f7-list-item :title="leaguesTitle" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une ligue'}" ref="leagues1">
+                    <select :name="leaguesTitle">
+                      <optgroup>
+                        <option v-for="league in leaguesList" :key="league.id" :value="league.name + '!' + league.country">{{league.name}}{{(league.id !== -1) ? `,&nbsp;&nbsp;${league.country}` : "" }}</option>
+                      </optgroup>
                     </select>
                   </f7-list-item>
                 </f7-list>
                 <br><br>
-                <f7-button fill round raised text-color="black" fill sheet-open=".demo-sheet-swipe-to-close1" :class="currentLeague1 === 'Select a league'? 'disabled' : ''">
-                  Monter les équipes <span v-if="currentLeague1 !== 'Select a league'">de la {{currentLeague1}}</span>
+                <f7-button fill round raised text-color="black" fill sheet-open=".demo-sheet-swipe-to-close1" :class="currentLeague1.id === -1 ? 'disabled' : ''">
+                  Monter les équipes <span v-if="currentLeague1.id !== -1">de la {{currentLeague1.name}}</span>
                 </f7-button>
                 <br><br>
                 <hr/>
@@ -32,18 +31,17 @@
                 <center><h3 class="light">veuillez sélectionner la ligue de la deuxième équipe</h3></center>
                 <br>
                 <f7-list>
-                  <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}" ref="leagues2">
-                    <select :name="leaguesC">
-                      <option value="Select a league" selected>Selectionner une ligue</option>
-                      <option :value="leagues[0]">{{leagues[0]}}</option>
-                      <option :value="leagues[1]">{{leagues[1]}}</option>
-                      <option :value="leagues[2]">{{leagues[2]}}</option>
+                  <f7-list-item :title="leaguesTitle" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une ligue'}" ref="leagues2">
+                    <select :name="leaguesTitle">
+                      <optgroup>
+                        <option v-for="league in leaguesList" :key="league.id" :value="league.name + '!' + league.country">{{league.name}}{{(league.id !== -1) ? `,&nbsp;&nbsp;${league.country}` : "" }}</option>
+                      </optgroup>
                     </select>
                   </f7-list-item>
                 </f7-list>
                 <br><br>
-                <f7-button fill round raised text-color="black" fill sheet-open=".demo-sheet-swipe-to-close2" :class="currentLeague2 === 'Select a league' ? 'disabled' : ''">
-                  Monter les équipes <span v-if="currentLeague2 !== 'Select a league'">de la {{currentLeague2}}</span>
+                <f7-button fill round raised text-color="black" fill sheet-open=".demo-sheet-swipe-to-close2" :class="currentLeague2.id === -1  ? 'disabled' : ''">
+                  Monter les équipes <span v-if="currentLeague2.id !== -1">de la {{currentLeague2.name}}</span>
                 </f7-button>
                 <br><br>
               </div>
@@ -58,17 +56,16 @@
                   <br>
                   <f7-list>
                     <f7-list-item title="Based on the 1, 2, 3 ... last years" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
-                      <select name="Based on the 1, 2, 3 ... last years">
-                        <option value="Select a benchmark" selected>Selctionner un benchmark</option>
-                        <option value="Current year">Current year</option>
-                        <option value="Last 2 years">Last 2 years</option>
-                        <option value="Last 3 years">Last 3 years</option>
-                        <option value="Last 4 years">Last 4 years</option>
-                        <option value="Last 5 years">Last 5 years</option>
-                        <option value="Last 6 years">Last 6 years</option>
-                        <option value="Last 7 years">Last 7 years</option>
-                        <option value="Last 8 years">Last 8 years</option>
-                        <option value="Last 9 years">Last 9 years</option>
+                      <select name="Sur la base des 1, 2, 3 ... dernières années">
+                        <option value="1" selected>Années en cours</option>
+                        <option value="2">2 dernières années</option>
+                        <option value="3">3 dernières années</option>
+                        <option value="4">4 dernières années</option>
+                        <option value="5">5 dernières années</option>
+                        <option value="6">6 dernières années</option>
+                        <option value="7">7 dernières années</option>
+                        <option value="8">8 dernières années</option>
+                        <option value="9">9 dernières années</option>
                       </select>
                     </f7-list-item>
                   </f7-list>
@@ -78,8 +75,16 @@
                 <center><h1 class="light">Résultats</h1></center>
                 <div v-if="displayResult">
                   <br><br><br>
-                  <h2 class="light">{{prediction.team0}}   : 60 %</h2>
-                  <h2 class="light">{{prediction.team1}}   : 25 %</h2>
+                  <span>
+                    <img :src="prediction.awayTeam.teamImage" height="80px" width="80px">
+                    <font class="light" size="5">{{prediction.awayTeam.name}}   : 60 %</font>
+                  </span>
+                  <br><br>
+                  <span>
+                    <img :src="prediction.homeTeam.teamImage" height="80px" width="80px">
+                    <font class="light" size="5">{{prediction.homeTeam.name}}   : 25 %</font>
+                  </span>
+                  <br><br>
                   <h2 class="light">Égaliter   : 15 %</h2>
                   <f7-button fill round raised text-color="black" fill @click="restart">Nouveau simulation</f7-button>
                 </div>
@@ -115,13 +120,11 @@
       backdrop
       >
       <f7-page-content>
-        <f7-block-title large><font color="red">Les équipes de la {{currentLeague1}}</font></f7-block-title>
+        <f7-block-title large><font color="red">Les équipes de la {{currentLeague1.name}}</font></f7-block-title>
         <f7-block-title>2020-21</f7-block-title>
-        <f7-list simple-list v-for="team in currentTeamsLeague1" :key="team.code">
-          <f7-list-item :title="team.name">
-            &nbsp;&nbsp;&nbsp;
-            <!-- <img :src="calculateLogo(team.name)"/> -->
-            <font color="red">{{team.code}}</font>
+        <f7-list media-list v-for="team in currentTeamsLeague1" :key="team.code">
+          <f7-list-item :title="team.name" :after="currentLeague1.country">
+                  <img slot="media" :src="team.image" width="50" />
           </f7-list-item>
         </f7-list>
       </f7-page-content>
@@ -133,13 +136,11 @@
     backdrop
     >
     <f7-page-content>
-      <f7-block-title large><font color="red">Les équipes de la {{currentLeague2}}</font></f7-block-title>
+      <f7-block-title large><font color="red">Les équipes de la {{currentLeague2.name}}</font></f7-block-title>
       <f7-block-title>2020-21</f7-block-title>
-      <f7-list simple-list v-for="team in currentTeamsLeague2" :key="team.code">
-        <f7-list-item :title="team.name">
-          &nbsp;&nbsp;&nbsp;
-          <!-- <img :src="calculateLogo(team.name)"/> -->
-          <font color="red">{{team.code}}</font>
+      <f7-list media-list v-for="team in currentTeamsLeague2" :key="team.code">
+        <f7-list-item :title="team.name" :after="currentLeague1.country">
+                <img slot="media" :src="team.image" width="50" />
         </f7-list-item>
       </f7-list>
     </f7-page-content>
@@ -166,315 +167,42 @@ export default {
       return {
         user: StorageService.getUser(),
         leagues: [
-          "La liga",
-          "Premier league",
-          "Bundesliga"
+          {
+            name: "Selectionner une ligue",
+            country: "",
+            id: -1,
+            name: "Selectionner une ligue",
+            type: "",
+            year: ""
+          }
         ],
-        currentLeague1: 'Select a league',
-        currentLeague2: 'Select a league',
+        currentLeague1: {
+          country: "",
+          id: -1,
+          name: "Selectionner une ligue",
+          type: "",
+          year: ""
+        },
+        currentLeague2: {
+          country: "",
+          id: -1,
+          name: "Selectionner une ligue",
+          type: "",
+          year: ""
+        },
+        countryTeam1: '',
+        countryTeam2: '',
         match: [
           {
             name: "team1"
           },
           {
-              name: "team2"
+            name: "team2"
           }
         ],
-        deutchTeams: [
-          {
-            "key": "bayern",
-            "name": "Bayern München",
-            "code": "FCB"
-          },
-          {
-            "key": "dortmund",
-            "name": "Borussia Dortmund",
-            "code": "BVB"
-          },
-          {
-            "key": "leverkusen",
-            "name": "Bayer 04 Leverkusen",
-            "code": "B04"
-          },
-          {
-            "key": "schalke",
-            "name": "FC Schalke 04",
-            "code": "S04"
-          },
-          {
-            "key": "frankfurt",
-            "name": "Eintracht Frankfurt",
-            "code": "FFM"
-          },
-          {
-            "key": "mgladbach",
-            "name": "Bor. Mönchengladbach",
-            "code": "BMG"
-          },
-          {
-            "key": "wolfsburg",
-            "name": "VfL Wolfsburg",
-            "code": "WOB"
-          },
-          {
-            "key": "mainz",
-            "name": "1. FSV Mainz 05",
-            "code": "M05"
-          },
-          {
-            "key": "bremen",
-            "name": "Werder Bremen",
-            "code": "BRE"
-          },
-          {
-            "key": "hoffenheim",
-            "name": "TSG 1899 Hoffenheim",
-            "code": "HOF"
-          },
-          {
-            "key": "augsburg",
-            "name": "FC Augsburg",
-            "code": "FCA"
-          },
-          {
-            "key": "herthabsc",
-            "name": "Hertha BSC",
-            "code": "BSC"
-          },
-          {
-            "key": "koeln",
-            "name": "1. FC Köln",
-            "code": "KOE"
-          },
-          {
-            "key": "paderborn",
-            "name": "SC Paderborn 07",
-            "code": "SCP"
-          },
-          {
-            "key": "freiburg",
-            "name": "SC Freiburg",
-            "code": "SCF"
-          },
-          {
-            "key": "duesseldorf",
-            "name": "Fortuna Düsseldorf",
-            "code": "F95"
-          },
-          {
-            "key": "unionberlin",
-            "name": "1. FC Union Berlin",
-            "code": "FCU"
-          },
-          {
-            "key": "leipzig",
-            "name": "RB Leipzig",
-            "code": "RBL"
-          }
+        teams1: [
         ],
-        englandTeams: [
-          {
-            "key": "chelsea",
-            "name": "Chelsea FC",
-            "code": "CHE"
-          },
-          {
-            "key": "arsenal",
-            "name": "Arsenal FC",
-            "code": "ARS"
-          },
-          {
-            "key": "tottenham",
-            "name": "Tottenham Hotspur FC",
-            "code": "TOT"
-          },
-          {
-            "key": "westham",
-            "name": "West Ham United FC",
-            "code": "WHU"
-          },
-          {
-            "key": "crystalpalace",
-            "name": "Crystal Palace FC",
-            "code": "CRY"
-          },
-          {
-            "key": "manutd",
-            "name": "Manchester United FC",
-            "code": "MUN"
-          },
-          {
-            "key": "mancity",
-            "name": "Manchester City FC",
-            "code": "MCI"
-          },
-          {
-            "key": "everton",
-            "name": "Everton FC",
-            "code": "EVE"
-          },
-          {
-            "key": "liverpool",
-            "name": "Liverpool FC",
-            "code": "LIV"
-          },
-          {
-            "key": "newcastle",
-            "name": "Newcastle United FC",
-            "code": "NEW"
-          },
-          {
-            "key": "astonvilla",
-            "name": "Aston Villa FC",
-            "code": "AVL"
-          },
-          {
-            "key": "southampton",
-            "name": "Southampton FC",
-            "code": "SOU"
-          },
-          {
-            "key": "leicester",
-            "name": "Leicester City FC",
-            "code": "LEI"
-          },
-          {
-            "key": "bournemouth",
-            "name": "AFC Bournemouth",
-            "code": "BOU"
-          },
-          {
-            "key": "norwich",
-            "name": "Norwich City FC",
-            "code": "NOR"
-          },
-          {
-            "key": "watford",
-            "name": "Watford FC",
-            "code": "WAT"
-          },
-          {
-            "key": "burnley",
-            "name": "Burnley FC",
-            "code": "BUR"
-          },
-          {
-            "key": "brightonhovealbionfc",
-            "name": "Brighton & Hove Albion FC",
-            "code": "BHA"
-          },
-          {
-            "key": "sheffieldunitedfc",
-            "name": "Sheffield United FC",
-            "code": "SFU"
-          },
-          {
-            "key": "wolverhamptonwanderersfc",
-            "name": "Wolverhampton Wanderers FC",
-            "code": "WHW"
-          }
-        ],
-        espagnolTeams: [
-          {
-            "key": "barcelona",
-            "name": "FC Barcelona",
-            "code": "BAR"
-          },
-          {
-            "key": "espanyol",
-            "name": "RCD Espanyol",
-            "code": "ESP"
-          },
-          {
-            "key": "madrid",
-            "name": "Real Madrid",
-            "code": "RMD"
-          },
-          {
-            "key": "atletico",
-            "name": "Atlético Madrid",
-            "code": "ATL"
-          },
-          {
-            "key": "getafe",
-            "name": "Getafe CF",
-            "code": "GET"
-          },
-          {
-            "key": "sevilla",
-            "name": "Sevilla FC",
-            "code": "SEV"
-          },
-          {
-            "key": "valencia",
-            "name": "Valencia CF",
-            "code": "VAL"
-          },
-          {
-            "key": "levante",
-            "name": "Levante UD",
-            "code": "LEV"
-          },
-          {
-            "key": "athletic",
-            "name": "Athletic Club Bilbao",
-            "code": "ATH"
-          },
-          {
-            "key": "granada",
-            "name": "Granada CF",
-            "code": "GRA"
-          },
-          {
-            "key": "celta",
-            "name": "RC Celta Vigo",
-            "code": "CEL"
-          },
-          {
-            "key": "realsociedad",
-            "name": "Real Sociedad",
-            "code": "RSO"
-          },
-          {
-            "key": "valladolid",
-            "name": "Real Valladolid CF",
-            "code": "VID"
-          },
-          {
-            "key": "eibar",
-            "name": "SD Eibar",
-            "code": null
-          },
-          {
-            "key": "betis",
-            "name": "Real Betis",
-            "code": "BET"
-          },
-          {
-            "key": "osasuna",
-            "name": "CA Osasuna",
-            "code": "OSA"
-          },
-          {
-            "key": "villareal",
-            "name": "Villarreal CF",
-            "code": "VLL"
-          },
-          {
-            "key": "alaves",
-            "name": "Deportivo Alavés",
-            "code": null
-          },
-          {
-            "key": "mallorca",
-            "name": "RCD Mallorca",
-            "code": "MLL"
-          },
-          {
-            "key": "leganes",
-            "name": "CD Leganés",
-            "code": null
-          }
+        teams2: [
         ],
         currentProgress: 10,
         step: 1,
@@ -484,6 +212,26 @@ export default {
       }
     },
     methods: {
+      fetshTeams1() {
+        if (this.currentLeague1 && this.currentLeague1.id !== -1) {
+          let vm = this;
+          WebService.teamsOfLeague(vm.currentLeague1.id).then(response => {
+            this.teams1 = response.data;
+          }).catch((err) => {
+            console.warn('can\'t get teams of the selected league, error= ', err);
+          })
+        }
+      },
+      fetshTeams2() {
+        if (this.currentLeague2 && this.currentLeague2.id !== -1) {
+          let vm = this;
+          WebService.teamsOfLeague(vm.currentLeague2.id).then(response => {
+            this.teams2 = response.data;
+          }).catch((err) => {
+            console.warn('can\'t get teams of the selected league, error= ', err);
+          })
+        }
+      },
       restart() {
         this.step = 1;
         this.currentLeague1 = 'Select a league';
@@ -534,19 +282,23 @@ export default {
       }
     },
     computed: {
+      leaguesList() {
+        return this.leagues;
+      },
       currentStep() {
         // console.log('currentStep =', this.step);
         return this.step;
       },
-      leaguesC() {
-        return this.leagues[0] + ", " + this.leagues[1] + ", " + this.leagues[2];
+      leaguesTitle() {
+        return "LaLiga, Bundesliga, Ligue1 ..";
       },
       currentStateC() {
+        console.log('this.prediction =', this.prediction);
         // console.log('current league =', this.currentLeague);
-        if ((this.step === 1) && (this.currentLeague1 === 'Select a league' || this.currentLeague2 === 'Select a league')) {
+        if ((this.step === 1) && (this.currentLeague1.name === 'Selectionner une ligue' || this.currentLeague2.name === 'Selectionner une ligue')) {
           return false;
         }
-        if (this.step === 2 && this.prediction === null) {
+        if ((this.step === 2 && this.prediction === null) || (this.prediction && (this.prediction.awayTeam.teamName === 'Select a team' || !this.prediction.homeTeam.teamName === 'Select a team'))) {
           return false;
         }
         if (this.step === 3 && this.yearsParams === '') {
@@ -555,75 +307,44 @@ export default {
         return true;
       },
       currentTeamsLeague1() {
-        console.log('dans currentTeamsLeague, currentLeague =', this.currentLeague1);
-        if (this.currentLeague1 === 'La liga') {
-          return this.espagnolTeams;
-        } else if (this.currentLeague1 === 'Premier league') {
-          return this.englandTeams;
-        } else if (this.currentLeague1 === 'Bundesliga') {
-          return this.deutchTeams;
-        }
-        console.log('returning nothing');
-        return [];
+        return this.teams1;
       },
       currentTeamsLeague2() {
-        console.log('dans currentTeamsLeague, currentLeague =', this.currentLeague2);
-        if (this.currentLeague2 === 'La liga') {
-          return this.espagnolTeams;
-        } else if (this.currentLeague2 === 'Premier league') {
-          return this.englandTeams;
-        } else if (this.currentLeague2 === 'Bundesliga') {
-          return this.deutchTeams;
-        }
-        console.log('returning nothing');
-        return [];
+        return this.teams2;
       }
     },
     mounted() {
-      console.log('logoFetcher =', logoFetcher.findCodeLogo('FC Barcelona'));
+      WebService.getAvailableLeague().then(response => {
+        this.leagues = this.leagues
+                          .concat(response.data.filter(league => league.year >= 2019 && league.country !== 'China' && !league.name.includes('Cup') && !league.name.includes('World') && !league.name.includes('Euro') && !league.name.includes('Segunda')));
+        }).catch((err) => {
+        console.warn('can\t fetsh leagues , error =', err);
+      })
+
+
       let vm = this;
       vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
-        vm.currentLeague1 = el.selectEl.selectedOptions[0].value;
-        console.log('dans le mounted, currentLeague =', vm.currentLeague1);
-        let yearMinusOne = new Date().getFullYear() - 1;
-        let currentYear = ( yearMinusOne % 100 ) + 1;
-        // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
-
-        // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
-        //   .then(response => console.log('response =', response));
-          // .then(teams => vm.teams = teams);
+        const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
+        vm.countryTeam1 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
+        vm.currentLeague1 = vm.leagues.filter(league => league.name === tmpName && league.country === vm.countryTeam1)[0];
+        vm.fetshTeams1();
       });
 
       vm.$refs.leagues2.f7SmartSelect.on('close', function(el) {
-        vm.currentLeague2 = el.selectEl.selectedOptions[0].value;
-        console.log('dans le mounted, currentLeague =', vm.currentLeague2);
-        let yearMinusOne = new Date().getFullYear() - 1;
-        let currentYear = ( yearMinusOne % 100 ) + 1;
-        // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
-
-        // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
-        //   .then(response => console.log('response =', response));
-          // .then(teams => vm.teams = teams);
+        const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
+        vm.countryTeam2 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
+        vm.currentLeague2 = vm.leagues.filter(league => league.name === tmpName && league.country === vm.countryTeam2)[0];
+        vm.fetshTeams2();
       });
 
 
       if (vm.step === 3) {
         vm.$refs.years.f7SmartSelect.on('close', function(el) {
           vm.yearsParams = el.selectEl.selectedOptions[0].value;
-          // console.log('yearsParams = ', vm.yearsParams);
+          vm.prediction.yearsFilter = vm.yearsParams;
+          console.log('prediction =', vm.prediction);
         });
       }
-
-      // let smartSelect = app.smartSelect.get('.smart-select');
-      // smartSelect.on('close', function (el) {
-      //   vm.currentLeague = el.selectEl.selectedOptions[0].value;
-      // });
-
-      //WebService calls
-      //fetching available leagues
-      // WebService.getAvailableLeague()
-      //   .then(response => response.data.data.leagues)
-      //   .then(leagues => vm.leagues = leagues);
 
     },
     watch: {
@@ -632,24 +353,22 @@ export default {
           let vm = this;
           setTimeout(function () {
             vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
-              vm.currentLeague1 = el.selectEl.selectedOptions[0].value;
-              // console.log('dans le mounted, currentLeague =', vm.currentLeague);
-              let yearMinusOne = new Date().getFullYear() - 1;
-              let currentYear = ( yearMinusOne % 100 ) + 1;
-              // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+              vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
+                const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
+                vm.countryTeam1 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
+                vm.currentLeague1 = vm.leagues.filter(league => league.name === tmpName && league.country === vm.countryTeam1)[0];
+                vm.fetshTeams1();
+              });
           }, 3000);
 
           vm.$refs.leagues2.f7SmartSelect.on('close', function(el) {
-            vm.currentLeague2 = el.selectEl.selectedOptions[0].value;
-            // console.log('dans le mounted, currentLeague =', vm.currentLeague);
-            let yearMinusOne = new Date().getFullYear() - 1;
-            let currentYear = ( yearMinusOne % 100 ) + 1;
-            // console.log('yearMinusOne = ', yearMinusOne, '   currentYear =', currentYear);
+            vm.$refs.leagues2.f7SmartSelect.on('close', function(el) {
+              const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
+              vm.countryTeam2 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
+              vm.currentLeague2 = vm.leagues.filter(league => league.name === tmpName && league.country === vm.countryTeam2)[0];
+              vm.fetshTeams2();
+            });
         }, 3000);
-
-            // WebService.getTeamsOfLeague(vm.calculateLeagueCode(vm.currentLeague), yearMinusOne, currentYear)
-            //   .then(response => console.log('response =', response));
-              // .then(teams => vm.teams = teams);
           });
         }
         if (this.step === 2) {
@@ -660,14 +379,15 @@ export default {
           setTimeout(function () {
             vm.$refs.years.f7SmartSelect.on('close', function(el) {
               vm.yearsParams = el.selectEl.selectedOptions[0].value;
-              // console.log('yearsParams = ', vm.yearsParams);
+              vm.prediction.yearsFilter = vm.yearsParams;
+              console.log('prediction =', vm.prediction);
             });
           }, 3000);
         }
 
         if (this.step === 4) {
           let vm = this;
-          vm.$f7.dialog.preloader('Processing for the prediction ...., please wait');
+          vm.$f7.dialog.preloader('Prediction en cours ...., veuillez patientez');
           setTimeout(() => {
             vm.displayResult = true;
             vm.$f7.dialog.close();

@@ -77,11 +77,9 @@ export default {
   },
   mounted() {
     WebService.getImage(StorageService.getUser().email).then(response => {
-      console.log('response get image ', response);
         const base64Data = response.data.picByte;
         if (base64Data) {
           this.retrievedImage = 'data:image/jpeg;base64,' + base64Data;
-          console.log('retrievedImage =', this.retrievedImage);
         }
     }).catch((err) => {
       console.warn("can't fetsh photo, error :", err);

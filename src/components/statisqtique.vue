@@ -14,12 +14,11 @@
           <center v-else class="light">Afin de trouver {{calculateLabelChoice()}}, merci de selectionner la ligue en question</center>
           <br>
           <f7-list>
-            <f7-list-item :title="leaguesC" smart-select :smart-select-params="{openIn: 'sheet'}" ref="leagues1" :class="choises === 'équipe / joueur' ? 'disabled' : ''">
-              <select :name="leaguesC">
-                <option value="Select a league" selected>Selectionner une ligue</option>
-                <option :value="leagues[0]">{{leagues[0]}}</option>
-                <option :value="leagues[1]">{{leagues[1]}}</option>
-                <option :value="leagues[2]">{{leagues[2]}}</option>
+            <f7-list-item :title="leaguesTitle"  smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une ligue'}" ref="leagues1">
+              <select :name="leaguesTitle">
+                <optgroup>
+                  <option v-for="league in leaguesList" :key="league.id" :value="league.name + '!' + league.country">{{league.name}}{{(league.id !== -1) ? `,&nbsp;&nbsp;${league.country}` : "" }}</option>
+                </optgroup>
               </select>
             </f7-list-item>
           </f7-list>
@@ -111,9 +110,36 @@ import StorageService from '../services/storage-service';
 
 export default {
     components: {
-      
+
     },
     name: "main",
+    data () {
+      return {
+        user: StorageService.getUser(),
+        yearsParams: '',
+        team: '',
+        player: '',
+        choise: '',
+        displayResult: false,
+        leagues: [
+          {
+            name: "Selectionner une ligue",
+            country: "",
+            id: -1,
+            type: "",
+            year: ""
+          }
+        ],
+        currentLeague: {
+          name: 'Select a league',
+          country: "",
+          id: -1,
+          name: "Selectionner une ligue",
+          type: "",
+          year: ""
+        }
+      };
+    },
     methods: {
       restart() {
         this.displayResult = false;
@@ -145,6 +171,12 @@ export default {
       }
     },
     computed: {
+      leaguesList() {
+        return this.leagues;
+      },
+      leaguesTitle() {
+        return "LaLiga, Bundesliga, Ligue1 ..";
+      },
       currentStateC() {
         let first_result =  this.team !== '' && this.team !== 'Sélectionner une équipe' && this.yearsParams !== '' && this.yearsParams !== 'Selectionner un benchmark'
                && this.choise !== '';
@@ -175,6 +207,13 @@ export default {
       }
     },
     mounted() {
+      WebService.getAvailableLeague().then(response => {
+        this.leagues = this.leagues
+                          .concat(response.data.filter(league => league.year >= 2019 && league.country !== 'China' && !league.name.includes('Cup') && !league.name.includes('World') && !league.name.includes('Euro') && !league.name.includes('Segunda')));
+        }).catch((err) => {
+        console.warn('can\t fetsh leagues , error =', err);
+      });
+
       let vm = this;
       vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
         vm.currentLeague = el.selectEl.selectedOptions[0].value;
@@ -190,318 +229,6 @@ export default {
         vm.yearsParams = el.selectEl.selectedOptions[0].value;
         console.log('yearsParams = ', vm.yearsParams);
       });
-    },
-    data () {
-      return {
-        user: StorageService.getUser(),
-        yearsParams: '',
-        team: '',
-        player: '',
-        choise: '',
-        displayResult: false,
-        leagues: [
-          "La liga",
-          "Premier league",
-          "Bundesliga"
-        ],
-        currentLeague: '',
-        deutchTeams: [
-          {
-            "key": "bayern",
-            "name": "Bayern München",
-            "code": "FCB"
-          },
-          {
-            "key": "dortmund",
-            "name": "Borussia Dortmund",
-            "code": "BVB"
-          },
-          {
-            "key": "leverkusen",
-            "name": "Bayer 04 Leverkusen",
-            "code": "B04"
-          },
-          {
-            "key": "schalke",
-            "name": "FC Schalke 04",
-            "code": "S04"
-          },
-          {
-            "key": "frankfurt",
-            "name": "Eintracht Frankfurt",
-            "code": "FFM"
-          },
-          {
-            "key": "mgladbach",
-            "name": "Bor. Mönchengladbach",
-            "code": "BMG"
-          },
-          {
-            "key": "wolfsburg",
-            "name": "VfL Wolfsburg",
-            "code": "WOB"
-          },
-          {
-            "key": "mainz",
-            "name": "1. FSV Mainz 05",
-            "code": "M05"
-          },
-          {
-            "key": "bremen",
-            "name": "Werder Bremen",
-            "code": "BRE"
-          },
-          {
-            "key": "hoffenheim",
-            "name": "TSG 1899 Hoffenheim",
-            "code": "HOF"
-          },
-          {
-            "key": "augsburg",
-            "name": "FC Augsburg",
-            "code": "FCA"
-          },
-          {
-            "key": "herthabsc",
-            "name": "Hertha BSC",
-            "code": "BSC"
-          },
-          {
-            "key": "koeln",
-            "name": "1. FC Köln",
-            "code": "KOE"
-          },
-          {
-            "key": "paderborn",
-            "name": "SC Paderborn 07",
-            "code": "SCP"
-          },
-          {
-            "key": "freiburg",
-            "name": "SC Freiburg",
-            "code": "SCF"
-          },
-          {
-            "key": "duesseldorf",
-            "name": "Fortuna Düsseldorf",
-            "code": "F95"
-          },
-          {
-            "key": "unionberlin",
-            "name": "1. FC Union Berlin",
-            "code": "FCU"
-          },
-          {
-            "key": "leipzig",
-            "name": "RB Leipzig",
-            "code": "RBL"
-          }
-        ],
-        englandTeams: [
-          {
-            "key": "chelsea",
-            "name": "Chelsea FC",
-            "code": "CHE"
-          },
-          {
-            "key": "arsenal",
-            "name": "Arsenal FC",
-            "code": "ARS"
-          },
-          {
-            "key": "tottenham",
-            "name": "Tottenham Hotspur FC",
-            "code": "TOT"
-          },
-          {
-            "key": "westham",
-            "name": "West Ham United FC",
-            "code": "WHU"
-          },
-          {
-            "key": "crystalpalace",
-            "name": "Crystal Palace FC",
-            "code": "CRY"
-          },
-          {
-            "key": "manutd",
-            "name": "Manchester United FC",
-            "code": "MUN"
-          },
-          {
-            "key": "mancity",
-            "name": "Manchester City FC",
-            "code": "MCI"
-          },
-          {
-            "key": "everton",
-            "name": "Everton FC",
-            "code": "EVE"
-          },
-          {
-            "key": "liverpool",
-            "name": "Liverpool FC",
-            "code": "LIV"
-          },
-          {
-            "key": "newcastle",
-            "name": "Newcastle United FC",
-            "code": "NEW"
-          },
-          {
-            "key": "astonvilla",
-            "name": "Aston Villa FC",
-            "code": "AVL"
-          },
-          {
-            "key": "southampton",
-            "name": "Southampton FC",
-            "code": "SOU"
-          },
-          {
-            "key": "leicester",
-            "name": "Leicester City FC",
-            "code": "LEI"
-          },
-          {
-            "key": "bournemouth",
-            "name": "AFC Bournemouth",
-            "code": "BOU"
-          },
-          {
-            "key": "norwich",
-            "name": "Norwich City FC",
-            "code": "NOR"
-          },
-          {
-            "key": "watford",
-            "name": "Watford FC",
-            "code": "WAT"
-          },
-          {
-            "key": "burnley",
-            "name": "Burnley FC",
-            "code": "BUR"
-          },
-          {
-            "key": "brightonhovealbionfc",
-            "name": "Brighton & Hove Albion FC",
-            "code": "BHA"
-          },
-          {
-            "key": "sheffieldunitedfc",
-            "name": "Sheffield United FC",
-            "code": "SFU"
-          },
-          {
-            "key": "wolverhamptonwanderersfc",
-            "name": "Wolverhampton Wanderers FC",
-            "code": "WHW"
-          }
-        ],
-        espagnolTeams: [
-          {
-            "key": "barcelona",
-            "name": "FC Barcelona",
-            "code": "BAR"
-          },
-          {
-            "key": "espanyol",
-            "name": "RCD Espanyol",
-            "code": "ESP"
-          },
-          {
-            "key": "madrid",
-            "name": "Real Madrid",
-            "code": "RMD"
-          },
-          {
-            "key": "atletico",
-            "name": "Atlético Madrid",
-            "code": "ATL"
-          },
-          {
-            "key": "getafe",
-            "name": "Getafe CF",
-            "code": "GET"
-          },
-          {
-            "key": "sevilla",
-            "name": "Sevilla FC",
-            "code": "SEV"
-          },
-          {
-            "key": "valencia",
-            "name": "Valencia CF",
-            "code": "VAL"
-          },
-          {
-            "key": "levante",
-            "name": "Levante UD",
-            "code": "LEV"
-          },
-          {
-            "key": "athletic",
-            "name": "Athletic Club Bilbao",
-            "code": "ATH"
-          },
-          {
-            "key": "granada",
-            "name": "Granada CF",
-            "code": "GRA"
-          },
-          {
-            "key": "celta",
-            "name": "RC Celta Vigo",
-            "code": "CEL"
-          },
-          {
-            "key": "realsociedad",
-            "name": "Real Sociedad",
-            "code": "RSO"
-          },
-          {
-            "key": "valladolid",
-            "name": "Real Valladolid CF",
-            "code": "VID"
-          },
-          {
-            "key": "eibar",
-            "name": "SD Eibar",
-            "code": null
-          },
-          {
-            "key": "betis",
-            "name": "Real Betis",
-            "code": "BET"
-          },
-          {
-            "key": "osasuna",
-            "name": "CA Osasuna",
-            "code": "OSA"
-          },
-          {
-            "key": "villareal",
-            "name": "Villarreal CF",
-            "code": "VLL"
-          },
-          {
-            "key": "alaves",
-            "name": "Deportivo Alavés",
-            "code": null
-          },
-          {
-            "key": "mallorca",
-            "name": "RCD Mallorca",
-            "code": "MLL"
-          },
-          {
-            "key": "leganes",
-            "name": "CD Leganés",
-            "code": null
-          }
-        ]
-      }
     }
   }
 </script>

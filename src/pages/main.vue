@@ -28,7 +28,7 @@ export default {
     data () {
       return {
         retrievedImage: null,
-        clicAnimation: true,
+        clicAnimation: false,
         user: StorageService.getUser(),
         logOutText: 'Log out',
         inscriptionFinished: true,
@@ -80,20 +80,18 @@ export default {
       let vm = this;
       this.profileIsCompleted();
       console.log('inscriptionFinished =', this.inscriptionFinished);
-      setTimeout(function () {
-        vm.clicAnimation = false;
-        if (vm.inscriptionFinished) {
+      // setTimeout(function () {
+        // vm.clicAnimation = false;
+        // if (vm.inscriptionFinished) {
           // console.log('inscriptionFinished =', vm.inscriptionFinished);
           //redirection to macth page
           vm.$f7router.navigate("/welcome/");
-        }
-      }, 4000);
+      //   }
+      // }, 4000);
       WebService.getImage(StorageService.getUser().email).then(response => {
-        console.log('response get image ', response);
           const base64Data = response.data.picByte;
           if (base64Data) {
             this.retrievedImage = 'data:image/jpeg;base64,' + base64Data;
-            console.log('retrievedImage =', this.retrievedImage);
           }
       }).catch((err) => {
         console.warn("can't fetsh photo, error :", err);

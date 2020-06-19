@@ -74,11 +74,27 @@ export default class WebService {
       });
     }
 
-    static getTeamsOfLeague(code, yearMinusOne, currentYear) {
-      return axios.get(`https://raw.githubusercontent.com/openfootball/football.json/master/${yearMinusOne}-${currentYear}/${code}.1.clubs.json`);
+    static getAvailableLeague() {
+      return axios.get('/leagues');
     }
 
-    static getAvailableLeague() {
-      return axios.get('');
+    static searchPlayerByName(name) {
+      return axios.get(`/search/player/${name}`);
+    }
+
+    static playerStats(id) {
+      return axios.get(`/player/stats/${id}`);
+    }
+
+    static teamByName(name) {
+      return axios.get(`/search/team/${name}`);
+    }
+
+    static teamsOfLeague(id) {
+      return axios.get(`/teams/league/${id}`);
+    }
+
+    static teamsStats(leagueId, teamId, season) {
+      return axios.get(`/teams/stats/${leagueId}/${teamId}/${season}`);
     }
 }
