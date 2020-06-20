@@ -109,11 +109,13 @@ export default class WebService {
         homeTeamLeagueId: prediction.homeTeam.leagueId,
         homeTeamName: prediction.homeTeam.teamName,
         homeTeamLeagueName: prediction.homeTeam.leagueName,
+        imageHome: prediction.homeTeam.teamImage,
+        imageAway: prediction.awayTeam.teamImage,
         date : date
       });
     }
 
-    static storeStatistique(type, currentLeague_id, currentLeague_year, team_id, player_id, date, teamName, playerName) {
+    static storeStatistique(type, currentLeague_id, currentLeague_year, team_id, player_id, date, teamName, playerName, image) {
       return axios.post('/statistique/save' , {
         type: type,
         teamId: team_id,
@@ -122,7 +124,8 @@ export default class WebService {
         playerId: player_id,
         date: date,
         teamName: teamName,
-        playerName: playerName
+        playerName: playerName,
+        image: image
       });
     }
 

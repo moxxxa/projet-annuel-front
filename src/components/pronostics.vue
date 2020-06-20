@@ -215,9 +215,12 @@ export default {
       fetshTeams1() {
         if (this.currentLeague1 && this.currentLeague1.id !== -1) {
           let vm = this;
+          vm.$f7.preloader.show();
           WebService.teamsOfLeague(vm.currentLeague1.id).then(response => {
             this.teams1 = response.data;
+            vm.$f7.preloader.hide();
           }).catch((err) => {
+            vm.$f7.preloader.hide();
             console.warn('can\'t get teams of the selected league, error= ', err);
           })
         }
@@ -225,9 +228,12 @@ export default {
       fetshTeams2() {
         if (this.currentLeague2 && this.currentLeague2.id !== -1) {
           let vm = this;
+          vm.$f7.preloader.show();
           WebService.teamsOfLeague(vm.currentLeague2.id).then(response => {
             this.teams2 = response.data;
+            vm.$f7.preloader.hide();
           }).catch((err) => {
+            vm.$f7.preloader.hide();
             console.warn('can\'t get teams of the selected league, error= ', err);
           })
         }
@@ -338,21 +344,17 @@ export default {
       }
     },
     mounted() {
-      WebService.getPronostics().then(response => {
-        console.log("getPronostics response =", response);
-      }).catch((err) => {
-        console.warn("can't getPronostics ", err);
-      });
-
+      let vm = this;
+      vm.$f7.preloader.show();
       WebService.getAvailableLeague().then(response => {
         this.leagues = this.leagues
                           .concat(response.data.filter(league => league.year >= 2019 && league.country !== 'China' && !league.name.includes('Cup') && !league.name.includes('World') && !league.name.includes('Euro') && !league.name.includes('Segunda')));
+        vm.$f7.preloader.hide();
         }).catch((err) => {
+          vm.$f7.preloader.hide();
         console.warn('can\t fetsh leagues , error =', err);
       })
 
-
-      let vm = this;
       vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
         const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
         vm.countryTeam1 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
@@ -417,12 +419,13 @@ export default {
           let vm = this;
           const today = new Date();
           const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+          console.log('prediction =', vm.prediction);
           WebService.pronostics(vm.prediction, date).then(response => {
             console.log('response =', response);
             // predictionResult
           }).catch((err) => {
             console.warn("error fetshing pronostics, err =", err);
-          })
+          });
           vm.$f7.dialog.preloader('Prediction en cours ...., veuillez patientez');
           console.log('this.prediction =', this.prediction);
           setTimeout(() => {

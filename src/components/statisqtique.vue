@@ -133,9 +133,12 @@ export default {
       fetshteams() {
         if (this.currentLeague && this.currentLeague.id !== -1) {
           let vm = this;
+          vm.$f7.preloader.show();
           WebService.teamsOfLeague(vm.currentLeague.id).then(response => {
             this.teams = response.data;
+            vm.$f7.preloader.hide();
           }).catch((err) => {
+            vm.$f7.preloader.hide();
             console.warn('can\'t get teams of the selected league, error= ', err);
           })
         }
@@ -206,20 +209,17 @@ export default {
       }
     },
     mounted() {
-      WebService.getStatistique().then(response => {
-        console.log("statistique response =", response);
-      }).catch((err) => {
-        console.warn("can't get statisitics ", err);
-      });
-      
+      let vm = this;
+      vm.$f7.preloader.show();
       WebService.getAvailableLeague().then(response => {
         this.leagues = this.leagues
                           .concat(response.data.filter(league => league.year >= 2019 && league.country !== 'China' && !league.name.includes('Cup') && !league.name.includes('World') && !league.name.includes('Euro') && !league.name.includes('Segunda')));
+        vm.$f7.preloader.hide();
         }).catch((err) => {
+        vm.$f7.preloader.hide();
         console.warn('can\t fetsh leagues , error =', err);
       });
 
-      let vm = this;
       vm.$refs.leagues1.f7SmartSelect.on('close', function(el) {
         const tmpName = el.selectEl.selectedOptions[0].value.substring(0, el.selectEl.selectedOptions[0].value.indexOf("!"));
         vm.countryTeam1 = el.selectEl.selectedOptions[0].value.substring(el.selectEl.selectedOptions[0].value.indexOf("!") + 1, el.selectEl.selectedOptions[0].value.length);
@@ -233,7 +233,7 @@ export default {
           vm.teamStats = response.data;
         }).catch((err) => {
           console.warn('error fetshing stats=', err);
-        })
+        });
       });
 
       vm.$refs.joueur.f7SmartSelect.on('close', function(el) {
@@ -242,7 +242,7 @@ export default {
           vm.playerStats = response.data;
         }).catch((err) => {
           console.warn('error fetshing player stats=', err);
-        })
+        });
       });
     },
     watch: {

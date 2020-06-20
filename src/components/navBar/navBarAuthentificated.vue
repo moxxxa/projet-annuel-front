@@ -10,13 +10,6 @@
     <a @click="goToPredict" style="text-decorations:none;"><font color="#9921e8">ClicFoot</font></a>
   </f7-nav-title>
 
-  <!-- Find matchs -->
-  <f7-nav-left class="tournament">
-    <f7-link @click="goToTournament">
-      <h5><font colot="black">Tournament</font></h5>
-    </f7-link>
-  </f7-nav-left>
-
   <f7-nav-left
     <a @click="logout">
       <img src="static/images/logout.png" />
