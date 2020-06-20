@@ -83,6 +83,7 @@
                 <thead>
                   <tr>
                     <th style="text-align: center; vertical-align: middle;" class="light">Type</th>
+                    <th style="text-align: center; vertical-align: middle;" class="light">Date d'éxecution</th>
                     <th style="text-align: center; vertical-align: middle;" class="light">Nom</th>
                     <th style="text-align: center; vertical-align: middle;" class="light">Age</th>
                     <th style="text-align: center; vertical-align: middle;" class="light">Nationnalité</th>
@@ -100,6 +101,7 @@
                 <tbody>
                   <tr v-for="player in playersStats" :key="player.idTmp">
                     <td style="text-align: center; vertical-align: middle;" class="light">{{player.type === 'team' ? 'équipe' : 'joueur'}}</td>
+                    <td style="text-align: center; vertical-align: middle;" class="light">{{player.date}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{player.info.name}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{player.age}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{player.info.nationality}}</td>
