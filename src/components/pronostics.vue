@@ -27,7 +27,6 @@
                 </f7-button>
                 <br><br>
                 <hr/>
-
                 <center><h3 class="light">veuillez sélectionner la ligue de la deuxième équipe</h3></center>
                 <br>
                 <f7-list>
@@ -208,7 +207,8 @@ export default {
         step: 1,
         prediction: null,
         yearsParams: '',
-        displayResult: false
+        displayResult: false,
+        predictionResult: []
       }
     },
     methods: {
@@ -338,6 +338,12 @@ export default {
       }
     },
     mounted() {
+      WebService.getPronostics().then(response => {
+        console.log("getPronostics response =", response);
+      }).catch((err) => {
+        console.warn("can't getPronostics ", err);
+      });
+
       WebService.getAvailableLeague().then(response => {
         this.leagues = this.leagues
                           .concat(response.data.filter(league => league.year >= 2019 && league.country !== 'China' && !league.name.includes('Cup') && !league.name.includes('World') && !league.name.includes('Euro') && !league.name.includes('Segunda')));
@@ -409,7 +415,16 @@ export default {
 
         if (this.step === 4) {
           let vm = this;
+          const today = new Date();
+          const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+          WebService.pronostics(vm.prediction, date).then(response => {
+            console.log('response =', response);
+            // predictionResult
+          }).catch((err) => {
+            console.warn("error fetshing pronostics, err =", err);
+          })
           vm.$f7.dialog.preloader('Prediction en cours ...., veuillez patientez');
+          console.log('this.prediction =', this.prediction);
           setTimeout(() => {
             vm.displayResult = true;
             vm.$f7.dialog.close();

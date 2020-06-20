@@ -98,9 +98,9 @@ export default {
   methods: {
     OnGoogleAuthSuccess (idToken) {
       WebService.googleRegistre(idToken).then(response => {
+        StorageService.setToken(response.data.token);
         StorageService.setUser(response.data);
-        StorageService.setToken("temporory token");
-        WebService.setAuthorization("temporory token");
+        WebService.setAuthorization(response.data.token);
         location.reload();
       }).catch((err) => {
         console.log('error google registry ', err);

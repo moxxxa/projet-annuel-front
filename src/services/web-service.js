@@ -97,4 +97,40 @@ export default class WebService {
     static teamsStats(leagueId, teamId, season) {
       return axios.get(`/teams/stats/${leagueId}/${teamId}/${season}`);
     }
+
+    static pronostics(prediction, date) {
+      console.log('sending the pronostics');
+      return axios.post('/pronostics/predict', {
+        awayTeamId: prediction.awayTeam.teamId,
+        awayTeamLeagueId: prediction.awayTeam.leagueId,
+        awayTeamName: prediction.awayTeam.teamName,
+        awayTeamLeagueName: prediction.awayTeam.leagueName,
+        homeTeamId: prediction.homeTeam.teamId,
+        homeTeamLeagueId: prediction.homeTeam.leagueId,
+        homeTeamName: prediction.homeTeam.teamName,
+        homeTeamLeagueName: prediction.homeTeam.leagueName,
+        date : date
+      });
+    }
+
+    static storeStatistique(type, currentLeague_id, currentLeague_year, team_id, player_id, date, teamName, playerName) {
+      return axios.post('/statistique/save' , {
+        type: type,
+        teamId: team_id,
+        leagueId: currentLeague_id,
+        year: currentLeague_year,
+        playerId: player_id,
+        date: date,
+        teamName: teamName,
+        playerName: playerName
+      });
+    }
+
+    static getStatistique() {
+      return axios.get('/statistique/all');
+    }
+
+    static getPronostics() {
+      return axios.get('/pronostics/all');
+    }
 }

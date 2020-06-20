@@ -79,7 +79,8 @@ import StorageService from '../services/storage-service';
 export default {
     props: [
       "teamStats",
-      "team"
+      "team",
+      "currentLeague"
     ],
     components: {
     },
@@ -91,7 +92,14 @@ export default {
 
     },
     mounted() {
-
+      //store the Statisqtiques
+      const today = new Date();
+      const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+      WebService.storeStatistique("team", this.currentLeague.id, this.currentLeague.year, this.team.id, -1, date, this.team.name, "").then(response => {
+        console.log('team statistique successfully stored');
+      }).catch((err) => {
+        console.warn("err =", err);
+      });
     },
     data() {
       return {

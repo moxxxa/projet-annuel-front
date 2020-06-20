@@ -67,10 +67,10 @@
           <center><h1 class="light">Résultats</h1></center>
           <br>
           <div class="data-table" v-if="choises === 'Joueur'">
-            <player-statistique :player="player" :playerStats="playerStats" :currentLeague="currentLeague"/>
+            <player-statistique :player="player" :playerStats="playerStats" :currentLeague="currentLeague" :team="team"/>
           </div>
           <div v-else>
-            <team-statistique :teamStats="teamStats" :team="team"/>
+            <team-statistique :teamStats="teamStats" :team="team" :currentLeague="currentLeague"/>
           </div>
           <br><br>
           <f7-button fill round raised text-color="black" fill @click="restart">Nouvelle recherche</f7-button>
@@ -206,6 +206,12 @@ export default {
       }
     },
     mounted() {
+      WebService.getStatistique().then(response => {
+        console.log("statistique response =", response);
+      }).catch((err) => {
+        console.warn("can't get statisitics ", err);
+      });
+      
       WebService.getAvailableLeague().then(response => {
         this.leagues = this.leagues
                           .concat(response.data.filter(league => league.year >= 2019 && league.country !== 'China' && !league.name.includes('Cup') && !league.name.includes('World') && !league.name.includes('Euro') && !league.name.includes('Segunda')));
