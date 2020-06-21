@@ -136,4 +136,10 @@ export default class WebService {
     static getPronostics() {
       return axios.get('/pronostics/all');
     }
+
+    static getTournamentPrediction(tournament) {
+      return axios.post(`/tournament/prediction`, {
+        tournament: tournament
+      });
+    };
 }

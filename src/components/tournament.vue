@@ -29,7 +29,7 @@
 
           <!-- teams selection -->
           <br><br>
-          <div v-if="numberOfTeamC !== 0">
+          <div v-if="numberOfTeamC !== 0 && canPick">
             <teams-selector @updateTeams="updateTeams" :numberOfTeams="numberOfTeamC" :leagues="leagues"/>
           </div>
           <div v-else>
@@ -44,8 +44,9 @@
           <br>
           <center><h1 class="light">Résultats</h1></center>
           <br><br><br>
-          <h2 class="light">Prémiere place: {{selectedTeams[1]}}  <font color="red">( 58 % )</font></h2>
-          <h2 class="light">Deuxième place: {{selectedTeams[3]}}  <font color="red">( 42 % )</font></h2>
+          <h2 class="light">Prémiere place: {{predictionResult.firstPlace}}  <font color="red">{{predictionResult.firstPlacePrediction}}</font></h2>
+          <h2 class="light">Deuxième place: {{predictionResult.secondPlace}}  <font color="red">{{predictionResult.secondPlacePrediction}}</font></h2>
+          <h2 class="light">Deuxième place: {{predictionResult.thirdPlace}}  <font color="red">{{predictionResult.thirdPlacePrediction}}</font></h2>
           <br><br>
           <f7-button fill round raised text-color="black" fill @click="restart">Nouveau simulation</f7-button>
           <br><br>
@@ -54,15 +55,15 @@
     </f7-card>
     <f7-popover class="popover-number-teams">
       <f7-list>
-        <f7-list-item link="#" popover-close title="2" @click="numberOfTeams = 2"></f7-list-item>
-        <f7-list-item link="#" popover-close title="4" @click="numberOfTeams = 4"></f7-list-item>
-        <f7-list-item link="#" popover-close title="6" @click="numberOfTeams = 6"></f7-list-item>
-        <f7-list-item link="#" popover-close title="8" @click="numberOfTeams = 8"></f7-list-item>
-        <f7-list-item link="#" popover-close title="10" @click="numberOfTeams = 10"></f7-list-item>
-        <f7-list-item link="#" popover-close title="12" @click="numberOfTeams = 12"></f7-list-item>
-        <f7-list-item link="#" popover-close title="14" @click="numberOfTeams = 14"></f7-list-item>
-        <f7-list-item link="#" popover-close title="16" @click="numberOfTeams = 16"></f7-list-item>
-        <f7-list-item link="#" popover-close title="18" @click="numberOfTeams = 18"></f7-list-item>
+        <f7-list-item link="#" popover-close title="2" @click="numberOfTeams = 2; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="4" @click="numberOfTeams = 4; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="6" @click="numberOfTeams = 6; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="8" @click="numberOfTeams = 8; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="10" @click="numberOfTeams = 10; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="12" @click="numberOfTeams = 12; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="14" @click="numberOfTeams = 14; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="16" @click="numberOfTeams = 16; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="18" @click="numberOfTeams = 18; canPick = false;"></f7-list-item>
       </f7-list>
     </f7-popover>
   </f7-block>
@@ -87,7 +88,9 @@ export default {
         selectedTeams: [],
         numberOfTeams: 0,
         yearsParams: '',
-        leagues: []
+        leagues: [],
+        predictionResult: null,
+        canPick: false
 
       }
     },
@@ -103,6 +106,11 @@ export default {
       },
       predict() {
       let vm = this;
+      WebService.getTournamentPrediction(vm.selectedTeams).then(response => {
+        vm.predictionResult = response.data;
+      }).catch((err) => {
+        console.warn("error while calculating prediction ", err);
+      });
       vm.$f7.dialog.preloader('Processing for the prediction ...., please wait');
         setTimeout(() => {
           vm.displayResult = true;
@@ -111,6 +119,9 @@ export default {
       }
     },
     computed: {
+      canPickC() {
+        return this.canPick;
+      },
       numberOfTeamC() {
         console.log('getting number of teams');
         return this.numberOfTeams;
@@ -141,6 +152,25 @@ export default {
         vm.yearsParams = el.selectEl.selectedOptions[0].value;
         console.log('yearsParams = ', vm.yearsParams);
       });
+    },
+    watch: {
+      numberOfTeamC(newv, oldv) {
+        let vm = this;
+        vm.$f7.preloader.show();
+        for (const league of vm.leagues.slice(0, 4)) {
+          WebService.teamsOfLeague(league.id).then(response => {
+            league.teams = response.data;
+            console.log('leagues =', vm.leagues);
+          }).catch((err) => {
+            vm.$f7.preloader.hide();
+            console.warn('can\'t get teams of the selected league, error= ', err);
+          });
+        }
+        setTimeout(function () {
+          vm.canPick = true;
+          vm.$f7.preloader.hide();
+        }, 4000);
+      }
     }
   }
 </script>
