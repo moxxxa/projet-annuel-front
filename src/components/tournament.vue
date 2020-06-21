@@ -44,9 +44,9 @@
           <br>
           <center><h1 class="light">Résultats</h1></center>
           <br><br><br>
-          <h2 class="light">Prémiere place: {{predictionResult.firstPlace}}  <font color="red">{{predictionResult.firstPlacePrediction}}</font></h2>
-          <h2 class="light">Deuxième place: {{predictionResult.secondPlace}}  <font color="red">{{predictionResult.secondPlacePrediction}}</font></h2>
-          <h2 class="light">Deuxième place: {{predictionResult.thirdPlace}}  <font color="red">{{predictionResult.thirdPlacePrediction}}</font></h2>
+          <h2 class="light" v-if="predictionResult.firstPlace">Prémiere place: {{predictionResult.firstPlace}}  <font color="red">{{predictionResult.firstPlacePrediction}}</font></h2>
+          <h2 class="light" v-if="predictionResult.secondPlace">Deuxième place: {{predictionResult.secondPlace}}  <font color="red">{{predictionResult.secondPlacePrediction}}</font></h2>
+          <h2 class="light" v-if="predictionResult.thirdPlace">Troisième place: {{predictionResult.thirdPlace}}  <font color="red">{{predictionResult.thirdPlacePrediction}}</font></h2>
           <br><br>
           <f7-button fill round raised text-color="black" fill @click="restart">Nouveau simulation</f7-button>
           <br><br>
@@ -100,12 +100,15 @@ export default {
         this.numberOfTeams = 0;
         this.yearsParams = '';
         this.displayResult = false;
+        this.canPick = false;
+        this.predictionResult = null;
       },
       updateTeams(payload) {
         this.selectedTeams = payload;
       },
       predict() {
       let vm = this;
+      vm.selectedTeams = vm.selectedTeams.map(div => div.substring(0, div.indexOf("-")));
       WebService.getTournamentPrediction(vm.selectedTeams).then(response => {
         vm.predictionResult = response.data;
       }).catch((err) => {
@@ -123,7 +126,6 @@ export default {
         return this.canPick;
       },
       numberOfTeamC() {
-        console.log('getting number of teams');
         return this.numberOfTeams;
       },
       currentStateC() {
@@ -143,14 +145,12 @@ export default {
                              !league.name.includes('Feminine') &&
                           (league.country === 'Germany' || league.country === 'France' || league.country === 'Spain' || league.country === 'Italy' || league.country === 'England')));
         vm.$f7.preloader.hide();
-        console.log('leagues =', vm.leagues);
         }).catch((err) => {
         vm.$f7.preloader.hide();
         console.warn('can\t fetsh leagues , error =', err);
       });
       vm.$refs.years.f7SmartSelect.on('close', function(el) {
         vm.yearsParams = el.selectEl.selectedOptions[0].value;
-        console.log('yearsParams = ', vm.yearsParams);
       });
     },
     watch: {
@@ -160,7 +160,6 @@ export default {
         for (const league of vm.leagues.slice(0, 4)) {
           WebService.teamsOfLeague(league.id).then(response => {
             league.teams = response.data;
-            console.log('leagues =', vm.leagues);
           }).catch((err) => {
             vm.$f7.preloader.hide();
             console.warn('can\'t get teams of the selected league, error= ', err);
@@ -170,6 +169,14 @@ export default {
           vm.canPick = true;
           vm.$f7.preloader.hide();
         }, 4000);
+      },
+      displayResult(newv, oldv) {
+        let vm = this;
+        setTimeout(function () {
+          vm.$refs.years.f7SmartSelect.on('close', function(el) {
+            vm.yearsParams = el.selectEl.selectedOptions[0].value;
+          });
+        }, 2000);
       }
     }
   }

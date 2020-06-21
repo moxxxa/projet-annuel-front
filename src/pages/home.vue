@@ -167,7 +167,6 @@ export default {
         document.getElementById("howItWorks").scrollIntoView({behavior: "smooth"});
       },
       scrollToTop() {
-        console.log('here');
         document.getElementById("homePage").scrollIntoView({behavior: "smooth"});
       },
       contentScrolled(position) {

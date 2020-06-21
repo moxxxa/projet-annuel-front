@@ -234,9 +234,6 @@ export default {
     this.prenom = this.oldLastName;
     this.nom = this.oldName;
     this.email = this.oldMail;
-    console.log('oldName =', this.oldName);
-    console.log('oldLastName =', this.oldLastName);
-    console.log('oldMail =', this.oldMail);
   }
 }
 

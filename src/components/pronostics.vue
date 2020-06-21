@@ -323,7 +323,6 @@ export default {
         return "LaLiga, Bundesliga, Ligue1 ..";
       },
       currentStateC() {
-        console.log('this.prediction =', this.prediction);
         // console.log('current league =', this.currentLeague);
         if ((this.step === 1) && (this.currentLeague1.name === 'Selectionner une ligue' || this.currentLeague2.name === 'Selectionner une ligue')) {
           return false;
@@ -374,7 +373,6 @@ export default {
         vm.$refs.years.f7SmartSelect.on('close', function(el) {
           vm.yearsParams = el.selectEl.selectedOptions[0].value;
           vm.prediction.yearsFilter = vm.yearsParams;
-          console.log('prediction =', vm.prediction);
         });
       }
 
@@ -410,7 +408,6 @@ export default {
             vm.$refs.years.f7SmartSelect.on('close', function(el) {
               vm.yearsParams = el.selectEl.selectedOptions[0].value;
               vm.prediction.yearsFilter = vm.yearsParams;
-              console.log('prediction =', vm.prediction);
             });
           }, 3000);
         }
@@ -419,15 +416,12 @@ export default {
           let vm = this;
           const today = new Date();
           const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-          console.log('prediction =', vm.prediction);
           WebService.pronostics(vm.prediction, date).then(response => {
-            console.log('response =', response);
             // predictionResult
           }).catch((err) => {
             console.warn("error fetshing pronostics, err =", err);
           });
           vm.$f7.dialog.preloader('Prediction en cours ...., veuillez patientez');
-          console.log('this.prediction =', this.prediction);
           setTimeout(() => {
             vm.displayResult = true;
             vm.$f7.dialog.close();

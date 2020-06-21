@@ -20,7 +20,6 @@ export default class StorageService {
   }
 
   static setUser(user) {
-    console.log('user =', user);
     storage.setItem('user', JSON.stringify(user));
   }
 

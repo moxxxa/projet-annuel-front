@@ -67,7 +67,6 @@ export default {
       },
       async onPhotoUpload(event) {
         WebService.deletePhoto(StorageService.getUser().email).then(response => {
-          console.log('response delete photo =' , response);
           this.triggerUpload(event);
         }).catch((err) => {
           console.warn('err deleting photo', err);
@@ -78,10 +77,8 @@ export default {
         const uploadImageData = new FormData();
         uploadImageData.append('imageFile', this.selectedFile, StorageService.getUser().email);
         WebService.uploadPhoto(uploadImageData).then(response => {
-            console.log('response upload photo =', response);
             this.base64Data = response.data.picByte;
             this.retrievedImage = 'data:image/jpeg;base64,' + this.base64Data;
-            console.log('retrievedImage =', this.retrievedImage);
         }).catch((err) => {
           console.log("error =", err);
           let vm = this;
@@ -103,11 +100,9 @@ export default {
     },
     computed: {
       userLastName() {
-        console.log('user last name =', (StorageService.getUser() && StorageService.getUser().lastName) ? StorageService.getUser().lastName: 'ClicFoot');
         return (StorageService.getUser() && StorageService.getUser().lastName) ? StorageService.getUser().lastName: 'ClicFoot';
       },
       userAvatar() {
-        console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
         return (this.retrievedImage !== null) ? this.retrievedImage :
           (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? StorageService.avatarFromUser(StorageService.getUser()) : 'static/images/d-avatar.jpg';
       },

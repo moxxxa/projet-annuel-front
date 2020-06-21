@@ -43,7 +43,6 @@ export default {
         setTimeout(() => {
           vm.$f7.dialog.close();
           vm.$f7router.navigate("/main-prediction/");
-          console.log('redirected succesfully')
         }, 3000);
       },
       async profileIsCompleted() {
@@ -71,7 +70,6 @@ export default {
         return this.inscriptionFinished;
       },
       userAvatar() {
-        console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
         return (this.retrievedImage !== null) ? this.retrievedImage :
           (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? this.retrievedImage : 'static/images/d-avatar.jpg';
       },
@@ -79,7 +77,6 @@ export default {
     mounted() {
       let vm = this;
       this.profileIsCompleted();
-      console.log('inscriptionFinished =', this.inscriptionFinished);
       // setTimeout(function () {
         // vm.clicAnimation = false;
         // if (vm.inscriptionFinished) {

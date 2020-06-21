@@ -137,8 +137,6 @@ export default {
       vm.$f7.preloader.show();
       WebService.login(this.email, this.password)
         .then(response => {
-          console.log('response login =', response);
-          console.log('cookie =', response.headers['set-cookie']);
           vm.$f7.preloader.hide();
           StorageService.setToken(response.data.token);
           StorageService.setUser(response.data);

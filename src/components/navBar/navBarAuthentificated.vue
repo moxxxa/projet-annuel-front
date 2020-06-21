@@ -62,8 +62,7 @@ export default {
     },
     _avatar() {
       return StorageService.avatarFromUser(StorageService.getUser());
-      console.log('_avatar :', StorageService.avatarFromUser(StorageService.getUser()));
-    },
+    }
   },
   computed: {
     profileAvatarC() {

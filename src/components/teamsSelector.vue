@@ -3,7 +3,7 @@
     <f7-list-item title="Select the teams" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="teams">
       <select name="Select the teams" multiple :maxlength="numberOfTeams">
         <optgroup v-for="league in leaguesC" :key="league.id" :label="league.name">
-          <option v-for="team in league.teams" :key="team.id + '-' + league.name" :value="team.name + '-' + league.name">{{team.name}}</option>
+          <option v-for="team in league.teams" :key="team.id + '-' + league.name" :value="team.id + '-' + team.name + '-' + league.name">{{team.name}}</option>
         </optgroup>
       </select>
     </f7-list-item>
@@ -27,7 +27,6 @@ export default {
         return new Date().getUTCMilliseconds() + "";
       },
       leaguesC() {
-        console.log('leaguesC =', this.leagues);
         return this.leagues;
       }
     },
@@ -35,7 +34,6 @@ export default {
       let vm = this;
       vm.$refs.teams.f7SmartSelect.on('close', function(el) {
         // vm.selectedTeams = el.selectEl.selectedOptions[0].value;
-        console.log('selectedTeams = ', vm.$refs.teams.f7SmartSelect.$selectEl.val());
         vm.$emit('updateTeams', vm.$refs.teams.f7SmartSelect.$selectEl.val());
       });
     },

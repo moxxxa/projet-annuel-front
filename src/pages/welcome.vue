@@ -70,7 +70,6 @@ export default {
       return true;
     },
     userAvatar() {
-      console.log('avatar =', StorageService.avatarFromUser(StorageService.getUser()));
       return (this.retrievedImage !== null) ? this.retrievedImage :
         (StorageService.avatarFromUser(StorageService.getUser()) !== '') ? this.retrievedImage : 'static/images/d-avatar.jpg';
     }

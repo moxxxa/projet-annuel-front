@@ -66,7 +66,6 @@ export default class WebService {
     }
 
     static deleteUserAccount(currentMdp) {
-      console.log('currentMdp =', currentMdp);
       return axios.delete('/user/delete', {
         data: {
           password : currentMdp
@@ -99,7 +98,6 @@ export default class WebService {
     }
 
     static pronostics(prediction, date) {
-      console.log('sending the pronostics');
       return axios.post('/pronostics/predict', {
         awayTeamId: prediction.awayTeam.teamId,
         awayTeamLeagueId: prediction.awayTeam.leagueId,

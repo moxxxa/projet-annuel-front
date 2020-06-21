@@ -169,7 +169,7 @@ export default {
         WebService.setAuthorization(response.data.token);
         location.reload();
       }).catch((err) => {
-        console.log('error google registry ', err);
+        console.warn('error google registry ', err);
       });
     },
     OnGoogleAuthFail (error) {
@@ -189,7 +189,6 @@ export default {
       return ;
     },
     acceptDeclineConditions(event) {
-      console.log('event =', event);
       this.userAccept = !this.userAccept;
     },
     handleRegistre() {
@@ -274,7 +273,6 @@ export default {
       vm.$f7.preloader.show();
       WebService.registre(vm.emailRegistration, vm.passwordRegistration, vm.nomRegistration, vm.prenomRegistration)
       .then((response) => {
-            console.log('response registration=', response);
             StorageService.setUser(response.data);
             StorageService.setToken(response.data.token);
             WebService.setAuthorization(response.data.token);

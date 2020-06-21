@@ -69,15 +69,12 @@ export default {
     },
     methods: {
       updateSmartSelect(event) {
-        console.log('event =', event);
       }
     },
     computed: {
 
     },
     mounted() {
-      console.log('currentLeague1 =', this.currentLeague1);
-      console.log('currentLeague2 =', this.currentLeague2);
       let vm = this;
       vm.$refs.item1.f7SmartSelect.on('close', function(el) {
         vm.team0 = el.$valueEl[0].innerText;
@@ -91,7 +88,6 @@ export default {
         }
         else {
           vm.teamsAux = vm.teams2;
-          console.log('teamsAux =', vm.teamsAux);
         }
       });
       vm.$refs.item2.f7SmartSelect.on('close', function(el) {
@@ -100,7 +96,6 @@ export default {
 
       vm.$refs.hometeam.f7SmartSelect.on('close', function(el) {
         vm.homeTeam = el.$valueEl[0].innerText;
-        console.log('vm.homeTeam =', vm.homeTeam);
         const team1Tmp = {
           teamImage: vm.teams1.find(div => div.name === vm.team0).image,
           teamName: vm.team0,

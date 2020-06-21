@@ -96,7 +96,6 @@ export default {
       const today = new Date();
       const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
       WebService.storeStatistique("team", this.currentLeague.id, this.currentLeague.year, this.team.id, -1, date, this.team.name, "", this.team.image).then(response => {
-        console.log('team statistique successfully stored');
       }).catch((err) => {
         console.warn("err =", err);
       });
