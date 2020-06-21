@@ -152,8 +152,6 @@ import WebService from '../services/web-service'
 import StorageService from '../services/storage-service';
 import navbarAuth from '../components/navBar/navBarAuthentificated';
 import secondstep from '../components/second-step';
-// import { logos } from '../teams_logo';
-import logoFetcher from '../utility/logo-fetcher';
 
 export default {
     components: {

@@ -4,7 +4,8 @@
     <f7-view
       main
       class="safe-areas"
-      id="main-view" :stackPages="true" url="/"
+      id="main-view"
+      url="/"
     >
     </f7-view>
 

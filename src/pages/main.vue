@@ -24,11 +24,11 @@ export default {
       profileChecker,
       navbarAuth
     },
-    name: "main",
+    name: "MainPage",
     data () {
       return {
         retrievedImage: null,
-        clicAnimation: false,
+        clicAnimation: true,
         user: StorageService.getUser(),
         logOutText: 'Log out',
         inscriptionFinished: true,
@@ -46,14 +46,6 @@ export default {
         }, 3000);
       },
       async profileIsCompleted() {
-        // let status = false;
-        // await WebService.checkIfProfileIsCompleted().then(response => {
-        //   this.inscriptionFinished = response.data.data.is_completed;
-        //   // console.log('response completed =', response);
-        // }).catch((err) => {
-        //   console.log('error =', err);
-        // });
-        // console.log('status =', status);
       },
       sendAvatarToNavbar(avatar) {
         if (avatar) {
@@ -77,14 +69,14 @@ export default {
     mounted() {
       let vm = this;
       this.profileIsCompleted();
-      // setTimeout(function () {
-        // vm.clicAnimation = false;
-        // if (vm.inscriptionFinished) {
-          // console.log('inscriptionFinished =', vm.inscriptionFinished);
-          //redirection to macth page
+      setTimeout(function () {
+        vm.clicAnimation = false;
+        if (vm.inscriptionFinished) {
+          console.log('inscriptionFinished =', vm.inscriptionFinished);
+          // redirection to macth page
           vm.$f7router.navigate("/welcome/");
-      //   }
-      // }, 4000);
+        }
+      }, 4000);
       WebService.getImage(StorageService.getUser().email).then(response => {
           const base64Data = response.data.picByte;
           if (base64Data) {

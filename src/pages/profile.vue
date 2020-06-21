@@ -51,7 +51,7 @@ export default {
     components: {
       navbarAuth
     },
-    name: "main",
+    name: "Profile",
     data () {
       return {
         user: StorageService.getUser(),

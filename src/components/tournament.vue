@@ -80,7 +80,7 @@ export default {
       navbarAuth,
       teamsSelector
     },
-    name: "main",
+    name: "Tournament",
     data () {
       return {
         displayResult: false,

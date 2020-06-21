@@ -2,31 +2,31 @@
   <f7-page name="setting-page" class="accueil-page">
     <navbar-auth :avatar="userAvatar" :checkProfil="checkProfile"/>
     <f7-toolbar tabbar bottom scrollable color-theme="black" bg-color="white">
-      <f7-link tab-link="#pronostics" class="light" style="flex-grow: 1;">Pronostics</f7-link>
-      <f7-link tab-link="#tournament" class="light" style="flex-grow: 1;">Tournois</f7-link>
-      <f7-link tab-link="#statisqtique" class="light" style="flex-grow: 1;">Statisqtique</f7-link>
-      <f7-link tab-link="#recherches" class="light" style="flex-grow: 1;">Mes recherches</f7-link>
+      <f7-link tab-link="#pronosticsTab" class="light" style="flex-grow: 1;">Pronostics</f7-link>
+      <f7-link tab-link="#tournamentTab" class="light" style="flex-grow: 1;">Tournois</f7-link>
+      <f7-link tab-link="#statisqtiqueTab" class="light" style="flex-grow: 1;">Statisqtique</f7-link>
+      <f7-link tab-link="#recherchesTab" class="light" style="flex-grow: 1;">Mes recherches</f7-link>
     </f7-toolbar>
     <f7-tabs animated>
-      <f7-tab id="pronostics" class="page-content" tab-active>
+      <f7-tab id="pronosticsTab" class="page-content" tab-active>
         <br>
         <f7-block>
           <pronostics/>
         </f7-block>
       </f7-tab>
-      <f7-tab id="tournament" class="page-content">
+      <f7-tab id="tournamentTab" class="page-content">
         <br>
         <f7-block>
           <tournament/>
         </f7-block>
       </f7-tab>
-      <f7-tab id="statisqtique" class="page-content">
+      <f7-tab id="statisqtiqueTab" class="page-content">
         <br>
         <f7-block>
           <statisqtique/>
         </f7-block>
       </f7-tab>
-      <f7-tab id="recherches" class="page-content">
+      <f7-tab id="recherchesTab" class="page-content">
         <br>
         <f7-block>
           <recherches/>
@@ -54,6 +54,7 @@ export default {
     recherches,
     navbarAuth
   },
+  name: 'Welcome',
   props: {
 
   },

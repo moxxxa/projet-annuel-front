@@ -98,7 +98,7 @@ export default {
       teamStatistique,
       playerStatistique
     },
-    name: "main",
+    name: "Statisqtique",
     data () {
       return {
         user: StorageService.getUser(),
