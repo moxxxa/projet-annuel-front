@@ -12,10 +12,33 @@
         <div v-else>
           <div v-if="pronostics.length > 0">
             <h2 class="light">Pronostics</h2>
-            <div class="pronostics data-table">
+            <div class="pronostics data-table" v-if="pendingPronostics">
               <table>
                 <thead>
                   <tr>
+                    <th style="text-align: center; vertical-align: middle;" class="light">Statut</th>
+                    <th style="text-align: center; vertical-align: middle;" class="light">Numéro</th>
+                    <th style="text-align: center; vertical-align: middle;" class="light">Date d'éxecution</th>
+                    <th style="text-align: center; vertical-align: middle;" class="light">équipe à domicile</th>
+                    <th style="text-align: center; vertical-align: middle;" class="light">équipe à l'extérieur</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="p in pronostics" :key="p.id" v-if="p.status === 'Pending'">
+                    <td style="text-align: center; vertical-align: middle;" class="light"><font color="red">En cours</font></td>
+                    <td style="text-align: center; vertical-align: middle;" class="light">{{p.id}}</td>
+                    <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
+                    <td style="text-align: center; vertical-align: middle;" class="light">{{p.homeTeamName}}<br><img :src="p.imageHome" height="40px" weight="40px"></td>
+                    <td style="text-align: center; vertical-align: middle;" class="light">{{p.awayTeamName}}<br><img :src="p.imageAway" height="40px" weight="40px"></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pronostics data-table" v-if="completedPronostics">
+              <table>
+                <thead>
+                  <tr>
+                    <th style="text-align: center; vertical-align: middle;" class="light">Statut</th>
                     <th style="text-align: center; vertical-align: middle;" class="light">Numéro</th>
                     <th style="text-align: center; vertical-align: middle;" class="light">Date d'éxecution</th>
                     <th style="text-align: center; vertical-align: middle;" class="light">équipe à domicile</th>
@@ -26,7 +49,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="p in pronostics" :key="p.id">
+                  <tr v-for="p in pronostics" :key="p.id" v-if="p.status === 'Finished'">
+                    <td style="text-align: center; vertical-align: middle;" class="light"><font color="green">Terminé</font></td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.id}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.homeTeamName}}<br><img :src="p.imageHome" height="40px" weight="40px"></td>
@@ -43,7 +67,7 @@
           <div v-if="statistiques.length > 0">
             <h2 class="light">Statistique</h2>
             <div class="statisitics data-table">
-              <table>
+              <table v-if="statistiqueTeams">
                 <thead>
                   <tr>
                     <th style="text-align: center; vertical-align: middle;" class="light">Type</th>
@@ -64,7 +88,7 @@
                   <tr v-for="p in teamsStats" :key="p.idTmp">
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.type === 'team' ? 'équipe' : 'joueur'}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
-                    <td style="text-align: center; vertical-align: middle;" class="light"><strong>{{p.name}}</strong></td>
+                    <td style="text-align: center; vertical-align: middle;" class="light"><strong>{{p.name}}</strong><br><img :src="p.image" height="40px" weight="40px"></td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.goalCount}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.players ? p.players.length : 'N/F'}}</td>
                     <td style="text-align: center; vertical-align: middle;" class="light">{{p.homeDraws}}</td>
@@ -78,8 +102,8 @@
                 </tbody>
               </table>
               <br>
-              <hr/>
-              <table>
+              <table v-if="statistiquePlayers">
+                <hr v-if="statistiqueTeams"/>
                 <thead>
                   <tr>
                     <th style="text-align: center; vertical-align: middle;" class="light">Type</th>
@@ -117,6 +141,62 @@
                   </tr>
                 </tbody>
               </table>
+              <div v-if="tournaments.length > 0">
+                <hr/>
+                <h2 class="light">Tournois</h2>
+                <div class="pronostics data-table" v-if="pendingTournaments">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Statut</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Numéro</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Date d'éxecution</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">équipes</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="p in tournaments" :key="p.id" v-if="p.status === 'Pending'">
+                        <td style="text-align: center; vertical-align: middle;" class="light"><font color="red">En cours</font></td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.id}}</td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
+                        <td style="text-align: center; vertical-align: middle;" class="light"><div v-for="team in p.teams" :key="team.id">{{team.name}}&nbsp;&nbsp;<img :src="team.image" height="30px" weight="30px"><br><br></div></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="pronostics data-table" v-if="completedTournaments">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Statut</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Numéro</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Date d'éxecution</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">équipes</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Prémiere place</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Prémiere place taux</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Deuxième place</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Deuxième place taux</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Troisième place</th>
+                        <th style="text-align: center; vertical-align: middle;" class="light">Troisième place taux</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="p in tournaments" :key="p.id" v-if="p.status === 'Finished'">
+                        <td style="text-align: center; vertical-align: middle;" class="light"><font color="green">Terminé</font></td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.id}}</td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
+                        <td style="text-align: center; vertical-align: middle;" class="light"><div v-for="team in p.teams" :key="team.id">{{team.name}}&nbsp;&nbsp;<img :src="team.image" height="30px" weight="30px"><br><br></div></td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.firstPlace}} </td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.firstPlacePrediction}} </td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.secondPlace}} </td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.secondPlacePrediction}} </td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.thirdPlace ? p.thirdPlace : 'N/F'}}</td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.thirdPlace ? p.thirdPlacePrediction : 'N/F'}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -140,14 +220,16 @@ export default {
       return {
         pronostics: [],
         statistiques: [],
-        globalStats: []
+        globalStats: [],
+        tournaments: []
       };
     },
     methods: {
       refresh() {
-        this.pronostics = [],
-        this.statistiques = [],
-        this.globalStats = []
+        this.pronostics = [];
+        this.statistiques = [];
+        this.globalStats = [];
+        this.tournaments = [];
         this.fetshData();
       },
       fetshData() {
@@ -189,18 +271,55 @@ export default {
           vm.$f7.preloader.hide();
           console.warn("can't get statisitics ", err);
         });
+
+        WebService.getTournaments().then(response => {
+          vm.tournaments = response.data;
+          for (const element of vm.tournaments) {
+            element.teams = [];
+            for (const id of element.tournament) {
+              WebService.teamById(id).then(response1 => {
+                element.teams.push(response1.data);
+              }).catch((err) => {
+                console.warn('error fetshing player =', err);
+              });
+            }
+          }
+          vm.$f7.preloader.hide();
+        }).catch((err) => {
+          vm.$f7.preloader.hide();
+          console.warn("can't get tournaments ", err);
+        });
+
       }
     },
     computed: {
+      statistiqueTeams() {
+        return this.statistiques.filter(div => div.type === 'team').length > 0;
+      },
+      statistiquePlayers() {
+        return this.statistiques.filter(div => div.type === 'player').length > 0;
+      },
       dataIsAvailable() {
-        return this.pronostics.length + this.statistiques.length > 0;
+        return this.pronostics.length + this.statistiques.length + this.tournaments.length > 0;
       },
       teamsStats() {
         return this.globalStats.filter(div => div.type === 'team');
       },
       playersStats() {
         return this.globalStats.filter(div => div.type === 'player');
-      }
+      },
+      completedPronostics() {
+        return this.pronostics.filter(div => div.status === 'Finished').length > 0;
+      },
+      pendingPronostics() {
+        return this.pronostics.filter(div => div.status === 'Pending').length > 0;
+      },
+      pendingTournaments() {
+        return this.tournaments.filter(div => div.status === 'Pending').length > 0;
+      },
+      completedTournaments() {
+        return this.tournaments.filter(div => div.status === 'Finished').length > 0;
+      },
     },
     mounted() {
       this.fetshData();

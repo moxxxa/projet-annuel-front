@@ -42,13 +42,13 @@
         </div>
         <div v-else>
           <br>
-          <center><h1 class="light">Résultats</h1></center>
-          <br><br><br>
+          <center><h2 class="light">Vous pouvez suivre votre demande dans l'onglet Mes recherches</h2></center>
+          <!-- <br><br><br>
           <h2 class="light" v-if="predictionResult.firstPlace">Prémiere place: {{predictionResult.firstPlace}}  <font color="red">{{predictionResult.firstPlacePrediction}}</font></h2>
           <h2 class="light" v-if="predictionResult.secondPlace">Deuxième place: {{predictionResult.secondPlace}}  <font color="red">{{predictionResult.secondPlacePrediction}}</font></h2>
-          <h2 class="light" v-if="predictionResult.thirdPlace">Troisième place: {{predictionResult.thirdPlace}}  <font color="red">{{predictionResult.thirdPlacePrediction}}</font></h2>
+          <h2 class="light" v-if="predictionResult.thirdPlace">Troisième place: {{predictionResult.thirdPlace}}  <font color="red">{{predictionResult.thirdPlacePrediction}}</font></h2> -->
           <br><br>
-          <f7-button fill round raised text-color="black" fill @click="restart">Nouveau simulation</f7-button>
+          <f7-button fill round raised text-color="black" fill @click="restart">Nouvelle simulation</f7-button>
           <br><br>
         </div>
       </f7-card-content>
@@ -107,18 +107,28 @@ export default {
         this.selectedTeams = payload;
       },
       predict() {
-      let vm = this;
-      vm.selectedTeams = vm.selectedTeams.map(div => div.substring(0, div.indexOf("-")));
-      WebService.getTournamentPrediction(vm.selectedTeams).then(response => {
-        vm.predictionResult = response.data;
-      }).catch((err) => {
-        console.warn("error while calculating prediction ", err);
-      });
-      vm.$f7.dialog.preloader('Processing for the prediction ...., please wait');
-        setTimeout(() => {
+        let vm = this;
+        vm.selectedTeams = vm.selectedTeams.map(div => div.substring(0, div.indexOf("-")));
+        const today = new Date();
+        const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+        WebService.saveTournament(vm.selectedTeams, StorageService.getUser().token, date).then(response => {
           vm.displayResult = true;
-          vm.$f7.dialog.close();
-        }, 10000);
+        }).catch((err) => {
+          vm.restart();
+          console.warn("error while calculating prediction ", err);
+          let dialog =  vm.$f7.dialog.create({
+              title: 'Oups...',
+              text: 'quelque chose s\'est mal passé, veuillez ressayer plus tard',
+              destroyOnClose: true,
+              buttons: [
+                  {
+                      text: 'ok',
+                      color: vm.colorTheme,
+                  }
+              ]
+          });
+          dialog.open();
+        });
       }
     },
     computed: {

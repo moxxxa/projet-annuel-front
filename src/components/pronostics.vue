@@ -71,10 +71,9 @@
                   <br><br><br><br><br><br>
               </div>
               <div v-else-if="step === 4">
-                <center><h1 class="light">Résultats</h1></center>
                 <div v-if="displayResult">
-                  <br><br><br>
-                  <span>
+                  <br>
+                  <!-- <span>
                     <img :src="prediction.awayTeam.teamImage" height="80px" width="80px">
                     <font class="light" size="5">{{prediction.awayTeam.name}}   : 60 %</font>
                   </span>
@@ -83,12 +82,12 @@
                     <img :src="prediction.homeTeam.teamImage" height="80px" width="80px">
                     <font class="light" size="5">{{prediction.homeTeam.name}}   : 25 %</font>
                   </span>
+                  <br><br> -->
+                  <center><h2 class="light">Vous pouvez suivre votre demande dans l'onglet Mes recherches</h2></center>
                   <br><br>
-                  <h2 class="light">Égaliter   : 15 %</h2>
-                  <f7-button fill round raised text-color="black" fill @click="restart">Nouveau simulation</f7-button>
                 </div>
-                <div v-else>
-                  <br><br><br><br><br>
+                <div>
+                  <f7-button fill round raised text-color="black" fill @click="restart">Nouvelle simulation</f7-button>
                 </div>
               </div>
             </f7-card-content>
@@ -414,16 +413,23 @@ export default {
           let vm = this;
           const today = new Date();
           const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-          WebService.pronostics(vm.prediction, date).then(response => {
-            // predictionResult
-          }).catch((err) => {
-            console.warn("error fetshing pronostics, err =", err);
-          });
-          vm.$f7.dialog.preloader('Prediction en cours ...., veuillez patientez');
-          setTimeout(() => {
+          WebService.pronostics(vm.prediction, date, StorageService.getUser().token).then(response => {
             vm.displayResult = true;
-            vm.$f7.dialog.close();
-          }, 10000);
+          }).catch((err) => {
+            console.warn("error while calculating prediction ", err);
+            let dialog =  vm.$f7.dialog.create({
+                title: 'Oups...',
+                text: 'quelque chose s\'est mal passé, veuillez ressayer plus tard',
+                destroyOnClose: true,
+                buttons: [
+                    {
+                        text: 'ok',
+                        color: vm.colorTheme,
+                    }
+                ]
+            });
+            dialog.open();
+          });
 
       }
     }

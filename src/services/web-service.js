@@ -89,6 +89,10 @@ export default class WebService {
       return axios.get(`/search/team/${name}`);
     }
 
+    static teamById(team_id) {
+      return axios.get(`/teams/${team_id}`)
+    }
+
     static teamsOfLeague(id) {
       return axios.get(`/teams/league/${id}`);
     }
@@ -97,7 +101,7 @@ export default class WebService {
       return axios.get(`/teams/stats/${leagueId}/${teamId}/${season}`);
     }
 
-    static pronostics(prediction, date) {
+    static pronostics(prediction, date, token) {
       return axios.post('/pronostics/predict', {
         awayTeamId: prediction.awayTeam.teamId,
         awayTeamLeagueId: prediction.awayTeam.leagueId,
@@ -109,11 +113,13 @@ export default class WebService {
         homeTeamLeagueName: prediction.homeTeam.leagueName,
         imageHome: prediction.homeTeam.teamImage,
         imageAway: prediction.awayTeam.teamImage,
-        date : date
+        date : date,
+        token: token,
+        status: "Pending"
       });
     }
 
-    static storeStatistique(type, currentLeague_id, currentLeague_year, team_id, player_id, date, teamName, playerName, image) {
+    static storeStatistique(type, currentLeague_id, currentLeague_year, team_id, player_id, date, teamName, playerName, image, token) {
       return axios.post('/statistique/save' , {
         type: type,
         teamId: team_id,
@@ -123,7 +129,8 @@ export default class WebService {
         date: date,
         teamName: teamName,
         playerName: playerName,
-        image: image
+        image: image,
+        token: token
       });
     }
 
@@ -135,9 +142,17 @@ export default class WebService {
       return axios.get('/pronostics/all');
     }
 
-    static getTournamentPrediction(tournament) {
-      return axios.post(`/tournament/prediction`, {
-        tournament: tournament
+    static saveTournament(tournament, token, date) {
+      tournament = tournament.map(val => parseInt(val, 10));
+      return axios.post(`/tournament/save`, {
+        tournament: tournament,
+        token: token,
+        date : date,
+        status: "Pending"
       });
     };
+
+    static getTournaments() {
+      return axios.get('/tournament/all');
+    }
 }

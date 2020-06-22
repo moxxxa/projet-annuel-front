@@ -63,7 +63,7 @@ export default {
       const today = new Date();
       const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate() + '-' + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
-      WebService.storeStatistique("player", this.currentLeague.id, this.currentLeague.year, this.team.id, this.player.id, date, this.team.name, this.player.name).then(response => {
+      WebService.storeStatistique("player", this.currentLeague.id, this.currentLeague.year, this.team.id, this.player.id, date, this.team.name, this.player.name, "", StorageService.getUser().token).then(response => {
       }).catch((err) => {
         console.warn("err =", err);
       });
