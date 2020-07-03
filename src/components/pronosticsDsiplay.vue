@@ -7,7 +7,7 @@
     <div class="second-team">
       <img :src="pronostic.imageAway" height="40px" weight="40px">
     </div>
-    <br><br>
+    <br><br><br>
     <strong class="light">Date d'éxecution: {{pronostic.date}}  </strong>
     <br><br>
 
