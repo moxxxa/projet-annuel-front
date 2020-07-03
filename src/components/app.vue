@@ -108,6 +108,7 @@ export default {
       });
     },
     OnGoogleAuthFail (error) {
+      console.log('error =', error);
       let vm = this;
       let dialog =  vm.$f7.dialog.create({
           title: 'Ouups ..',

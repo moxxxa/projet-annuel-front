@@ -1,73 +1,39 @@
 <template>
-  <div class="data-table">
+  <div>
     <center>
       <img :src="team.image" height="80px" width="80px">
     </center>
+    <br><br>
+    <strong class="light">Nom de l'équipe: </strong> {{teamStats.name}}
+    <br><br>
+    <strong class="light">Nombre total de buts de cette saison: </strong> {{teamStats.goalCount}}
+    <br><br>
+    <strong class="light">Nombre de joueurs: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong> {{teamStats.players && teamStats.players.length ? teamStats.players.length : 'N/F'}}
+    <br><br>
+    <strong class="light">Matchs nulls à domicile: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;</strong> {{teamStats.homeDraws}}
+    <br><br>
+    <strong class="light">Matchs perdus à domicile: </strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{teamStats.homeLoses}}
+    <br><br>
+    <strong class="light">Matchs gagnés à domicile: </strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{teamStats.homeWin}}
+    <br><br>
+    <strong class="light">Matchs nulls à l'extérieur: </strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {{teamStats.outDraws}}
+    <br><br>
+    <strong class="light">Matchs perdus à l'extérieur: </strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {{teamStats.outLoses}}
+    <br><br>
+    <strong class="light">Matchs gagnés à l'extérieur: </strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    {{teamStats.outWin}}
+    <br><br>
+    <center><strong>Joueurs</strong></center>
     <br>
-    <table>
-      <thead>
-        <tr>
-          <th style="text-align: center; vertical-align: middle;" class="light">Nom</th>
-          <th style="text-align: center; vertical-align: middle;" class="light">Nombre total de buts</th>
-          <th style="text-align: center; vertical-align: middle;" class="light">Nombre de joueurs</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: center; vertical-align: middle;" class="light"><strong>{{teamStats.name}}</strong></td>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.goalCount}}</td>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.players ? teamStats.players.length : 'N/F'}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <br><br>
-    <table>
-      <thead>
-        <tr>
-          <th style="text-align: center; vertical-align: middle;" class="light">Matchs nulls à domicile</th>
-          <th style="text-align: center; vertical-align: middle;" class="light">Matchs perdus à domicile</th>
-          <th style="text-align: center; vertical-align: middle;" class="light">matchs gagnés à domicile</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.homeDraws}}</td>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.homeLoses}}</td>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.homeWin}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <br><br>
-    <table>
-      <thead>
-        <tr>
-          <th style="text-align: center; vertical-align: middle;" class="light">Matchs nulls à l'extérieur</th>
-          <th style="text-align: center; vertical-align: middle;" class="light">Matchs perdus à l'extérieur</th>
-          <th style="text-align: center; vertical-align: middle;" class="light">matchs gagnés à l'extérieur</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.outDraws}}</td>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.outLoses}}</td>
-          <td style="text-align: center; vertical-align: middle;" class="light">{{teamStats.outWin}}</td>
-        </tr>
-      </tbody>
-    </table>
-    <br><br>
     <center>
-      <table>
-        <thead>
-          <tr>
-            <th style="text-align: center; vertical-align: middle;" class="light">Joueurs</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="player in teamStats.players" :key="player.id">
-            <td style="text-align: center; vertical-align: middle;" class="light">{{player.name}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div v-for="player in teamStats.players" :key="player.id">
+        <div class="light">{{player.name}}</div>
+      </div>
     </center>
   </div>
 </template>

@@ -1,11 +1,11 @@
 <template>
   <div>
-    <center><h2 class="light">prediction preference</h2></center>
+    <center><h2 class="light">Préférence</h2></center>
     <f7-list>
-      <f7-list-item title="First team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une équipe'}" ref="item1">
-        <select name="First team" @input="updateSmartSelect">
+      <f7-list-item title="équipeN°1" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une équipe'}" ref="item1">
+        <select name="équipe N°1" @input="updateSmartSelect">
           <optgroup :label="currentLeague1.name">
-            <option value="Select a team" selected>Select a team</option>
+            <option value="Select a team" selected>Sélectionnez une équipe</option>
             <div v-for="team in teams1" :key="team.id">
               <option :value="team.name">{{team.name}}</option>
             </div>
@@ -17,10 +17,10 @@
       <h1 class="light"><font color="#9921e8">Vs</font></h1>
     </center>
     <f7-list>
-      <f7-list-item title="Second team" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item2" :class="team0 === '' ? 'disabled': ''">
-        <select name="Second team">
+      <f7-list-item title="équipeN°2" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="item2" :class="team0 === '' ? 'disabled': ''">
+        <select name="équipe N°2">
           <optgroup :label="currentLeague2.name">
-            <option value="Select a team" selected>Select a team</option>
+            <option value="Select a team" selected>Sélectionnez une équipe</option>
             <div v-for="team in teamsAux" :key="team.id">
               <option :value="team.name">{{team.name}}</option>
             </div>
@@ -30,9 +30,9 @@
     </f7-list>
     <hr/>
     <f7-list>
-      <f7-list-item title="The home team" smart-select :smart-select-params="{openIn: 'sheet'}" :class="team0 === '' || team1 === '' || team0 === 'Select a team' || team1 === 'Select a team' ? 'disabled': ''" ref="hometeam">
-        <select name="Home team">
-          <option value="Home team" selected>Selectionner l'équipe a domicile</option>
+      <f7-list-item title="domicile" smart-select :smart-select-params="{openIn: 'sheet'}" :class="team0 === '' || team1 === '' || team0 === 'Select a team' || team1 === 'Select a team' ? 'disabled': ''" ref="hometeam">
+        <select name="domicile">
+          <option value="Home team" selected>Sélectionnez une équipe</option>
           <option :value="team0">{{team0}}</option>
           <option :value="team1">{{team1}}</option>
         </select>

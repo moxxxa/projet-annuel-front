@@ -1,7 +1,7 @@
 <template>
   <f7-list>
-    <f7-list-item title="Select the teams" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Search a team'}" ref="teams">
-      <select name="Select the teams" multiple :maxlength="numberOfTeams">
+    <f7-list-item title="Les équipes" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une équipe'}" ref="teams">
+      <select name="Les équipes" multiple :maxlength="numberOfTeams">
         <optgroup v-for="league in leaguesC" :key="league.id" :label="league.name">
           <option v-for="team in league.teams" :key="team.id + '-' + league.name" :value="team.id + '-' + team.name + '-' + league.name">{{team.name}}</option>
         </optgroup>

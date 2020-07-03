@@ -4,9 +4,9 @@ import StorageService from './storage-service';
 
 var token = StorageService.getToken();
 
-var apiHost = 'http://localhost:8080';
+var apiHost = 'https://projetannuelljee.herokuapp.com/';
 if (process && process.env && process.env.NODE_ENV === 'development') {
-    apiHost = 'http://localhost:8080';
+    apiHost = 'https://projetannuelljee.herokuapp.com/';
 }
 
 axios.defaults.baseURL = apiHost;

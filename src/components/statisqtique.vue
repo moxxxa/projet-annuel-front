@@ -1,17 +1,18 @@
 <template>
-  <f7-block>
+  <div>
     <f7-card>
       <f7-card-content>
         <div v-if="!displayResult">
-          <center><h1 class="light">Statisqtiques</h1></center>
-          <center><h3 class="light">consulter les statistiques d'une équipe / joueur</h3></center>
+          <center><h1 class="light">Statistiques</h1></center>
+          <center><h4 class="light">Consulter les statistiques équipe / joueur</h4></center>
           <br>
-          <f7-button popover-open=".popover-choise"><font size="2"> Pour commencer, merci de choisir une option : &nbsp;{{choises}}</font></f7-button>
+          <center><font size="2">Pour commencer, merci de choisir une option : </font></center>
+          <f7-button popover-open=".popover-choise"><font size="2">&nbsp;{{choises}}</font></f7-button>
           <br><br>
           <hr/>
           <br>
           <center v-if="choises === 'équipe / joueur'"class="light">Veuillez Selectionner une ligue</center>
-          <center v-else class="light">Afin de trouver {{calculateLabelChoice()}}, merci de selectionner la ligue en question</center>
+          <center v-else class="light">Afin de trouver {{calculateLabelChoice()}}, merci de sélectionner la ligue en question</center>
           <br>
           <f7-list>
             <f7-list-item :title="leaguesTitle"  smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une ligue'}" ref="leagues1" :class="choise === '' ? 'disabled' : ''">
@@ -29,7 +30,7 @@
           <center v-else class="light">{{calculateLabelChoiceTeam()}}</center>
           <f7-list>
             <br>
-            <f7-list-item title="équipe" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'chercher une équipe'}" ref="equipe"
+            <f7-list-item title="Équipe" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'chercher une équipe'}" ref="equipe"
             :class="choises === 'équipe / joueur' || currentLeague.name === 'Select a league' || currentLeague.name === '' ? 'disabled' : ''">
               <select name="équipe">
                 <optgroup :label="currentLeague.name">
@@ -46,7 +47,7 @@
           <!-- joueur -->
           <f7-list>
             <f7-list-item title="Joueur" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'chercher un joueur'}" ref="joueur"
-            :class="choises ==='Equipe' || choises === 'équipe / joueur' || team === '' || currentLeague === 'Select a league' || currentLeague === '' ? 'disabled' : ''">
+            :class="choises ==='Équipe' || choises === 'équipe / joueur' || team === '' || currentLeague === 'Select a league' || currentLeague === '' ? 'disabled' : ''">
               <select name="équipe">
                 <optgroup :label="currentLeague.name">
                   <option value="Select a player" selected>Sélectionner un joueur</option>
@@ -80,11 +81,11 @@
     </f7-card>
     <f7-popover class="popover-choise">
       <f7-list>
-        <f7-list-item link="#" popover-close title="Equipe" @click="choise = 'Equipe'"></f7-list-item>
+        <f7-list-item link="#" popover-close title="Équipe" @click="choise = 'Équipe'"></f7-list-item>
         <f7-list-item link="#" popover-close title="Joueur" @click="choise = 'Joueur'"></f7-list-item>
       </f7-list>
     </f7-popover>
-  </f7-block>
+  </div>
 </template>
 
 <script>
@@ -163,20 +164,20 @@ export default {
       },
       findStats() {
         let vm = this;
-        vm.$f7.dialog.preloader('Veuillez patientez, la recherche pour les statistiques est en cours ...');
+        vm.$f7.dialog.preloader('La recherche pour les statistiques est en cours ...');
           setTimeout(() => {
             vm.displayResult = true;
             vm.$f7.dialog.close();
           }, 3000);
       },
       calculateLabelChoice() {
-        if (this.choise === 'Equipe') {
-          return 'cette equipe'
+        if (this.choise === 'Équipe') {
+          return 'cette équipe'
         }
         return 'ce joueur';
       },
       calculateLabelChoiceTeam() {
-        if (this.choise === 'Equipe') {
+        if (this.choise === 'Équipe') {
           return 'Veuillez sélectionner l\'équipe en question';
         }
         return 'Veuillez sélectionner l\'équipe dans laquelle figure ce joueur';
@@ -187,7 +188,7 @@ export default {
         return this.leagues;
       },
       leaguesTitle() {
-        return "LaLiga, Bundesliga, Ligue1 ..";
+        return "Ligue";
       },
       currentStateC() {
         let first_result =  this.team !== '' && this.team !== 'Sélectionner une équipe' && this.choise !== '';

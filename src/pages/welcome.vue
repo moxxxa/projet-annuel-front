@@ -9,28 +9,16 @@
     </f7-toolbar>
     <f7-tabs animated>
       <f7-tab id="pronosticsTab" class="page-content" tab-active>
-        <br>
-        <f7-block>
-          <pronostics/>
-        </f7-block>
+        <pronostics/>
       </f7-tab>
       <f7-tab id="tournamentTab" class="page-content">
-        <br>
-        <f7-block>
-          <tournament/>
-        </f7-block>
+        <tournament/>
       </f7-tab>
       <f7-tab id="statisqtiqueTab" class="page-content">
-        <br>
-        <f7-block>
-          <statisqtique/>
-        </f7-block>
+        <statisqtique/>
       </f7-tab>
       <f7-tab id="recherchesTab" class="page-content">
-        <br>
-        <f7-block>
-          <recherches/>
-        </f7-block>
+        <recherches/>
       </f7-tab>
     </f7-tabs>
   </f7-page>

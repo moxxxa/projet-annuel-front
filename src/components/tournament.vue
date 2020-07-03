@@ -1,5 +1,5 @@
 <template>
-  <f7-block>
+  <div>
     <f7-card>
       <f7-card-content>
         <div v-if="!displayResult">
@@ -7,14 +7,17 @@
           <center><h3 class="light">Prédire le résultat d'un tournoi</h3></center>
           <br>
           <!-- number of teams -->
-          <f7-button popover-open=".popover-number-teams"><font size="2"> Pour commencer, merci de choisir le nombre des équipes : &nbsp;{{numberOfTeams}}</font></f7-button>
+          <center>
+            Pour commencer, merci de choisir le
+          </center>
+          <f7-button popover-open=".popover-number-teams"><font size="2">nombre des équipes : &nbsp;{{numberOfTeams}}</font></f7-button>
           <br><br>
           <!-- years caluclation -->
+
           <f7-list>
-            <f7-list-item title="baser sur le 1, 2, 3 ... dernière années" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
-              <select name="Based on the 1, 2, 3 ... last years">
-                <option value="Selectionner un benchmark" selected>Selectionner un benchmark</option>
-                <option value="1">Années en cours</option>
+            <f7-list-item title="Sur la base de" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
+              <select name="Sur la base de">
+                <option value="1" selected>L'année en cours</option>
                 <option value="2">2 dernières années</option>
                 <option value="3">3 dernières années</option>
                 <option value="4">4 dernières années</option>
@@ -66,7 +69,7 @@
         <f7-list-item link="#" popover-close title="18" @click="numberOfTeams = 18; canPick = false;"></f7-list-item>
       </f7-list>
     </f7-popover>
-  </f7-block>
+  </div>
 </template>
 
 <script>
@@ -167,7 +170,7 @@ export default {
       numberOfTeamC(newv, oldv) {
         let vm = this;
         vm.$f7.preloader.show();
-        for (const league of vm.leagues.slice(0, 4)) {
+        for (const league of vm.leagues.slice(0, 2)) {
           WebService.teamsOfLeague(league.id).then(response => {
             league.teams = response.data;
           }).catch((err) => {

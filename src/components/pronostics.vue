@@ -1,5 +1,5 @@
 <template>
-    <f7-block>
+    <div>
       <f7-row>
         <f7-col width="100">
           <f7-card class="demo-facebook-card">
@@ -7,9 +7,10 @@
               <f7-progressbar :progress="currentProgress" id="demo-inline-progressbar"></f7-progressbar>
             </f7-card-header>
             <f7-card-content :padding="true">
+              <center><h1 class="light">Pronostics</h1></center>
               <div v-if="currentStep === 1">
-                <center><h2 class="light">1 Vs 1 Prediction</h2></center>
-                <center><h3 class="light">Pour commencer, veuillez sélectionner la ligue de la première équipe</h3></center>
+                <center><h3 class="light">1 Vs 1 Prediction</h3></center>
+                <center><h4 class="light">Pour commencer, veuillez sélectionner la ligue de la première équipe</h4></center>
                 <hr/>
                 <br>
                 <f7-list>
@@ -27,7 +28,7 @@
                 </f7-button>
                 <br><br>
                 <hr/>
-                <center><h3 class="light">veuillez sélectionner la ligue de la deuxième équipe</h3></center>
+                <center><h3 class="light">Veuillez sélectionner la ligue de la deuxième équipe</h3></center>
                 <br>
                 <f7-list>
                   <f7-list-item :title="leaguesTitle" smart-select :smart-select-params="{openIn: 'popup', searchbar: true, searchbarPlaceholder: 'Chercher une ligue'}" ref="leagues2">
@@ -51,12 +52,12 @@
               </div>
               <div v-else-if="currentStep === 3">
                   <center><h2 class="light">Dernière étape</h2></center>
-                  <center><h3 class="light">Cette étape est essentielle pour définir la précision de la prédiction</h3></center>
+                  <center><h3 class="light">Cette étape est essentielle pour ajuster la précision de la prédiction</h3></center>
                   <br>
                   <f7-list>
-                    <f7-list-item title="Based on the 1, 2, 3 ... last years" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
-                      <select name="Sur la base des 1, 2, 3 ... dernières années">
-                        <option value="1" selected>Années en cours</option>
+                    <f7-list-item title="Sur la base de" smart-select :smart-select-params="{openIn: 'sheet'}" ref="years">
+                      <select name="Sur la base de ">
+                        <option value="1" selected>L'année en cours</option>
                         <option value="2">2 dernières années</option>
                         <option value="3">3 dernières années</option>
                         <option value="4">4 dernières années</option>
@@ -118,7 +119,7 @@
       backdrop
       >
       <f7-page-content>
-        <f7-block-title large><font color="red">Les équipes de la {{currentLeague1.name}}</font></f7-block-title>
+        <f7-block-title large><font color="red" size="4">Les équipes de la {{currentLeague1.name}}</font></f7-block-title>
         <f7-block-title>2020-21</f7-block-title>
         <f7-list media-list v-for="team in currentTeamsLeague1" :key="team.code">
           <f7-list-item :title="team.name" :after="currentLeague1.country">
@@ -134,16 +135,16 @@
     backdrop
     >
     <f7-page-content>
-      <f7-block-title large><font color="red">Les équipes de la {{currentLeague2.name}}</font></f7-block-title>
+      <f7-block-title large><font color="red" size="4">Les équipes de la {{currentLeague2.name}}</font></f7-block-title>
       <f7-block-title>2020-21</f7-block-title>
       <f7-list media-list v-for="team in currentTeamsLeague2" :key="team.code">
-        <f7-list-item :title="team.name" :after="currentLeague1.country">
+        <f7-list-item :title="team.name" :after="currentLeague2.country">
                 <img slot="media" :src="team.image" width="50" />
         </f7-list-item>
       </f7-list>
     </f7-page-content>
   </f7-sheet>
-  </f7-block>
+</div>
 </template>
 
 <script>
@@ -284,6 +285,7 @@ export default {
       setPrediction(payload) {
         if (payload) {
           this.prediction = payload;
+          console.log('this.prediction =', this.prediction);
           // console.log('this.prediction =', this.prediction);
         }
       },
@@ -317,7 +319,7 @@ export default {
         return this.step;
       },
       leaguesTitle() {
-        return "LaLiga, Bundesliga, Ligue1 ..";
+        return "Ligue";
       },
       currentStateC() {
         // console.log('current league =', this.currentLeague);
