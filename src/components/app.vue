@@ -4,8 +4,8 @@
     <f7-view
       main
       class="safe-areas"
-      id="main-view"
       url="/"
+      :push-state="true"
     >
     </f7-view>
 

@@ -1,5 +1,5 @@
 <template>
-  <f7-block class="team-info">
+  <f7-block class="team-info" v-if="player">
     <br><br>
     <strong class="light">Date d'éxecution: {{player.date}}  </strong>
     <br><br>

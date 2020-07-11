@@ -41,8 +41,7 @@ export default {
       setTimeout(() => {
         vm.$f7.dialog.close();
         StorageService.removeAll();
-        window.location.href = "/";
-        location.reload();
+        location.href = "";
       }, 3000);
     },
     goToPredict() {

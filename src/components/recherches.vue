@@ -107,6 +107,10 @@
                             <f7-icon md="material:visibility" color="green" size="20"></f7-icon>
                           </f7-button>
                         </td>
+                        <td style="text-align: center; vertical-align: middle;" class="light">
+                          <span v-if="p.status === 'Pending'"><font color="red">En cours</font></span>
+                          <span v-else><font color="green">Terminé</font></span>
+                        </td>
                         <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
                       </tr>
                     </tbody>
@@ -222,7 +226,7 @@ export default {
         vm.$f7.preloader.show();
         WebService.getPronostics().then(response => {
           vm.pronostics = response.data;
-          console.log('pronostics =', vm.pronostics);
+          // console.log('pronostics =', vm.pronostics);
         }).catch((err) => {
           console.warn("can't getPronostics ", err);
         });
