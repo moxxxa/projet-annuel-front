@@ -123,7 +123,7 @@ export default {
     },
     deleteUserAccount() {
       let vm = this;
-      WebService.deleteUserAccount(vm.currentMdp).then(response => {
+      WebService.deleteUserAccount(vm.currentMdp, StorageService.getUser().email).then(response => {
         let dialog =  vm.$f7.dialog.create({
             title: 'L\'équipe ClicFoot',
             text: 'Vous allez nous manquer, votre compte vient d\'être supprimée :(',

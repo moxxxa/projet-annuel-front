@@ -4,10 +4,11 @@ import StorageService from './storage-service';
 
 var token = StorageService.getToken();
 
-// var apiHost = 'https://projetannuelljee.herokuapp.com/';
-var apiHost ='http://localhost:8080';
+var apiHost = 'https://annuel-jee-server.herokuapp.com/';
+// var apiHost ='http://localhost:8080';
 if (process && process.env && process.env.NODE_ENV === 'development') {
-    apiHost = 'http://localhost:8080';
+    // apiHost = 'http://localhost:8080';
+    apiHost = 'https://annuel-jee-server.herokuapp.com/';
 }
 
 axios.defaults.baseURL = apiHost;
@@ -59,17 +60,19 @@ export default class WebService {
       return axios.get(`/image/get/${imageName}`);
     }
 
-    static updateUserPassword(newMdp, currentMdp) {
+    static updateUserPassword(newMdp, currentMdp, email) {
       return axios.put(`/user/update/password`, {
         password: currentMdp,
-        passwordConfirm: newMdp
+        passwordConfirm: newMdp,
+        email: email
       });
     }
 
-    static deleteUserAccount(currentMdp) {
+    static deleteUserAccount(currentMdp, email) {
       return axios.delete('/user/delete', {
         data: {
-          password : currentMdp
+          password : currentMdp,
+          email: email
         }
       });
     }

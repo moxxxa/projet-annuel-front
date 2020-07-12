@@ -65,8 +65,8 @@
                 </tbody>
               </table>
               <br>
-              <hr v-if="playersStats"/>
-              <h2 class="light" v-if="playersStats">Statistique joueur </h2>
+              <hr v-if="statistiquePlayers"/>
+              <h2 class="light" v-if="statistiquePlayers">Statistique joueur </h2>
               <table v-if="statistiquePlayers">
                 <thead>
                   <tr>
@@ -88,7 +88,7 @@
               <div v-if="tournaments.length > 0">
                 <hr/>
                 <h2 class="light">Tournois</h2>
-                <div class="pronostics data-table" v-if="pendingTournaments">
+                <div class="pronostics data-table">
                   <table>
                     <thead>
                       <tr>
@@ -98,7 +98,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr v-for="p in tournaments" :key="p.id" v-if="p.status === 'Pending'">
+                      <tr v-for="p in tournaments" :key="p.id">
                         <td style="text-align: center; vertical-align: middle;" class="light">
                           <f7-button v-if="p.status === 'Pending'" class="disabled">
                             <f7-icon md="material:visibility_off" color="red" size="20"></f7-icon>
@@ -166,9 +166,6 @@
       </div>
   </div>
 </template>
-
-
-
 
 <script>
 import WebService from '../services/web-service'
@@ -264,6 +261,7 @@ export default {
 
         WebService.getTournaments().then(response => {
           vm.tournaments = response.data;
+          console.log('vm.tournaments =', vm.tournaments);
           for (const element of vm.tournaments) {
             element.teams = [];
             for (const id of element.tournament) {

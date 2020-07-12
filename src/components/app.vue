@@ -5,7 +5,6 @@
       main
       class="safe-areas"
       url="/"
-      :push-state="true"
     >
     </f7-view>
 
@@ -94,7 +93,6 @@ export default {
     };
   },
   computed: {
-
   },
   methods: {
     OnGoogleAuthSuccess (idToken) {
