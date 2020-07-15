@@ -110,7 +110,7 @@ export default {
       let vm = this;
       let dialog =  vm.$f7.dialog.create({
           title: 'Ouups ..',
-          text: error,
+          text: 'Une erreur vient de se produire, réessayez plus tard',
           destroyOnClose: true,
           buttons: [
               {

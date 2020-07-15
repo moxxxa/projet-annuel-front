@@ -18,7 +18,7 @@
     <strong class="light">Deuxième place taux: {{tournament.secondPlacePrediction}} </strong>
     <br><br>
 
-    <strong class="light" v-if="tournament.thirdPlace !== '-1'">Troisième place: {{tournament.thirdPlace !== '-1' ? tournament.thirdPlace : 'N/F'}} </strong>
+    <strong class="light" v-if="tournament.thirdPlace !== '-1'">Troisième place: {{tournament.thirdPlace !== '-1' ? teamById(tournament.thirdPlace) : 'N/F'}} </strong>
     <br><br>
 
     <strong class="light" v-if="tournament.thirdPlace !== '-1'">Troisième place taux: {{tournament.thirdPlace !== '-1' ? tournament.thirdPlacePrediction : 'N/F'}} </strong>

@@ -65,13 +65,14 @@
         </div>
         <div v-else>
           <br>
-          <center><h1 class="light">Résultats</h1></center>
+          <center v-if="choises === 'Équipe'"><h1 class="light">Résultats</h1></center>
           <br>
-          <div class="data-table" v-if="choises === 'Joueur'">
-            <player-statistique :player="player" :playerStats="playerStats" :currentLeague="currentLeague" :team="team"/>
+          <div v-if="choises === 'Équipe'">
+            <team-statistique :teamStats="teamStats" :team="team" :currentLeague="currentLeague"/>
           </div>
           <div v-else>
-            <team-statistique :teamStats="teamStats" :team="team" :currentLeague="currentLeague"/>
+            <player-statistique :player="player" :playerStats="playerStats" :currentLeague="currentLeague" :team="team"/>
+            <center><h2 class="light">Vous pouvez suivre votre demande dans l'onglet Mes recherches</h2></center>
           </div>
           <br><br>
           <f7-button fill round raised text-color="black" fill @click="restart">Nouvelle recherche</f7-button>

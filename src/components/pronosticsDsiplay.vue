@@ -41,12 +41,12 @@ computed: {
     let awayScoreComma = awayScore.split('.')[1].charAt(0);
     awayScore = awayScore.split('.')[0];
     if (awayScoreComma > 4) {
-      awayScore += 1;
+      awayScore = Number(awayScore) + 1;
     }
     let homeScoreComma = homeScore.split('.')[1].charAt(0);
     homeScore = homeScore.split('.')[0];
     if (homeScoreComma >= 4) {
-      homeScore += 1;
+      homeScore = Number(homeScore) + 1;
     }
     return Number(homeScore) + "-" + Number(awayScore);
   },
@@ -62,9 +62,9 @@ computed: {
     return homeScore + '.' + homeScoreComma.charAt(0) + homeScoreComma.charAt(1) + '-' + awayScore + '.' + awayScoreComma.charAt(0) + awayScoreComma.charAt(1);
   }
 },
-created() {
-  console.log('pronostic =', this.pronostic);
-}
+  created() {
+    console.log('pronostic =', this.pronostic);
+  }
 }
 </script>
 <style scoped>

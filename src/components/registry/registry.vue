@@ -68,7 +68,7 @@
           floating-label
           type="password"
           placeholder="Votre mot de passe"
-          info="au moins  8 characters contenant un nombre, une lettre majuscule et une lettre miniscule"
+          info="8 characters avec un nombre, une lettre majuscule et miniscule"
           clear-button
           :value="passwordRegistration"
           @input="passwordRegistration =  $event.target.value"

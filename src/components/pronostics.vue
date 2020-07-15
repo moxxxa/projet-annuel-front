@@ -74,16 +74,6 @@
               <div v-else-if="step === 4">
                 <div v-if="displayResult">
                   <br>
-                  <!-- <span>
-                    <img :src="prediction.awayTeam.teamImage" height="80px" width="80px">
-                    <font class="light" size="5">{{prediction.awayTeam.name}}   : 60 %</font>
-                  </span>
-                  <br><br>
-                  <span>
-                    <img :src="prediction.homeTeam.teamImage" height="80px" width="80px">
-                    <font class="light" size="5">{{prediction.homeTeam.name}}   : 25 %</font>
-                  </span>
-                  <br><br> -->
                   <center><h2 class="light">Vous pouvez suivre votre demande dans l'onglet Mes recherches</h2></center>
                   <br><br>
                 </div>
@@ -374,7 +364,6 @@ export default {
           vm.prediction.yearsFilter = vm.yearsParams;
         });
       }
-
     },
     watch: {
       step(newv, oldv) {
