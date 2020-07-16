@@ -13,7 +13,7 @@
             </f7-button>
           </a>
             <f7-button fill round raised text-color="white" href="/registre/" slot="right" class="margin-left">
-              Registre
+              Inscription
             </f7-button>
           <f7-nav-title sliding text-color="white" class="text-italic margin-top">
             <a href="/" style="text-decorations:none; color:inherit;">ClicFoot&nbsp;</a>

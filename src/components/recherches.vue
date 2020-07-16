@@ -42,8 +42,8 @@
             </div>
           </div>
           <br>
-          <hr/>
           <div v-if="statistiques.length > 0">
+            <hr v-if="pronostics.length"/>
             <h2 class="light">Statistique équipe</h2>
             <div class="statisitics data-table">
               <table v-if="statistiqueTeams">
@@ -85,38 +85,38 @@
                   </tr>
                 </tbody>
               </table>
-              <div v-if="tournaments.length > 0">
-                <hr/>
-                <h2 class="light">Tournois</h2>
-                <div class="pronostics data-table">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th></th>
-                        <th style="text-align: center; vertical-align: middle;" class="light">Statut</th>
-                        <th style="text-align: center; vertical-align: middle;" class="light">Date</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr v-for="p in tournaments" :key="p.id">
-                        <td style="text-align: center; vertical-align: middle;" class="light">
-                          <f7-button v-if="p.status === 'Pending'" class="disabled">
-                            <f7-icon md="material:visibility_off" color="red" size="20"></f7-icon>
-                          </f7-button>
-                          <f7-button v-else popup-open=".tournament-popup-swipe" @click="currentTournament = p; statistiqueDisplayPlayer = null; statistiqueDisplayTeam = null; currentPronostic = null;popupOpenedTr=true;">
-                            <f7-icon md="material:visibility" color="green" size="20"></f7-icon>
-                          </f7-button>
-                        </td>
-                        <td style="text-align: center; vertical-align: middle;" class="light">
-                          <span v-if="p.status === 'Pending'"><font color="red">En cours</font></span>
-                          <span v-else><font color="green">Terminé</font></span>
-                        </td>
-                        <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+            </div>
+          </div>
+          <div v-if="tournaments">
+            <hr/>
+            <h2 class="light">Tournois</h2>
+            <div class="pronostics data-table">
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th style="text-align: center; vertical-align: middle;" class="light">Statut</th>
+                    <th style="text-align: center; vertical-align: middle;" class="light">Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="p in tournaments" :key="p.id">
+                    <td style="text-align: center; vertical-align: middle;" class="light">
+                      <f7-button v-if="p.status === 'Pending'" class="disabled">
+                        <f7-icon md="material:visibility_off" color="red" size="20"></f7-icon>
+                      </f7-button>
+                      <f7-button v-else popup-open=".tournament-popup-swipe" @click="currentTournament = p; statistiqueDisplayPlayer = null; statistiqueDisplayTeam = null; currentPronostic = null;popupOpenedTr=true;">
+                        <f7-icon md="material:visibility" color="green" size="20"></f7-icon>
+                      </f7-button>
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;" class="light">
+                      <span v-if="p.status === 'Pending'"><font color="red">En cours</font></span>
+                      <span v-else><font color="green">Terminé</font></span>
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;" class="light">{{p.date}}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>

@@ -28,7 +28,7 @@
 
         <f7-list-input
           outline
-          label="Prènom"
+          label="Prénom"
           floating-label
           type="text"
           placeholder="Votre prénom"
@@ -141,7 +141,7 @@ export default {
         colorTheme: "blue",
         //Registre
         introRegistre: 'ClicFoot, plus qu\'un jeu',
-        registreText:  "Register",
+        registreText:  "Inscription",
         haveAccount: "Vous avez déjà un compte ?",
         LoginText: "S'identifier",
         emailRegistration: "",

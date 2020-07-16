@@ -59,14 +59,14 @@
     <f7-popover class="popover-number-teams">
       <f7-list>
         <f7-list-item link="#" popover-close title="2" @click="numberOfTeams = 2; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="4" @click="numberOfTeams = 4; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="6" @click="numberOfTeams = 6; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="8" @click="numberOfTeams = 8; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="10" @click="numberOfTeams = 10; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="12" @click="numberOfTeams = 12; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="14" @click="numberOfTeams = 14; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="16" @click="numberOfTeams = 16; canPick = false;"></f7-list-item>
-        <f7-list-item link="#" popover-close title="18" @click="numberOfTeams = 18; canPick = false;"></f7-list-item>
+        <f7-list-item link="#" popover-close title="4" @click="numberOfTeams = 4; canPick = false;" disabled></f7-list-item>
+        <f7-list-item link="#" popover-close title="6" @click="numberOfTeams = 6; canPick = false;" disabled></f7-list-item>
+        <f7-list-item link="#" popover-close title="8" @click="numberOfTeams = 8; canPick = false;" disabled></f7-list-item>
+        <f7-list-item link="#" popover-close title="10" @click="numberOfTeams = 10; canPick = false;" disabled></f7-list-item>
+        <f7-list-item link="#" popover-close title="12" @click="numberOfTeams = 12; canPick = false;" disabled></f7-list-item>
+        <f7-list-item link="#" popover-close title="14" @click="numberOfTeams = 14; canPick = false;" disabled></f7-list-item>
+        <f7-list-item link="#" popover-close title="16" @click="numberOfTeams = 16; canPick = false;" disabled></f7-list-item>
+        <f7-list-item link="#" popover-close title="18" @click="numberOfTeams = 18; canPick = false;" disabled></f7-list-item>
       </f7-list>
     </f7-popover>
   </div>
@@ -170,7 +170,7 @@ export default {
       numberOfTeamC(newv, oldv) {
         let vm = this;
         vm.$f7.preloader.show();
-        for (const league of vm.leagues.slice(0, 2)) {
+        for (const league of vm.leagues.slice(0, 4)) {
           WebService.teamsOfLeague(league.id).then(response => {
             league.teams = response.data;
           }).catch((err) => {

@@ -128,7 +128,7 @@ export default {
         // console.log('here1');
         let dialog =  vm.$f7.dialog.create({
             title: 'Nom trop court',
-            text: 'Le prènom doit comporter au moins trois caractères',
+            text: 'Le prénom doit comporter au moins trois caractères',
             destroyOnClose: true,
             buttons: [
                 {
@@ -144,7 +144,7 @@ export default {
       if (vm.nom.length < 3 && vm.nom.length > 0) {
         // console.log('here2');
         let dialog =  vm.$f7.dialog.create({
-            title: 'Prènom trop court',
+            title: 'Prénom trop court',
             text: 'Le nom doit comporter au moins trois caractères',
             destroyOnClose: true,
             buttons: [
